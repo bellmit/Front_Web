@@ -1,18 +1,17 @@
-import { NgModule }              from '@angular/core';
-import { RouterModule, Routes }  from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
 
-import { IndexComponent }  from '../index/index.component';
-import { DemoComponent }  from '../demo/demo.component';
-import { F0FComponent }  from './f0f.component';
-
+import {IndexComponent} from '../index/index.component';
+import {DemoSelfComponent} from '../demo/self/demoself.component';
+import {F0FComponent} from './f0f.component';
 
 
 const appRoutes: Routes = [
-  { path: 'index', component: IndexComponent },
-  { path: 'demo', component: DemoComponent },
-  { path: '',   redirectTo: '/index', pathMatch: 'full' },
-  { path: '**', component: F0FComponent }
+  {path: 'index', component: IndexComponent},
+  {path: 'demo-self', component: DemoSelfComponent},
+  {path: '', redirectTo: '/index', pathMatch: 'full'/*outlet:'container' */},
+  {path: '**', component: F0FComponent}
 ];
 
 
@@ -20,11 +19,12 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true }
+      {enableTracing: true}
     )
   ],
   exports: [
     RouterModule
   ]
 })
-export class LayoutRouterModule {}
+export class LayoutRouterModule {
+}

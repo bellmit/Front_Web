@@ -11,7 +11,9 @@ import { LayoutComponent } from './layout.component';/*布局组件*/
 import { LayoutRouterModule } from '../route/route.module';/*路由组件*/
 
 /*扩展*/
-import { DemoComponent } from '../demo/demo.component';
+import { IndexComponent } from '../index/index.component';
+import { DemoSelfComponent } from '../demo/self/demoself.component';
+import { F0FComponent } from '../route/f0f.component';
 
 
 
@@ -28,7 +30,9 @@ import { DemoComponent } from '../demo/demo.component';
   ],
   declarations: [
     LayoutComponent,
-    DemoComponent
+    IndexComponent,
+    DemoSelfComponent,
+    F0FComponent
   ],
   bootstrap: [LayoutComponent]
 })

@@ -1,7 +1,7 @@
 /*主栏目*/
 /*背景*/
 .cl-mainbox{
-  padding:10px;
+  padding:@ad-box-gapp;
   min-height: @ad-mainbox-min-height;
   background-repeat: repeat;
   background-color:@color-white;
@@ -36,11 +36,22 @@
 .cl-mainbox-wrap{
   .layout-base();
   background-color:@color-white;
-  margin:5px 0 5px 0;
   min-height: @ad-content-min-height;
+  padding:@ad-box-gapp;
 }
 .cl-mainbox-default{
   background-image:url('../images/welcome_bg_top.png'),url('../images/welcome_bg_bottom.png');
   background-position: left top,right bottom;
   background-repeat: no-repeat;
+}
+.cl-panel{
+  .layout-base();
+  padding:@ad-box-gapp;
+  &:after{
+    content:'';
+    display:table;
+    height:0;
+    width:100%;
+    line-height: 0;
+  }
 }

@@ -7,19 +7,8 @@
       <li nz-submenu>
         <span title><i class="anticon anticon-tag-o"></i><span class="nav-text">组件示例</span></span>
         <ul>
-          <li nz-menu-item routerLink="/demo" routerLinkActive="active">按钮</li>
-          <li nz-menu-item>表格</li>
-          <li nz-menu-item>分页</li>
-          <li nz-menu-item>弹窗</li>
-        </ul>
-      </li>
-      <li nz-submenu>
-        <span title><i class="anticon anticon-appstore-o"></i><span class="nav-text">组件示例</span></span>
-        <ul>
-          <li nz-menu-item>按钮</li>
-          <li nz-menu-item>表格</li>
-          <li nz-menu-item>分页</li>
-          <li nz-menu-item>弹窗</li>
+          <li nz-menu-item routerLink="/demo-self" routerLinkActive="active">自定义组件</li>
+          <li nz-menu-item routerLink="/demo-zorro"  nz-menu-item>ng-zorro组件</li>
         </ul>
       </li>
     </ul>
@@ -33,15 +22,12 @@
     </nz-header>
     <!--内容区-->
     <nz-content class="cl-mainbox cl-mainbox-bg-{{contentBgTheme}}" >
-
       <!--面包屑-->
-      <nz-breadcrumb class="ce-breadcrumb">
+      <!--<nz-breadcrumb class="ce-breadcrumb">
         <nz-breadcrumb-item>组件示例</nz-breadcrumb-item>
         <nz-breadcrumb-item>按钮</nz-breadcrumb-item>
-      </nz-breadcrumb>
-
+      </nz-breadcrumb>-->
       <router-outlet></router-outlet>
-
     </nz-content>
     <!--底部区域-->
     <nz-footer class="cl-footer">&copy;2018</nz-footer>

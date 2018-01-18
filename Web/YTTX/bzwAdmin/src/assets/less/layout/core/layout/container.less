@@ -5,11 +5,24 @@
 }
 
 /*404*/
-.cl-404-container {
+.cl-f0f-container {
   .layout-fixedl-base();
   width: 100%;
   height: 100%;
   width: 100vw;
   height: 100vh;
-  background:@color-gray10 url('../images');
+  background: @color-white url('../images/404.png') center top no-repeat;
+  .f0f-content {
+    .layout-relative-base();
+    width: 100%;
+    height: 100%;
+  }
+  .f0f-show {
+    .layout-absolutel-base(50%, @ad-f0f-icon-height);
+    background:transparent;
+    margin-left: -@ad-f0f-icon-height/2;
+    width: @ad-f0f-icon-height;
+    height: @ad-f0f-icon-height/5;
+    text-align: center;
+  }
 }
