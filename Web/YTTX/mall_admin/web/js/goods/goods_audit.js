@@ -260,6 +260,9 @@
                                 }
                             },
                             {
+                                "data": "createTime"
+                            },
+                            {
                                 "data": "id",
                                 "render": function (data, type, full, meta) {
                                     var id = parseInt(data, 10),

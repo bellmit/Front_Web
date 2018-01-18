@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   templateUrl: './demoself.component.html'
@@ -8,7 +8,7 @@ export class DemoSelfComponent {
   demoself_tab = [
     {
       name: '主题',
-      href:'/demo-self-theme'
+      href: '/demo-self-theme'
     }
   ];
 

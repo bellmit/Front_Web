@@ -2,8 +2,8 @@
   <div class="cl-panel">
     <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
       <nz-tab *ngFor="let tab of demoself_tab">
-        <ng-template routerLink="{{tab.href}}" #nzTabHeading>
-          {{tab.name}}
+        <ng-template #nzTabHeading>
+          <div routerLink="{{tab.href}}">{{tab.name}}</div>
         </ng-template>
       </nz-tab>
     </nz-tabset>
