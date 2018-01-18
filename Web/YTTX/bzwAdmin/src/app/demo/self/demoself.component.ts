@@ -8,8 +8,11 @@ export class DemoSelfComponent {
   demoself_tab = [
     {
       name: '主题',
-      href: '/demo-self-theme'
-    }
+      href: './demo-self-theme'
+    },{
+      name: '按钮',
+      href:'./demo-self-btn'
+    },
   ];
 
   /*demoself_tab = [

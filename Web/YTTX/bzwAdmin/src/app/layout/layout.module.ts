@@ -15,8 +15,9 @@ import {LayoutRouterModule} from '../route/route.module';
 /*扩展*/
 import {IndexComponent} from '../index/index.component';
 import {F0FComponent} from '../route/f0f.component';
-/*import {DemoSelfComponent} from '../demo/self/demoself.component';
-import {DemoSelfThemeComponent} from "../demo/self/component/demoselftheme.component";*/
+import {DemoSelfComponent} from '../demo/self/demoself.component';
+import {DemoSelfThemeComponent} from "../demo/self/component/demoselftheme.component";
+import {DemoSelfBtnComponent} from "../demo/self/component/demoselfbtn.component";
 
 
 @NgModule({
@@ -34,8 +35,9 @@ import {DemoSelfThemeComponent} from "../demo/self/component/demoselftheme.compo
     LayoutComponent,
     IndexComponent,
     F0FComponent,
-    /*DemoSelfComponent,
-    DemoSelfThemeComponent*/
+    DemoSelfComponent,
+    DemoSelfThemeComponent,
+    DemoSelfBtnComponent
   ],
   bootstrap: [LayoutComponent]
 })
