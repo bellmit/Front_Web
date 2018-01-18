@@ -135,8 +135,11 @@
 								}
 							},
 							{
-								"data":"contact"
+								"data":"storeName"
 							},
+                            {
+                                "data":"storeAddress"
+                            },
 							{
 								"data":"content"
 							},
