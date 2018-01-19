@@ -123,7 +123,7 @@
 						},
 						info:false,
 						searching:true,
-						order:[[4, "desc" ]],
+						order:[[5, "desc" ],[4, "desc" ]],
 						columns: [
 							{
 								"data":"nickName"
