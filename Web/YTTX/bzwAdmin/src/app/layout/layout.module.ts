@@ -6,18 +6,30 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 
-/*扩展组件*/
-import {LayoutComponent} from './layout.component';
 /*布局组件*/
-import {LayoutRouterModule} from '../route/route.module';
+import {LayoutComponent} from './layout.component';
 /*路由组件*/
+import {LayoutRouterModule} from '../route/route.module';
 
-/*扩展*/
+
+/*首页组件*/
 import {IndexComponent} from '../index/index.component';
+/*404组件*/
 import {F0FComponent} from '../route/f0f.component';
-import {DemoSelfComponent} from '../demo/self/demoself.component';
-import {DemoSelfThemeComponent} from "../demo/self/component/demoselftheme.component";
-import {DemoSelfBtnComponent} from "../demo/self/component/demoselfbtn.component";
+/*示例组件*/
+import {DemoSelfComponent} from '../demo/self/self.component';
+import {DemoSelfThemeComponent} from "../demo/self/component/theme.component";
+import {DemoSelfBtnComponent} from "../demo/self/component/btn.component";
+import {DemoSelfListGroupComponent} from "../demo/self/component/listgroup.component";
+import {DemoSelfThumbnailComponent} from "../demo/self/component/thumbnail.component";
+import {DemoSelfOrderComponent} from "../demo/self/component/order.component";
+import {DemoSelfGridLabelComponent} from "../demo/self/component/gridlabel.component";
+import {DemoSelfAttrLabelComponent} from "../demo/self/component/attrlabel.component";
+import {DemoSelfActionItemComponent} from "../demo/self/component/actionitem.component";
+import {DemoSelfFormComponent} from "../demo/self/component/form.component";
+import {DemoSelfUploadComponent} from "../demo/self/component/upload.component";
+import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
+
 
 
 @NgModule({
@@ -32,12 +44,25 @@ import {DemoSelfBtnComponent} from "../demo/self/component/demoselfbtn.component
     LayoutRouterModule
   ],
   declarations: [
+    /*布局组件*/
     LayoutComponent,
+    /*首页组件*/
     IndexComponent,
+    /*404组件*/
     F0FComponent,
+    /*示例组件*/
     DemoSelfComponent,
     DemoSelfThemeComponent,
-    DemoSelfBtnComponent
+    DemoSelfBtnComponent,
+    DemoSelfListGroupComponent,
+    DemoSelfThumbnailComponent,
+    DemoSelfOrderComponent,
+    DemoSelfGridLabelComponent,
+    DemoSelfAttrLabelComponent,
+    DemoSelfActionItemComponent,
+    DemoSelfFormComponent,
+    DemoSelfUploadComponent,
+    DemoSelfSlideComponent
   ],
   bootstrap: [LayoutComponent]
 })

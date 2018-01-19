@@ -2715,7 +2715,11 @@ angular.module('app')
                             search = province_value + city_value + country_value;
                         }
                     } else {
-                        search = province_value + city_value;
+                        if (address !== '') {
+                            search = province_value + city_value + address;
+                        } else {
+                            search = province_value + city_value;
+                        }
                     }
                 }
             } else {
