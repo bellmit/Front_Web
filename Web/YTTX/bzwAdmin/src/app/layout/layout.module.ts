@@ -1,3 +1,5 @@
+/*配置模块*/
+import {BASE_CONFIG} from "../base.config";
 /*系统模块*/
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -6,14 +8,21 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 
-/*布局组件*/
-import {LayoutComponent} from './layout.component';
+
+/*---模块类---*/
 /*路由组件*/
+import {SideMenuModule} from "./side/sidemenu.module";
 import {LayoutRouterModule} from '../route/route.module';
 
 
+
+/*---组件类---*/
+/*布局组件*/
+import {LayoutComponent} from './layout.component';
+/*侧边栏模块*/
+import {SideMenuComponent} from './side/sidemenu.component';
 /*首页组件*/
-import {IndexComponent} from '../index/index.component';
+import {IndexComponent} from '../web/index/index.component';
 /*404组件*/
 import {F0FComponent} from '../route/f0f.component';
 /*示例组件*/
@@ -31,7 +40,7 @@ import {DemoSelfUploadComponent} from "../demo/self/component/upload.component";
 import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
 
 
-
+/**/
 @NgModule({
   imports: [
     /*系统模块*/
@@ -40,12 +49,16 @@ import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
     HttpClientModule,
     BrowserAnimationsModule,
     NgZorroAntdModule.forRoot({extraFontName: 'anticon', extraFontUrl: './assets/fonts/fonts/iconfont'}),
+    /*侧边栏模块*/
+    SideMenuModule,
     /*扩展路由*/
     LayoutRouterModule
   ],
   declarations: [
     /*布局组件*/
     LayoutComponent,
+    /*侧边栏模块*/
+    SideMenuComponent,
     /*首页组件*/
     IndexComponent,
     /*404组件*/

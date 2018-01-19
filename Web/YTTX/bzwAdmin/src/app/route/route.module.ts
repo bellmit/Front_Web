@@ -1,9 +1,11 @@
-import {environment} from '../../environments/environment';
+/*配置模块*/
+import {BASE_CONFIG} from '../base.config';
+/*系统模块*/
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 /*首页模块*/
-import {IndexComponent} from '../index/index.component';
+import {IndexComponent} from '../web/index/index.component';
 /*404模块*/
 import {F0FComponent} from './f0f.component';
 /*demo模块*/
@@ -22,6 +24,8 @@ import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
 
 
 
+
+
 /*路径配置*/
 const appRoutes: Routes = [
   {
@@ -37,7 +41,7 @@ const appRoutes: Routes = [
   }
 ];
 
-if (!environment.production) {
+if (BASE_CONFIG.environment==='dev') {
   /*扩展路径*/
   appRoutes.unshift({
     /*自定义组件*/
