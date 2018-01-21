@@ -37,18 +37,6 @@
   height:auto;
   background-color:@color-white;
   padding:@ad-box-gapp;
-}
-.cl-mainbox-default{
-  background-image:url('../images/welcome_bg_top.png'),url('../images/welcome_bg_bottom.png');
-  background-position: left top,right bottom;
-  background-repeat: no-repeat;
-}
-.cl-panel{
-  .layout-base();
-  padding:@ad-box-gapp;
-  &:empty{
-    min-height: @ad-content-min-height;
-  }
   &:after{
     content:'';
     display:table;
@@ -56,4 +44,16 @@
     width:100%;
     line-height: 0;
   }
+}
+.cl-mainbox-default{
+  background-image:url('../images/welcome_bg_top.png'),url('../images/welcome_bg_bottom.png');
+  background-position: left top,right bottom;
+  background-repeat: no-repeat;
+  &:empty{
+    min-height: @ad-content-min-height;
+  }
+}
+.cl-panel{
+  .layout-base();
+  padding:@ad-box-gapp;
 }
