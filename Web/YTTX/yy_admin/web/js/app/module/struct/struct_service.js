@@ -2576,7 +2576,7 @@ angular.module('app')
                     if (searchtype === 1) {
                         /*店铺手机号码*/
                         delete data['fullName'];
-                        data['cellphone'] = record.searchValue;
+                        data['cellphone'] = toolUtil.trims(record.searchValue);
                     } else if (searchtype === 2) {
                         /*店铺全称*/
                         data['fullName'] = record.searchValue;
