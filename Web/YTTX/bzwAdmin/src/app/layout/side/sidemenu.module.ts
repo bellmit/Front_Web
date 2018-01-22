@@ -1,5 +1,5 @@
 
-import {BASE_CONFIG} from "../../base.config";
+import {BASE_CONFIG} from "../../config/base.config";
 /*系统模块*/
 import {NgModule} from '@angular/core';
 /*布局组件*/
