@@ -1,18 +1,20 @@
 import {Component,OnInit} from '@angular/core';
-import {SideMenuService} from './sidemenu.service'
+/*import {SideMenuService} from './sidemenu.service'*/
 
 @Component({
   selector: 'admin-side-menu',
   templateUrl: './sidemenu.component.html'
 })
 export class SideMenuComponent /*implements OnInit*/{
+  debug=true/*是否为测试模式*/;
+  create=true/*是否生成新菜单*/;
   menuitem=[];
 
 
   /*构造函数*/
-  constructor(private sidemenuservice: SideMenuService){
+  /*constructor(private sidemenuservice: SideMenuService){
 
-  }
+  }*/
 
 
 

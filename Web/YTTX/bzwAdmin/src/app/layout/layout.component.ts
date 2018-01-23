@@ -5,8 +5,7 @@ import {Component} from '@angular/core';
   templateUrl: './layout.component.html'
 })
 export class LayoutComponent {
-  /*当前收起状态*/
-  isCollapsed = false;
-  /*显示区背景切换*/
-  contentBgTheme='default';
+  isCollapsed = false;/*当前收起状态*/
+  contentBgTheme='default';/*显示区背景切换*/
+  contentBgList=['default','dot','whitecross','filter','block','blackcross','blackgrid','vline'];
 }

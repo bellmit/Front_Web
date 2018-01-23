@@ -1,2 +1,15 @@
 /*头部区域*/
+.ce-header-info-panel {
+  .layout-absoluter-base(-@ad-header-gappr, -@ad-header-height, 100);
+  .layout-base(150px);
+  height: 300px;
+  display: block;
+  .ce-header-info-btn {
+    .layout-base(@ad-header-height/2);
+    border: 1px solid darken(@color-white, 50);
+    height: @ad-header-height/2;
+    //display: inline-block;
+    .border-radius-base(3px);
+  }
+}
 
