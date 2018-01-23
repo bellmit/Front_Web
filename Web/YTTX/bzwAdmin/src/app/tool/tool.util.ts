@@ -2,6 +2,7 @@ import {BASE_CONFIG} from '../config/base.config';
 import {RULE_CONFIG} from '../config/rule.config';
 
 /*引入jquery*/
+
 /*declare var $: any;*/
 
 export class ToolUtil {
@@ -239,11 +240,7 @@ export class ToolUtil {
       isly = (year % 4 === 0 && year % 100 !== 0) ? true : year % 400 === 0;
 
     isly ? m_arr.splice(1, 1, 29) : m_arr.splice(1, 1, 28);
-    return month ? {
-      isly: isly, /*是否闰年*/
-      months: m_arr/*该年所有天数*/,
-      days: m_arr[parseInt(month, 10) - 1]/*获取指定月的天数*/
-    } : {
+    return {
       isly: isly,
       months: m_arr
     }
@@ -524,7 +521,7 @@ export class ToolUtil {
       } else if (len === 15) {
         nums = idcard.slice(0, 14).replace(/\D*/g, '');
       }
-      nlen = nums.length;
+      nlen = nums.toString().length;
       if (nlen < 14 || (nlen > 14 && nlen < 17)) {
         return false;
       }
@@ -555,8 +552,9 @@ export class ToolUtil {
       if (days < 1) {
         return false;
       }
+
       let leapyear = this.isLeapYear(years, months);
-      if ((leapyear.isly && months === 2 && days > 29) || (!leapyear.isly && months === 2 && days > 28) || (months !== 2 && leapyear.days < days)) {
+      if ((leapyear.isly && months === 2 && days > 29) || (!leapyear.isly && months === 2 && days > 28) || (months !== 2 && leapyear.months[parseInt(months, 10) - 1] < days)) {
         return false;
       }
       //是否为正确识别码
@@ -565,8 +563,7 @@ export class ToolUtil {
           tempmax = 0,
           i = 0,
           haves = 0,
-          ids = parseInt(idcard.slice(17), 10),
-          tempids = 0;
+          ids = idcard.slice(17);
 
         if (isNaN(ids)) {
           ids = 'x';
@@ -575,8 +572,7 @@ export class ToolUtil {
           tempmax += wf[i] * parseInt(temparr[i], 10);
         }
         haves = tempmax % 11;
-        tempids = last[haves];
-        if (ids !== tempids.toLowerCase()) {
+        if (last[haves] && ids !== last[haves].toString().toLowerCase()) {
           return false;
         }
       }
@@ -599,7 +595,7 @@ export class ToolUtil {
       }
     }
 
-    let money = this.trimMatch(str.toString(), ','),
+    let money = this.trimMatch(str.toString(), ',', false),
       moneyarr,
       len = 0,
       partz,
@@ -614,7 +610,7 @@ export class ToolUtil {
         return ['0.00', '0.00'];
       }
     }
-    if (flag && (parseInt(money * 100, 10) === 0)) {
+    if (flag && (parseInt((money * 100).toString(), 10) === 0)) {
       return ['', ''];
     }
     if (money.lastIndexOf('.') !== -1) {

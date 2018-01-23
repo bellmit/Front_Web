@@ -3,6 +3,8 @@ import {RULE_CONFIG} from '../config/rule.config';
 
 /*引入Mock*/
 declare var Mock: any;
+declare var moment: any;
+
 export class TestServe {
   /*通用私有方法--生成范围*/
   private _generateLimit(config) {
@@ -61,10 +63,7 @@ export class TestServe {
       } else if (str === 'phone') {
         rule = RULE_CONFIG.test_phone;
       } else if (str === 'datetime') {
-        rule = () => {
-          let d = new Date();
-          return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDay()}`;
-        };
+        rule = moment().format('YYYY-MM-DD HH:mm:ss');
       } else if (str === 'state') {
         rule = RULE_CONFIG.test_id;
       } else if (str === 'money') {
@@ -103,8 +102,9 @@ export class TestServe {
         return () => {
           let temprule = str.split(',').slice(1),
             min = parseInt(temprule[0], 10),
-            max = parseInt(temprule[1], 10);
-          return min + parseInt(Math.random() * (max - min), 10);
+            max = parseInt(temprule[1], 10),
+            mm = Math.random() * (max - min);
+          return min + parseInt(mm.toString(), 10);
         };
       } else {
         rule = RULE_CONFIG.test_value;
@@ -214,9 +214,6 @@ export class TestServe {
           break;
         default:
           if (map[i].indexOf('rule') !== -1) {
-            (function () {
-
-            }());
             map_obj[i] = () => {
               let rule = map[i].split(',').slice(1).join('|'),
                 reg = '(' + rule + '){1}';
@@ -226,8 +223,9 @@ export class TestServe {
             map_obj[i] = () => {
               let rule = map[i].split(',').slice(1),
                 min = parseInt(rule[0], 10),
-                max = parseInt(rule[1], 10);
-              return min + parseInt(Math.random() * (max - min), 10);
+                max = parseInt(rule[1], 10),
+                mm = Math.random() * (max - min);
+              return min + parseInt(mm.toString(), 10);
             };
           } else {
             map_obj[i] = RULE_CONFIG.test_value;
@@ -239,21 +237,21 @@ export class TestServe {
     /*组合属性*/
     if (typeof maptype !== 'undefined') {
       if (maptype === 'array') {
-        result[generateLimit(config)] = [map_obj];
+        result[this._generateLimit(config)] = [map_obj];
       } else if (maptype === 'object') {
-        result[generateLimit(config)] = map_obj;
+        result[this._generateLimit(config)] = map_obj;
       }
     } else {
-      result[generateLimit(config)] = [map_obj];
+      result[this._generateLimit(config)] = [map_obj];
     }
     return Mock.mock(result);
   }
 
   /*通用私有方法--生成结果集*/
   private _generateResult(datalist, config) {
-    var result = {};
+    let result = {};
     if (config) {
-      var type = config.type,
+      let type = config.type,
         message = typeof config.message === 'undefined' ? 'ok' : config.message,
         code = typeof config.code === 'undefined' ? 0 : config.code,
         count = typeof config.count === 'undefined' ? 50 : config.count;
@@ -285,11 +283,130 @@ export class TestServe {
       result['data'] = {
         message: 'ok',
         count: 50,
-        code: code,
+        code: 0,
         result: datalist
       };
     }
     return result;
+  }
+
+  /*通用私有方法--生成菜单*/
+  private _createMenu(flag) {
+    let mlist = [{
+        "code": "demo",
+        "name": "组件示例",
+        "link": "/demo-self",
+        "id": 1,
+        "subItem": [{
+          "code": "demo-self",
+          "link": "/demo-self",
+          "name": "自定义组件"
+        }, {
+          "code": "demo-zorro",
+          "link": "/demo-zorro",
+          "name": "ng-zorro组件"
+        }]
+      }],
+      plist = [{
+        "code": "add",
+        "name": "增加"
+      }, {
+        "code": "delete",
+        "name": "删除"
+      }, {
+        "code": "update",
+        "name": "修改"
+      }, {
+        "code": "query",
+        "name": "查询"
+      }],
+      elist = [{
+        "code": "audit",
+        "name": "审核"
+      }, {
+        "code": "send",
+        "name": "发货"
+      }, {
+        "code": "comment",
+        "name": "评论"
+      }, {
+        "code": "forbid",
+        "name": "禁用"
+      }, {
+        "code": "enable",
+        "name": "启用"
+      }, {
+        "code": "up",
+        "name": "上架"
+      }, {
+        "code": "down",
+        "name": "下架"
+      }, {
+        "code": "detail",
+        "name": "查看"
+      }],
+      i = 0,
+      count = 0,
+      len = mlist.length,
+      elen = elist.length,
+      menu = [];
+
+    for (i; i < len; i++) {
+      ((i) => {
+        let rmax = parseInt((Math.random() * elen).toString(), 10),
+          tempi = parseInt((i + 1).toString(), 10),
+          id = tempi * 10,
+          j = 0,
+          mitem = this._copyItem({
+            size: 1,
+            list: mlist.slice(i, tempi)
+          })[0],
+          pitem = this._copyItem({
+            list: plist
+          }).concat(this._copyItem({
+            list: elist.slice(0, rmax)
+          })),
+          slen = pitem.length;
+
+
+        mitem['id'] = id;
+        /*设置默认权限*/
+        for (j; j < slen; j++) {
+          count++;
+          pitem[j]['id'] = id;
+          pitem[j]['prid'] = count;
+          pitem[j]['isPermit'] = flag ? parseInt((Math.random() * 10).toString(), 10) % 2 : 1;
+        }
+        mitem['permitItem'] = pitem;
+        menu.push(mitem);
+      })(i);
+    }
+    return menu;
+  }
+
+  /*通用私有方法--复制数组对象*/
+  private _copyItem(config) {
+    let size = config.size,
+      list = config.list,
+      arr = [],
+      k = 0;
+
+    /*没有复制长度，则穿件新长度*/
+    if (typeof size === 'undefined') {
+      size = list.length;
+    }
+
+    /*默认为扩展对象*/
+    for (k; k < size; k++) {
+      let obj = {},
+        item = list[k],
+        m;
+      for (m in item) {
+        obj[m] = item[m];
+      }
+      arr.push(obj);
+    }
+    return arr;
   }
 
 
@@ -386,39 +503,55 @@ export class TestServe {
 
   /*测试接口--菜单*/
   testMenu(config) {
-    let menuobj = {
-        "menu": [{
-          "modClass": "",
-          "modId": 1,
-          "modName": "组件示例",
-          "modShow": true,
-          "permitItem": [{
-            "funcCode": "",
-            "funcName": "",
-            "isPermit": 1,
-            "modId": 1,
-            "prid": 10
-          }]
-        }]
-      },
-      setflag = false/*是否开启随机设置模式*/;
-    if (config && config.setflag) {
-      setflag = true;
-    }
-    if (setflag) {
-      let menuarray = menuobj.menu,
-        len = menuarray.length,
-        i = 0;
+    let menuobj = {};
 
-      for (i; i < len; i++) {
-        let menuitem = menuarray[i]['permitItem'],
-          sublen = menuitem.length,
-          j = 0;
-        for (j; j < sublen; j++) {
-          menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+    /*是否生成菜单*/
+    if (config && config.create) {
+      if (config.israndom === true) {
+        /*是否开启随机设置模式*/
+        menuobj['menu'] = this._createMenu(true);
+      } else {
+        menuobj['menu'] = this._createMenu(false);
+      }
+    } else {
+      menuobj['menu'] = RULE_CONFIG.test_menu.slice(0);
+      /*是否随机设置*/
+      if (config && config.israndom === true) {
+        /*是否开启随机设置模式*/
+        let menuarray = menuobj['menu'],
+          len = menuarray.length,
+          i = 0;
+
+        for (i; i < len; i++) {
+          let menuitem = menuarray[i]['permitItem'],
+            sublen = menuitem.length,
+            j = 0;
+          for (j; j < sublen; j++) {
+            menuitem[j]['isPermit'] = parseInt((Math.random() * 10).toString(), 10) % 2;
+          }
         }
       }
     }
+
+
+    /*是否随机设置*/
+    /*if (config && config.israndom === true) {
+     /!*var i = 0,
+     menuitem,
+     sublen,
+     j;
+     for (i; i < len; i++) {
+     var menuitem = menu[i]['permitItem'],
+     sublen = menuitem.length,
+     j = 0;
+     for (j; j < sublen; j++) {
+     menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+     }
+     }*!/
+     _doMenuItem_(menuobj, true);
+     } else {
+     _doMenuItem_(menuobj, false);
+     }*/
     return {
       status: 200,
       data: {
@@ -431,11 +564,12 @@ export class TestServe {
 
   /*测试接口--生成凭证*/
   testSuccess(type) {
-    let res;
+    var res;
 
     if (type) {
       if (type === 'list') {
         res = {
+          status: 200,
           message: 'ok',
           code: 0,
           count: 50,
