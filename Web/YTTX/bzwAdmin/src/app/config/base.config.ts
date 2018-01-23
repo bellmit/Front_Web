@@ -12,5 +12,6 @@ export const BASE_CONFIG = {
   common_domain: common_domain/*公用地址*/,
   common_project: common_project/*公用工程*/,
   url: `${domain}${project}`/*常用请求地址*/,
-  common_url: `${common_domain}${common_project}`/*公用请求地址*/
+  common_url: `${common_domain}${common_project}`/*公用请求地址*/,
+  cache_type:false/*缓存类型是否为localstorage:默认为localstorage,即false*/
 };

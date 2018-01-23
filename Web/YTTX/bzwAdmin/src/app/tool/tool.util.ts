@@ -4,25 +4,27 @@ import {RULE_CONFIG} from '../config/rule.config';
 /*引入jquery*/
 
 /*declare var $: any;*/
+/*引入moment*/
+declare var moment: any;
 
 export class ToolUtil {
 
   /*返回系统唯一标识符*/
   static getSystemUniqueKey() {
     return BASE_CONFIG.unique_key;
-  };
+  }
 
   /*判断是否盒模型*/
   static supportBox() {
     let elem = document.getElementsByTagName('body')[0],
       bs = window.getComputedStyle(elem, null).getPropertyValue("box-sizing") || document.defaultView.getComputedStyle(elem, null);
     return bs && bs === 'border-box';
-  };
+  }
 
   /*判断是否支持JSON*/
   static supportJSON() {
     return JSON && JSON.stringify && typeof JSON.stringify === 'function';
-  };
+  }
 
   /*判断是否支持本地存储*/
   static supportStorage() {
@@ -41,8 +43,8 @@ export class ToolUtil {
   }
 
   /*清除本地存储--清除当前标识数据*/
-  static clear(flag) {
-    if (flag) {
+  static clear() {
+    if (BASE_CONFIG.cache_type) {
       sessionStorage.removeItem(BASE_CONFIG.unique_key);
     } else {
       localStorage.removeItem(BASE_CONFIG.unique_key);
@@ -50,12 +52,75 @@ export class ToolUtil {
   }
 
   /*清除本地存储--清除所有数据*/
-  static clearAll(flag) {
-    if (flag) {
+  static clearAll() {
+    if (BASE_CONFIG.cache_type) {
       sessionStorage.clear();
     } else {
       localStorage.clear();
     }
+  }
+
+  /*是否登录*/
+  static isLogin(cache) {
+    if (cache === null) {
+      cache = this.getParams(BASE_CONFIG.unique_key);
+    }
+    if (cache && cache.loginMap && cache.loginMap.isLogin) {
+      return true;
+    }
+    return false;
+  }
+
+  /*判断缓存是否有效*/
+  static validLogin(obj) {
+    /*必须有缓存*/
+    let cacheLogin = typeof obj !== 'undefined' ? obj : this.getParams('loginMap');
+
+    if (cacheLogin) {
+      /*如果已经存在登陆信息则获取登录时间*/
+      let login_dt = cacheLogin.datetime;
+      if (!login_dt) {
+        return false;
+      }
+      login_dt = login_dt.replace(/\s*/g, '').split('|');
+
+      let login_rq = login_dt[0],
+        login_sj = login_dt[1],
+        now = moment().format('YYYY-MM-DD|HH:mm:ss').split('|'),
+        now_rq = now[0],
+        now_sj = now[1],
+        reqdomain = cacheLogin.reqdomain;
+
+
+      /*判断日期*/
+      if (login_rq !== now_rq) {
+        //同一天有效
+        return false;
+      } else if (login_rq === now_rq) {
+        login_sj = login_sj.split(':');
+        now_sj = now_sj.split(':');
+        let login_hh = parseInt(login_sj[0], 10),
+          now_hh = parseInt(now_sj[0], 10)/*,
+                     login_mm=parseInt(login_sj[1],10),
+                     now_mm=parseInt(now_sj[1],10)*/;
+
+        if (now_hh - login_hh > 2) {
+          /*超过2小时失效*/
+          return false;
+        }
+        /*if(now_mm - login_mm >1){
+         //同一分钟有效
+         return false;
+         }*/
+      }
+
+      /*请求域与登陆域不一致*/
+      /*if (BASE_CONFIG.domain !== '' && BASE_CONFIG.domain !== reqdomain) {
+        return false;
+      }*/
+      return true;
+    }
+    return false;
   }
 
   /*递归查找缓存对象*/
@@ -111,10 +176,10 @@ export class ToolUtil {
   }
 
   /*设置本地存储*/
-  static setParams(key, value, flag) {
+  static setParams(key, value) {
     if (key === BASE_CONFIG.unique_key) {
-      if (flag) {
-        /*为localstorage*/
+      if (BASE_CONFIG.cache_type) {
+        /*为sessionStorage*/
         sessionStorage.setItem(key, JSON.stringify(value));
       } else {
         /*默认为localstorage*/
@@ -122,7 +187,7 @@ export class ToolUtil {
       }
     } else {
       let cache = null;
-      if (flag) {
+      if (BASE_CONFIG.cache_type) {
         cache = JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key));
       } else {
         cache = JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key));
@@ -139,7 +204,7 @@ export class ToolUtil {
         cache = {};
         cache[key] = value;
       }
-      if (flag) {
+      if (BASE_CONFIG.cache_type) {
         /*为localstorage*/
         sessionStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
       } else {
@@ -150,16 +215,16 @@ export class ToolUtil {
   }
 
   /*获取本地存储*/
-  static getParams(key, flag) {
+  static getParams(key) {
     if (key === BASE_CONFIG.unique_key) {
-      if (flag) {
+      if (BASE_CONFIG.cache_type) {
         return JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key)) || null;
       } else {
         return JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key)) || null;
       }
     } else {
       let cache = null;
-      if (flag) {
+      if (BASE_CONFIG.cache_type) {
         cache = sessionStorage.getItem(BASE_CONFIG.unique_key);
       } else {
         cache = localStorage.getItem(BASE_CONFIG.unique_key);
@@ -179,16 +244,16 @@ export class ToolUtil {
   }
 
   /*删除本地存储*/
-  static removeParams(key, flag) {
+  static removeParams(key) {
     if (key === BASE_CONFIG.unique_key) {
-      if (flag) {
+      if (BASE_CONFIG.cache_type) {
         sessionStorage.removeItem(key);
       } else {
         localStorage.removeItem(key);
       }
     } else {
       let cache = null;
-      if (flag) {
+      if (BASE_CONFIG.cache_type) {
         cache = sessionStorage.getItem(BASE_CONFIG.unique_key);
       } else {
         cache = localStorage.getItem(BASE_CONFIG.unique_key);
@@ -199,7 +264,7 @@ export class ToolUtil {
             key: key,
             cache: JSON.parse(cache)
           }, 'find', 'delete');
-          if (flag) {
+          if (BASE_CONFIG.cache_type) {
             /*为localstorage*/
             sessionStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
           } else {
@@ -431,12 +496,12 @@ export class ToolUtil {
   /*去除html非法字符*/
   static trimHtmlIllegal(str) {
     return str.replace(RULE_CONFIG.illegalhtml_str, '').replace(RULE_CONFIG.illegalentity_str, '');
-  };
+  }
 
   /*去除所有非法字符*/
   static trimIllegal(str) {
     return str.replace(RULE_CONFIG.illegal_str, '').replace(RULE_CONFIG.illegalentity_str, '');
-  };
+  }
 
   /*去除所有指定字符（字符串,需去除字符,是否忽略大小写)：返回字符串*/
   static trimMatch(str, match, ignore) {
@@ -448,7 +513,7 @@ export class ToolUtil {
     } else {
       return str.replace(new RegExp('\\' + match, 'g'), '');
     }
-  };
+  }
 
   /*去除所有空格（字符串）：返回字符串*/
   static trims(str) {

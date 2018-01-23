@@ -3,9 +3,10 @@ import {RULE_CONFIG} from '../config/rule.config';
 
 /*引入Mock*/
 declare var Mock: any;
+/*引入moment*/
 declare var moment: any;
 
-export class TestServe {
+export class TestService {
   /*通用私有方法--生成范围*/
   private _generateLimit(config) {
     let limit;
