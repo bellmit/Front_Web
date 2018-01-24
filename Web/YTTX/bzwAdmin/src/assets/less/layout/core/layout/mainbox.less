@@ -1,7 +1,9 @@
 /*主栏目*/
 /*背景*/
 .cl-mainbox{
-  padding:@ad-box-gapp;
+  .layout-base();
+  height:100%;
+  padding:@ad-box-gapp!important;
   background-repeat: repeat;
   background-color:@color-white;
   background-position:left top;
@@ -20,15 +22,6 @@
 }
 .cl-mainbox-bg-block{
   background-image:url('../images/bg/bg_bigblock.png');
-}
-.cl-mainbox-bg-blackcross{
-  background-image:url('../images/bg/bg_blackcross.png');
-}
-.cl-mainbox-bg-blackgrid{
-  background-image:url('../images/bg/bg_blackgrid.jpg');
-}
-.cl-mainbox-bg-vline{
-  background-image:url('../images/bg/bg_vline.png');
 }
 
 /*展现区*/
@@ -50,7 +43,9 @@
   background-position: left top,right bottom;
   background-repeat: no-repeat;
   &:empty{
-    min-height: 100%;
+    height: 100%;
+    .calc-base(height,'100vh - (130px + 23px)');
+    min-height: @ad-content-min-height / 2;
   }
 }
 .cl-panel{

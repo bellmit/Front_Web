@@ -150,10 +150,7 @@ export class TestService {
           map_obj[i] = RULE_CONFIG.test_phone;
           break;
         case 'datetime':
-          map_obj[i] = () => {
-            let d = new Date();
-            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDay()}`;
-          };
+          map_obj[i] = moment().format('YYYY-MM-DD|HH:mm:ss');
           break;
         case 'state':
           map_obj[i] = RULE_CONFIG.test_id;
@@ -164,7 +161,7 @@ export class TestService {
         case 'unit':
           map_obj[i] = RULE_CONFIG.test_unit;
           break;
-        case 'card':
+        case 'bankcard':
           map_obj[i] = RULE_CONFIG.test_bankcard;
           break;
         case 'email':
@@ -565,7 +562,7 @@ export class TestService {
 
   /*测试接口--生成凭证*/
   testSuccess(type) {
-    var res;
+    let res;
 
     if (type) {
       if (type === 'list') {

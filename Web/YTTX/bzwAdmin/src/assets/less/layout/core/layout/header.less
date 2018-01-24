@@ -1,15 +1,25 @@
 /*头部区域*/
+/*下拉信息面板*/
 .ce-header-info-panel {
-  .layout-absoluter-base(-@ad-header-gappr, -@ad-header-height, 100);
-  .layout-base(150px);
+  position: absolute;
+  top:-@ad-header-height;
+  z-index: 100;
+  .layout-base(@ad-header-height/4);
   height: 300px;
-  display: block;
   .ce-header-info-btn {
-    .layout-base(@ad-header-height/2);
-    border: 1px solid darken(@color-white, 50);
-    height: @ad-header-height/2;
-    //display: inline-block;
-    .border-radius-base(3px);
+    text-align: center !important;
+    .border-radius-base(0) !important;
+    .layout-base(@ad-header-height/3);
+    height: @ad-header-height;
+    text-indent: -.22em;
   }
+  .ce-header-info-list {
+     .layout-base(@ad-header-height * 3) !important;
+   }
 }
-
+.ce-header-info{
+  right:-@ad-header-gappr + 10;
+}
+.ce-header-message{
+  right:-@ad-header-gappr + 10 + @ad-header-height/2;
+}
