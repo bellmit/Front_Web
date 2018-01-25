@@ -7,7 +7,7 @@ import {RULE_CONFIG} from '../config/rule.config';
 /*引入moment*/
 declare var moment: any;
 
-export class ToolUtil {
+export class ToolService {
 
   /*返回系统唯一标识符*/
   static getSystemUniqueKey() {
@@ -147,13 +147,11 @@ export class ToolUtil {
       } else if (type === 'get') {
         if (i === key) {
           return cache[i];
-        } else {
-          if (typeof cache[i] === 'object') {
-            this.paramsItem({
-              key: key,
-              cache: cache[i]
-            }, type, null);
-          }
+        } else if (typeof cache[i] === 'object') {
+          this.paramsItem({
+            key: key,
+            cache: cache[i]
+          }, type, null);
         }
       } else if (type === 'find') {
         if (i === key) {
@@ -237,9 +235,8 @@ export class ToolUtil {
           }, 'get', null);
         }
         return JSON.parse(cache);
-      } else {
-        return null;
       }
+      return null;
     }
   }
 

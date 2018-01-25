@@ -39,6 +39,10 @@ import {DemoSelfFormComponent} from "../demo/self/component/form.component";
 import {DemoSelfUploadComponent} from "../demo/self/component/upload.component";
 import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
 
+/*服务类*/
+import {LoginService} from "../service/login.service";
+import {SettingService} from "../service/setting.service";
+
 
 /**/
 @NgModule({
@@ -77,6 +81,7 @@ import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
     DemoSelfUploadComponent,
     DemoSelfSlideComponent
   ],
+  providers:[LoginService,SettingService],
   bootstrap: [LayoutComponent]
 })
 export class LayoutModule {

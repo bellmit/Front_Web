@@ -21,16 +21,16 @@
             <div class="ce-header-info-panel ce-header-message">
               <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
                 <button nzType="primary" nz-button nz-dropdown class="ce-header-info-btn ant-dropdown-link"><i class="anticon anticon-down"></i></button>
-                <ul *ngFor="let bgtheme of layout.contentBgList" class="ce-header-info-list" nz-menu>
-                  <li (click)="toggleBgTheme(bgtheme)" nz-menu-item>背景主题:{{bgtheme.name}}</li>
+                <ul class="ce-header-info-list" nz-menu>
+                  <li *ngFor="let bgtheme of layout.contentBgList" (click)="toggleBgTheme(bgtheme)" nz-menu-item [class.ant-dropdown-menu-item-selected]="layout.contentBgTheme===bgtheme.value">背景主题:{{bgtheme.name}}</li>
                 </ul>
               </nz-dropdown>
             </div>
             <div class="ce-header-info-panel ce-header-info">
               <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
                 <button nzType="primary" nz-button nz-dropdown class="ce-header-info-btn ant-dropdown-link"><i class="anticon anticon-down"></i></button>
-                <ul *ngFor="let info of user.info" class="ce-header-info-list" nz-menu>
-                  <li nz-menu-item>{{info.name}}:{{info.value}}</li>
+                <ul class="ce-header-info-list" nz-menu>
+                  <li *ngFor="let info of user.info" nz-menu-item>{{info.name}}:{{info.value}}</li>
                 </ul>
               </nz-dropdown>
               <!--<button nz-button [nzSize]="'small'" [nzType]="'primary'">

@@ -1,5 +1,8 @@
-import {ToolUtil} from '../tool/tool.util';
+import {ToolService} from '../service/tool.service';
 import {Component} from '@angular/core';
+
+import {LoginService} from "../service/login.service";
+import {SettingService} from "../service/setting.service";
 
 @Component({
   selector: 'app-root',
@@ -9,10 +12,10 @@ export class LayoutComponent {
   /*布局模型*/
   layout = {
     isCollapsed: false/*当前收起状态*/,
-    contentBgTheme: ToolUtil.getParams('setting-bg') || 'default'/*显示区背景切换*/,
+    contentBgTheme: ToolService.getParams('contentBgTheme') || 'default'/*显示区背景切换*/,
     contentBgList: [{
       name: '默认',
-      value: 'defalut'
+      value: 'default'
     }, {
       name: '小星',
       value: 'dot'
@@ -26,7 +29,7 @@ export class LayoutComponent {
       name: '块状',
       value: 'block'
     }]/*显示区背景列表*/,
-    support: ToolUtil.supportBox() && ToolUtil.supportJSON() && ToolUtil.supportStorage() && ToolUtil.supportImage()/*是否兼容*/
+    support: ToolService.supportBox() && ToolService.supportJSON() && ToolService.supportStorage() && ToolService.supportImage()/*是否兼容*/
   };
 
   /*用户模型*/
@@ -44,15 +47,20 @@ export class LayoutComponent {
   };
 
   /*构造函数*/
-  constructor() {
-
+  constructor(private loginservice: LoginService, private settingservice: SettingService) {
+    //this.loginservice.setCache({},'setting');
   }
 
 
   /*切换背景*/
   toggleBgTheme(bgtheme) {
-    this.layout.contentBgTheme = bgtheme.value;
-    ToolUtil.setParams('setting-bg', bgtheme.value);
+    ToolService.getParams('contentBgTheme');
+    //console.log(ToolService.getParams('contentBgTheme'));
+    /*this.layout.contentBgTheme = bgtheme.value;
+
+    this.loginservice.setCache({
+      'contentBgTheme': bgtheme.value
+    },'setting');*/
   }
 
 
