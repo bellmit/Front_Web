@@ -30,7 +30,15 @@
               <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
                 <button nzType="primary" nz-button nz-dropdown class="ce-header-info-btn ant-dropdown-link"><i class="anticon anticon-down"></i></button>
                 <ul class="ce-header-info-list" nz-menu>
-                  <li *ngFor="let info of user.info" nz-menu-item>{{info.name}}:{{info.value}}</li>
+                  <ng-template *ngFor="let info of user.info;last">
+                    <li *ngIf="last" nz-menu-item>
+                      <button nz-button [nzSize]="'small'" [nzType]="'primary'">
+                      <i class="anticon anticon-logout"></i>
+                      <span>{{info.value}}</span>
+                      </button>
+                    </li>
+                    <li *ngIfElse="last" nz-menu-item>{{info.name}}:{{info.value}}</li>
+                  </ng-template>
                 </ul>
               </nz-dropdown>
               <!--<button nz-button [nzSize]="'small'" [nzType]="'primary'">

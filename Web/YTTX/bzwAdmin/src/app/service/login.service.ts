@@ -3,6 +3,8 @@ import {ToolService} from './tool.service';
 
 import {Injectable} from '@angular/core';
 
+/*declare var moment: any;*/
+
 
 /*注入类型*/
 @Injectable()
@@ -132,5 +134,26 @@ export class LoginService {
   }
 
 
-  /**/
+  /*获取登录信息*/
+  getLoginInfo(flag){
+    let list=[{
+      name: '用户名',
+      value: 'zhangsan'
+    }, {
+      name: '登录时间',
+      value: '2018-01-26'/*moment().format('YYYY-MM-DD|HH:mm:ss')*/
+    }];
+    if(flag){
+      list.push({
+        name:'',
+        value:'退出'
+      });
+    }else{
+      list.push({
+        name:'',
+        value:'登录'
+      });
+    }
+    return list;
+  }
 }
