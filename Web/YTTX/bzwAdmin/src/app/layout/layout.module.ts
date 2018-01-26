@@ -40,6 +40,7 @@ import {DemoSelfUploadComponent} from "../demo/self/component/upload.component";
 import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
 
 /*服务类*/
+import {LayoutService} from "../service/layout.service";
 import {LoginService} from "../service/login.service";
 import {SettingService} from "../service/setting.service";
 
@@ -81,7 +82,7 @@ import {SettingService} from "../service/setting.service";
     DemoSelfUploadComponent,
     DemoSelfSlideComponent
   ],
-  providers:[LoginService,SettingService],
+  providers:[LayoutService,LoginService,SettingService],
   bootstrap: [LayoutComponent]
 })
 export class LayoutModule {

@@ -7,7 +7,7 @@ import {RULE_CONFIG} from '../config/rule.config';
 /*引入moment*/
 declare var moment: any;
 
-export class ToolService {
+export class ToolService_bak {
 
   /*返回系统唯一标识符*/
   static getSystemUniqueKey() {
@@ -63,18 +63,18 @@ export class ToolService {
   /*是否登录*/
   static isLogin(cache) {
     if (cache === null) {
-      cache = this.getCache();
+      cache = this.getParams(BASE_CONFIG.unique_key);
     }
-    if (cache && cache.loginMap && cache.loginMap.islogin) {
+    if (cache && cache.loginMap && cache.loginMap.isLogin) {
       return true;
     }
     return false;
   }
 
   /*判断缓存是否有效*/
-  static validLogin(cache) {
+  static validLogin(obj) {
     /*必须有缓存*/
-    let cacheLogin = typeof cache !== 'undefined' ? cache : this.getCache()['loginMap'];
+    let cacheLogin = typeof obj !== 'undefined' ? obj : this.getParams('loginMap');
 
     if (cacheLogin) {
       /*如果已经存在登陆信息则获取登录时间*/
@@ -123,63 +123,203 @@ export class ToolService {
     return false;
   }
 
+
+  /*提供操作路径的缓存操作*/
+  static actionParams(config, type) {
+    let key = config.key,
+      rootcache = config.cache || this.getParams(BASE_CONFIG.unique_key),
+      cache = Object.assign({}, rootcache),
+      wraplist = config.wraplist,
+      wraplen = 0,
+      wrapstr = '',
+      value = '';
+
+    if (wraplist) {
+      /*提供父级索引的情况下*/
+      wraplen = wraplist.length;
+      for (let j = 0; j < wraplen; j++) {
+        if (wraplist[j] in cache) {
+          cache = cache[wraplist[j]];
+        } else {
+          cache = null;
+        }
+      }
+      if (cache === null) {
+        return cache;
+      } else {
+        if (type === 'set') {
+          wrapstr = wraplist.join('.');
+          rootcache[wrapstr][key] = value;
+          return rootcache;
+        } else if (type === 'get') {
+          return cache[key] || null;
+        } else if (type === 'find') {
+          wrapstr = wraplist.join('.');
+          let action = config.action;
+          if (action === 'delete') {
+            delete rootcache[wrapstr][key];
+          } else if (action === 'other') {
+            /*to do*/
+          }
+          return rootcache;
+        }
+      }
+    }
+    return null;
+  }
+
+  /*递归查找缓存对象*/
+  static paramsItem(config, type) {
+    let key = config.key,
+      cache = config.cache,
+      value = '';
+
+    for (let i in cache) {
+      if (type === 'set') {
+        value = config.value;
+        if (i === key) {
+          cache[i] = value;
+          return true;
+        } else {
+          if (typeof cache[i] === 'object') {
+            this.paramsItem({
+              key: key,
+              value: value,
+              cache: cache[i]
+            }, type);
+          }
+        }
+      } else if (type === 'get') {
+        if (i === key) {
+          return cache[i];
+        } else if (typeof cache[i] === 'object') {
+          this.paramsItem({
+            key: key,
+            cache: cache[i]
+          }, type);
+        }
+      } else if (type === 'find') {
+        let action = config.action;
+        if (i === key) {
+          if (action === 'delete') {
+            delete cache[i];
+          } else if (action === 'other') {
+            /*to do*/
+          }
+          return true;
+        } else {
+          if (typeof cache[i] === 'object') {
+            this.paramsItem({
+              key: key,
+              cache: cache[i],
+              action: action
+            }, type);
+          }
+        }
+      }
+    }
+  }
+
   /*设置本地存储*/
-  static setCache(cache) {
-    if (BASE_CONFIG.cache_type) {
-      sessionStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+  static setParams(key, value) {
+    if (key === BASE_CONFIG.unique_key) {
+      if (BASE_CONFIG.cache_type) {
+        /*为sessionStorage*/
+        sessionStorage.setItem(key, JSON.stringify(value));
+      } else {
+        /*默认为localstorage*/
+        localStorage.setItem(key, JSON.stringify(value));
+      }
     } else {
-      localStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+      let cache = null;
+      if (BASE_CONFIG.cache_type) {
+        cache = JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key));
+      } else {
+        cache = JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key));
+      }
+      if (cache !== null) {
+        if (typeof key !== 'undefined') {
+          this.paramsItem({
+            key: key,
+            value: value,
+            cache: cache
+          }, 'set');
+        }
+      } else {
+        cache = {};
+        cache[key] = value;
+      }
+      if (BASE_CONFIG.cache_type) {
+        /*为localstorage*/
+        sessionStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+      } else {
+        /*默认为localstorage*/
+        localStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+      }
     }
   }
 
   /*获取本地存储*/
-  static getCache() {
-    if (BASE_CONFIG.cache_type) {
-      return JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key)) || null;
+  static getParams(key) {
+    if (key === BASE_CONFIG.unique_key) {
+      if (BASE_CONFIG.cache_type) {
+        return JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key)) || null;
+      } else {
+        return JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key)) || null;
+      }
     } else {
-      return JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key)) || null;
+      let cache = null;
+      if (BASE_CONFIG.cache_type) {
+        cache = sessionStorage.getItem(BASE_CONFIG.unique_key);
+      } else {
+        cache = localStorage.getItem(BASE_CONFIG.unique_key);
+      }
+      if (cache !== null) {
+        let tempcache = JSON.parse(cache);
+        if (typeof key !== 'undefined' && key !== null && tempcache) {
+          return this.paramsItem({
+            key: key,
+            cache: tempcache
+          }, 'get');
+        }
+        return tempcache;
+      }
+      return null;
     }
   }
 
-  /*获取本地存储的集合*/
-  static getCacheMap(config) {
-    let cache = null,
-      key = config.key;
-
-    if (!key) {
-      return null;
-    }
-    if (config.cache) {
-      cache = config.cache;
+  /*删除本地存储*/
+  static removeParams(key) {
+    if (key === BASE_CONFIG.unique_key) {
+      if (BASE_CONFIG.cache_type) {
+        sessionStorage.removeItem(key);
+      } else {
+        localStorage.removeItem(key);
+      }
     } else {
-      cache = this.getCache();
+      let cache = null;
+      if (BASE_CONFIG.cache_type) {
+        cache = sessionStorage.getItem(BASE_CONFIG.unique_key);
+      } else {
+        cache = localStorage.getItem(BASE_CONFIG.unique_key);
+      }
+      if (cache !== null) {
+        if (typeof key !== 'undefined') {
+          this.paramsItem({
+            key: key,
+            action: 'delete',
+            cache: JSON.parse(cache)
+          }, 'find');
+          if (BASE_CONFIG.cache_type) {
+            /*为localstorage*/
+            sessionStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+          } else {
+            /*默认为localstorage*/
+            localStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+          }
+        }
+      }
     }
-    if (cache[key]) {
-      return cache[key];
-    }
-    return null;
-  }
-
-  /*设置本地存储的集合*/
-  static setCacheMap(config) {
-    let cache = null,
-      key = config.key;
-
-    if (!key) {
-      return null;
-    }
-    let value = typeof config.value !== 'undefined' ? config.value : '';
-
-    if (config.cache) {
-      cache = config.cache;
-    } else {
-      cache = this.getCache();
-    }
-    if (cache[key]) {
-      cache[key] = value;
-      return cache;
-    }
-    return null;
   }
 
   /*适配请求地址*/

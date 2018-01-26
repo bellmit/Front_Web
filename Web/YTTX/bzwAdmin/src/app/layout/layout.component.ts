@@ -1,6 +1,7 @@
 import {ToolService} from '../service/tool.service';
 import {Component} from '@angular/core';
 
+import {LayoutService} from "../service/layout.service";
 import {LoginService} from "../service/login.service";
 import {SettingService} from "../service/setting.service";
 
@@ -12,24 +13,11 @@ export class LayoutComponent {
   /*布局模型*/
   layout = {
     isCollapsed: false/*当前收起状态*/,
-    contentBgTheme: ToolService.getParams('contentBgTheme') || 'default'/*显示区背景切换*/,
-    contentBgList: [{
-      name: '默认',
-      value: 'default'
-    }, {
-      name: '小星',
-      value: 'dot'
-    }, {
-      name: '斜线',
-      value: 'whitecross'
-    }, {
-      name: '滤镜',
-      value: 'filter'
-    }, {
-      name: '块状',
-      value: 'block'
-    }]/*显示区背景列表*/,
-    support: ToolService.supportBox() && ToolService.supportJSON() && ToolService.supportStorage() && ToolService.supportImage()/*是否兼容*/
+    contentBgTheme:ToolService.getCacheMap({
+      key:'settingMap'
+    })['contentBgTheme'] || 'default',/*显示区背景切换*/
+    contentBgList: this.settingservice.loadBgTheme()/*显示区背景列表*/,
+    support: this.layoutservice.isSupport()/*是否兼容*/
   };
 
   /*用户模型*/
@@ -47,20 +35,18 @@ export class LayoutComponent {
   };
 
   /*构造函数*/
-  constructor(private loginservice: LoginService, private settingservice: SettingService) {
-    //this.loginservice.setCache({},'setting');
-  }
+  constructor(private layoutservice:LayoutService,
+              private loginservice: LoginService,
+              private settingservice: SettingService) {}
 
 
   /*切换背景*/
   toggleBgTheme(bgtheme) {
-    ToolService.getParams('contentBgTheme');
     //console.log(ToolService.getParams('contentBgTheme'));
-    /*this.layout.contentBgTheme = bgtheme.value;
-
+    this.layout['contentBgTheme'] = bgtheme.value;
     this.loginservice.setCache({
       'contentBgTheme': bgtheme.value
-    },'setting');*/
+    },'setting');
   }
 
 

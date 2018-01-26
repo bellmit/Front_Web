@@ -7,7 +7,7 @@ import {Injectable} from '@angular/core';
 /*注入类型*/
 @Injectable()
 export class LoginService {
-  private cache = ToolService.getParams(BASE_CONFIG.unique_key);
+  private cache = ToolService.getCache();
   private modulekey = 'login';
 
   /*
@@ -102,12 +102,12 @@ export class LoginService {
 
   /*获取缓存*/
   getCache() {
-    this.cache = ToolService.getParams(BASE_CONFIG.unique_key);
+    this.cache = ToolService.getCache();
     return this.cache;
   }
 
   /*更新缓存*/
-  setCache(object,key) {
+  setCache(value, key) {
     /*没有索引不操作*/
     if (!key) {
       return false;
@@ -115,19 +115,22 @@ export class LoginService {
     /*没有缓存则创建缓存*/
     if (!this.cache) {
       this.createCache();
-      ToolService.setParams(BASE_CONFIG.unique_key,this.cache);
+      ToolService.setCache(this.cache);
     }
     /*判断缓存索引是否正确*/
-    if(!BASE_CONFIG.cache_list.includes(key)){
+    if (!BASE_CONFIG.cache_list.includes(key)) {
       return false;
     }
     /*设置缓存*/
-    if (object!==null) {
-      this.cache[`${key}Map`] = object;
+    if (value !== null) {
+      this.cache[`${key}Map`] = value;
       this.cache[`${BASE_CONFIG.cache_list[0]}Map`][key] = true;
     } else {
       this.cache[`${BASE_CONFIG.cache_list[0]}Map`][key] = false;
     }
-    ToolService.setParams(BASE_CONFIG.unique_key, this.cache);
+    ToolService.setCache(this.cache);
   }
+
+
+  /**/
 }
