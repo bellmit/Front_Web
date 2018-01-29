@@ -78,29 +78,6 @@ export class LoginService {
     this.cache = null;
   }
 
-  /*创建缓存*/
-  createCache() {
-    /*不存在缓存则创建缓存*/
-    let tempcache = {};
-    BASE_CONFIG.cache_list.forEach((c, i, a) => tempcache[c] = false);
-    this.cache = {
-      cacheMap: tempcache/*缓存加载情况记录*/,
-      routeMap: {
-        prev: '',
-        current: '',
-        size: 0,
-        history: []
-      }/*路由缓存*/,
-      moduleMap: {}/*模块缓存*/,
-      menuMap: {}/*菜单缓存*/,
-      powerMap: {}/*权限缓存*/,
-      loginMap: {}/*登录认证缓存*/,
-      settingMap: {}/*设置缓存*/,
-      menusourceMap: {}/*解析后的菜单源码缓存，用于菜单加载时直接应用，而不需要解析*/,
-      tempMap: {}/*临时缓存*/
-    };
-  }
-
 
   /*获取缓存*/
   getCache() {
@@ -113,11 +90,6 @@ export class LoginService {
     /*没有索引不操作*/
     if (!key) {
       return false;
-    }
-    /*没有缓存则创建缓存*/
-    if (!this.cache) {
-      this.createCache();
-      ToolService.setCache(this.cache);
     }
     /*判断缓存索引是否正确*/
     if (!BASE_CONFIG.cache_list.includes(key)) {
@@ -135,25 +107,17 @@ export class LoginService {
 
 
   /*获取登录信息*/
-  getLoginInfo(flag){
-    let list=[{
+  getLoginInfo(flag) {
+    let list = [{
       name: '用户名',
       value: 'zhangsan'
     }, {
       name: '登录时间',
-      value: '2018-01-26'/*moment().format('YYYY-MM-DD|HH:mm:ss')*/
+      value: '2018-01-29'/*moment().format('YYYY-MM-DD|HH:mm:ss')*/
+    }, {
+      name: '',
+      value: '退出'
     }];
-    if(flag){
-      list.push({
-        name:'',
-        value:'退出'
-      });
-    }else{
-      list.push({
-        name:'',
-        value:'登录'
-      });
-    }
-    return list;
+    return flag ? list : [];
   }
 }

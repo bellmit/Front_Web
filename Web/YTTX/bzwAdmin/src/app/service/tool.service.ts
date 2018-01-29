@@ -134,11 +134,39 @@ export class ToolService {
 
   /*获取本地存储*/
   static getCache() {
+    let cache;
     if (BASE_CONFIG.cache_type) {
-      return JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key)) || null;
+      cache = JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key)) || null;
     } else {
-      return JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key)) || null;
+      cache = JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key)) || null;
     }
+    if (cache === null) {
+      cache=this.createCache();
+      this.setCache(cache);
+    }
+    return cache;
+  }
+
+  /*创建本地存储*/
+  static createCache() {
+    let tempcache = {};
+    BASE_CONFIG.cache_list.forEach((c, i, a) => tempcache[c] = false);
+    return {
+      cacheMap: tempcache/*缓存加载情况记录*/,
+      routeMap: {
+        prev: '',
+        current: '',
+        size: 0,
+        history: []
+      }/*路由缓存*/,
+      moduleMap: {}/*模块缓存*/,
+      menuMap: {}/*菜单缓存*/,
+      powerMap: {}/*权限缓存*/,
+      loginMap: {}/*登录认证缓存*/,
+      settingMap: {}/*设置缓存*/,
+      menusourceMap: {}/*解析后的菜单源码缓存，用于菜单加载时直接应用，而不需要解析*/,
+      tempMap: {}/*临时缓存*/
+    };
   }
 
   /*获取本地存储的集合*/

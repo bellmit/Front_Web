@@ -1,67 +1,69 @@
 <ng-container *ngIf="layout.support">
   <!--兼容区域-->
-  <nz-layout class="cl-container">
-    <!--侧边栏-->
-    <nz-sider class="cl-sidebox" nzBreakpoint="sm" nzCollapsible [(nzCollapsed)]="layout.isCollapsed" [nzTrigger]="null">
-      <div class="logo ce-side-logo"></div>
-      <admin-side-menu></admin-side-menu>
-    </nz-sider>
+  <ng-container *ngIf="user.islogin">
+    <!--已登录视图-->
+    <nz-layout class="cl-container">
+      <!--侧边栏-->
+      <nz-sider class="cl-sidebox" nzBreakpoint="sm" nzCollapsible [(nzCollapsed)]="layout.isCollapsed" [nzTrigger]="null">
+        <div class="logo ce-side-logo"></div>
+        <admin-side-menu></admin-side-menu>
+      </nz-sider>
 
-    <!--主显示区-->
-    <nz-layout>
-      <!--头部区域-->
-      <nz-header class="g-gap-pl4">
-        <i class="anticon trigger ce-header-toggleside" [class.anticon-menu-fold]="!layout.isCollapsed" [class.anticon-menu-unfold]="layout.isCollapsed" (click)="layout.isCollapsed=!layout.isCollapsed"></i>
-        <div nz-row>
-          <div nz-col [nzSpan]="2"></div>
-          <div nz-col [nzSpan]="10"></div>
-          <div nz-col [nzSpan]="4"></div>
-          <div nz-col [nzSpan]="4"></div>
-          <div nz-col [nzSpan]="4">
-            <div class="ce-header-info-panel ce-header-message">
-              <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
-                <button nzType="primary" nz-button nz-dropdown class="ce-header-info-btn ant-dropdown-link"><i class="anticon anticon-down"></i></button>
-                <ul class="ce-header-info-list" nz-menu>
-                  <li *ngFor="let bgtheme of layout.contentBgList" (click)="toggleBgTheme(bgtheme)" nz-menu-item [class.ant-dropdown-menu-item-selected]="layout.contentBgTheme===bgtheme.value">背景主题:{{bgtheme.name}}</li>
-                </ul>
-              </nz-dropdown>
-            </div>
-            <div class="ce-header-info-panel ce-header-info">
-              <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
-                <button nzType="primary" nz-button nz-dropdown class="ce-header-info-btn ant-dropdown-link"><i class="anticon anticon-down"></i></button>
-                <ul class="ce-header-info-list" nz-menu>
-                  <ng-template *ngFor="let info of user.info;last">
-                    <li *ngIf="last" nz-menu-item>
-                      <button nz-button [nzSize]="'small'" [nzType]="'primary'">
-                      <i class="anticon anticon-logout"></i>
-                      <span>{{info.value}}</span>
-                      </button>
-                    </li>
-                    <li *ngIfElse="last" nz-menu-item>{{info.name}}:{{info.value}}</li>
-                  </ng-template>
-                </ul>
-              </nz-dropdown>
-              <!--<button nz-button [nzSize]="'small'" [nzType]="'primary'">
-                      <i class="anticon anticon-logout"></i>
-                      <span>退出</span>
-                    </button>-->
+      <!--主显示区-->
+      <nz-layout>
+        <!--头部区域-->
+        <nz-header class="g-gap-pl4">
+          <i class="anticon trigger ce-header-toggleside" [class.anticon-menu-fold]="!layout.isCollapsed" [class.anticon-menu-unfold]="layout.isCollapsed" (click)="layout.isCollapsed=!layout.isCollapsed"></i>
+          <div nz-row>
+            <div nz-col [nzSpan]="2"></div>
+            <div nz-col [nzSpan]="10"></div>
+            <div nz-col [nzSpan]="4"></div>
+            <div nz-col [nzSpan]="4"></div>
+            <div nz-col [nzSpan]="4">
+              <div class="ce-header-info-panel ce-header-message">
+                <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
+                  <button nzType="primary" nz-button nz-dropdown class="ce-header-info-btn ant-dropdown-link"><i class="anticon anticon-down"></i></button>
+                  <ul class="ce-header-info-list" nz-menu>
+                    <li *ngFor="let bgtheme of layout.contentBgList" (click)="toggleBgTheme(bgtheme)" nz-menu-item [class.ant-dropdown-menu-item-selected]="layout.contentBgTheme===bgtheme.value">背景主题:{{bgtheme.name}}</li>
+                  </ul>
+                </nz-dropdown>
+              </div>
+              <div class="ce-header-info-panel ce-header-info">
+                <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
+                  <button nzType="primary" nz-button nz-dropdown class="ce-header-info-btn ant-dropdown-link"><i class="anticon anticon-down"></i></button>
+                  <ul class="ce-header-info-list" nz-menu>
+                    <ng-container  *ngFor="let info of user.info;last as action">
+                      <li *ngIf="action" nz-menu-item>
+                        <button nz-button [nzSize]="'small'" [nzType]="default">
+                          <i class="anticon anticon-logout}}"></i><span>{{info.value}}</span>
+                        </button>
+                      </li>
+                      <li *ngIf="!action" nz-menu-item>{{info.name}}:{{info.value}}</li>
+                    </ng-container>
+                  </ul>
+                </nz-dropdown>
+              </div>
             </div>
           </div>
-        </div>
-      </nz-header>
-      <!--内容区-->
-      <nz-content class="cl-mainbox cl-mainbox-bg-{{layout.contentBgTheme}}">
-        <!--面包屑-->
-        <!--<nz-breadcrumb class="ce-breadcrumb">
-          <nz-breadcrumb-item>组件示例</nz-breadcrumb-item>
-          <nz-breadcrumb-item>按钮</nz-breadcrumb-item>
-        </nz-breadcrumb>-->
-        <router-outlet></router-outlet>
-      </nz-content>
-      <!--底部区域-->
-      <nz-footer class="cl-footer">&copy;2018</nz-footer>
+        </nz-header>
+        <!--内容区-->
+        <nz-content class="cl-mainbox cl-mainbox-bg-{{layout.contentBgTheme}}">
+          <router-outlet></router-outlet>
+        </nz-content>
+        <!--底部区域-->
+        <nz-footer class="cl-footer">&copy;2018</nz-footer>
+      </nz-layout>
     </nz-layout>
-  </nz-layout>
+  </ng-container>
+
+  <ng-container *ngIf="!user.islogin">
+    <!--未登录视图-->
+    <div class="cl-login-container">
+      <div class="cl-login-panel">
+        <admin-login-form></admin-login-form>
+      </div>
+    </div>
+  </ng-container>
 </ng-container>
 
 <ng-container *ngIf="!layout.support">

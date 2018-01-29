@@ -1,0 +1,37 @@
+.cl-login-container {
+  .layout-relative-base();
+  .layout-base();
+  background: @color-white;
+  height: 100%;
+  height: 100vh;
+  width: 100vw;
+  .cl-login-panel {
+    .layout-absolutel-base(50%, 50%);
+    .layout-base(@ad-login-width);
+    height: @ad-login-height;
+    margin-left: -@ad-login-width/2;
+    margin-top: -@ad-login-height/2;
+    overflow: hidden;
+  }
+  .cl-login-header {
+    .border-radius-base(5px 5px 0 0);
+    height: @ad-header-height;
+    background: lighten(@color-light, 5%);
+  }
+  .cl-login-logo {
+    height: 100%;
+    width: 100%;
+    background: transparent url('../images/logo.png') 20px center no-repeat;
+  }
+  .cl-login-main {
+    overflow: hidden;
+    border-left: 1px solid @color-gray12;
+    border-right: 1px solid @color-gray12;
+    border-bottom: 1px solid @color-gray12;
+    background: lighten(@color-gray12, 20%);
+    .layout-base();
+    height: @ad-login-height - @ad-header-height;
+    padding: 20px 50px;
+    .border-radius-base(0 0 5px 5px);
+  }
+}

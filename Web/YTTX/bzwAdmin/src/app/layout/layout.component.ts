@@ -10,6 +10,9 @@ import {SettingService} from "../service/setting.service";
   templateUrl: './layout.component.html'
 })
 export class LayoutComponent {
+  /*是否登录*/
+  private islogin = this.loginservice.isLogin(null);
+
   /*布局模型*/
   layout = {
     isCollapsed: false/*当前收起状态*/,
@@ -22,8 +25,8 @@ export class LayoutComponent {
 
   /*用户模型*/
   user = {
-    islogin: this.loginservice.isLogin(null),
-    info: this.loginservice.getLoginInfo(()=>{this.user.islogin})
+    islogin: this.islogin,
+    info: this.loginservice.getLoginInfo(this.islogin)
   };
 
   /*构造函数*/
@@ -35,7 +38,6 @@ export class LayoutComponent {
 
   /*切换背景*/
   toggleBgTheme(bgtheme) {
-    //console.log(ToolService.getParams('contentBgTheme'));
     this.layout['contentBgTheme'] = bgtheme.value;
     this.loginservice.setCache({
       'contentBgTheme': bgtheme.value

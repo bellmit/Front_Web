@@ -1,9 +1,11 @@
 /*配置模块*/
 import {BASE_CONFIG} from "../config/base.config";
+
 /*系统模块*/
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
@@ -43,6 +45,8 @@ import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
 import {LayoutService} from "../service/layout.service";
 import {LoginService} from "../service/login.service";
 import {SettingService} from "../service/setting.service";
+import {LoginComponent} from "./login/login.component";
+import {LoginModule} from "./login/login.module";
 
 
 /**/
@@ -50,16 +54,21 @@ import {SettingService} from "../service/setting.service";
   imports: [
     /*系统模块*/
     BrowserModule,
+    ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     NgZorroAntdModule.forRoot({extraFontName: 'anticon', extraFontUrl: './assets/fonts/fonts/iconfont'}),
+    /*登录模块*/
+    LoginModule,
     /*侧边栏模块*/
     SideMenuModule,
     /*扩展路由*/
     LayoutRouterModule
   ],
   declarations: [
+    /*登录模块*/
+    LoginComponent,
     /*布局组件*/
     LayoutComponent,
     /*侧边栏模块*/
