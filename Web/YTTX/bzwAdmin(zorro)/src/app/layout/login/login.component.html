@@ -1,0 +1,25 @@
+<div class="cl-login-header">
+  <div class="cl-login-logo"></div>
+</div>
+<div class="cl-login-main">
+  <form [formGroup]="loginForm" novalidate>
+    <div class="form-group">
+      <label class="center-block">用户名:
+        <input type="text" class="form-control" formControlName="username">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">密&nbsp;&nbsp;码:
+        <input type="password" class="form-control" formControlName="password">
+      </label>
+    </div>
+    <div class="form-group clearfix">
+      <label class="center-block g-w-percent25 g-f-l">验证码:
+        <input type="text" class="form-control" formControlName="validcode">
+      </label>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-info" type="button">登录</button>
+    </div>
+  </form>
+</div>
