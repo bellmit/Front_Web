@@ -141,10 +141,13 @@ export class LoginService {
   loginSubmit(config) {
     let data = config.form.value,
       debug = config.debug;
-    this.http.post(ToolService.adaptReqUrl({
+    this.http.post('assets/json/test.json'/*ToolService.adaptReqUrl({
       debug: debug,
       url: '/sysuser/login',
-    }), config.value).subscribe(data => {
+    })*/, {
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
+      data:config.value
+    }).subscribe(data => {
       if (debug) {
         data = this.test.testToken('list');
       }
