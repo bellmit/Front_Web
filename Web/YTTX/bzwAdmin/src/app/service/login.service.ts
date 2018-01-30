@@ -1,7 +1,9 @@
 import {BASE_CONFIG} from '../config/base.config';
 import {ToolService} from './tool.service';
+import {TestService} from './test.service';
 
 import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 /*declare var moment: any;*/
 
@@ -11,6 +13,10 @@ import {Injectable} from '@angular/core';
 export class LoginService {
   private cache = ToolService.getCache();
   private modulekey = 'login';
+  private bgTheme = 'default';
+
+  constructor(private test:TestService,private http: HttpClient) {
+  }
 
   /*
   缓存模板
@@ -106,7 +112,7 @@ export class LoginService {
   }
 
 
-  /*获取登录信息*/
+  /*顶部导航获取登录信息*/
   getLoginInfo(flag) {
     let list = [{
       name: '用户名',
@@ -120,4 +126,30 @@ export class LoginService {
     }];
     return flag ? list : [];
   }
+
+  /*登录面板获取背景*/
+  getBgTheme() {
+    let bg = Math.floor(Math.random() * (BASE_CONFIG.contentBgList.length - 1));
+    if (isNaN(bg)) {
+      return this.bgTheme;
+    }
+    return BASE_CONFIG.contentBgList[bg].value;
+  }
+
+
+  /*请求登录*/
+  loginSubmit(config) {
+    let data = config.form.value,
+      debug = config.debug;
+    this.http.post(ToolService.adaptReqUrl({
+      debug: debug,
+      url: '/sysuser/login',
+    }), config.value).subscribe(data => {
+      if (debug) {
+        data = this.test.testToken('list');
+      }
+      console.log(data);
+    });
+  }
+
 }

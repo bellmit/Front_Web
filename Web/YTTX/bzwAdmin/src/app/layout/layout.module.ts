@@ -1,5 +1,5 @@
 /*配置模块*/
-import {BASE_CONFIG} from "../config/base.config";
+/*import {BASE_CONFIG} from "../config/base.config";*/
 
 /*系统模块*/
 import {NgModule} from '@angular/core';
@@ -44,6 +44,7 @@ import {DemoSelfSlideComponent} from "../demo/self/component/slide.component";
 /*服务类*/
 import {LayoutService} from "../service/layout.service";
 import {LoginService} from "../service/login.service";
+import {TestService} from "../service/test.service";
 import {SettingService} from "../service/setting.service";
 import {LoginComponent} from "./login/login.component";
 import {LoginModule} from "./login/login.module";
@@ -91,7 +92,7 @@ import {LoginModule} from "./login/login.module";
     DemoSelfUploadComponent,
     DemoSelfSlideComponent
   ],
-  providers:[LayoutService,LoginService,SettingService],
+  providers:[LayoutService,LoginService,TestService,SettingService],
   bootstrap: [LayoutComponent]
 })
 export class LayoutModule {
