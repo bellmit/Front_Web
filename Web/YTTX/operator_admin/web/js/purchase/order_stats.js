@@ -411,7 +411,8 @@
 												<col class="g-w-percent5">\
 												<col class="g-w-percent5">\
 												<col class="g-w-percent5">\
-												<col class="g-w-percent15">\
+												<col class="g-w-percent5">\
+												<col class="g-w-percent10">\
 											</colgroup>\
 											<thead>\
 												<tr>\
@@ -420,23 +421,35 @@
 													<th>所在地址</th>\
 													<th>收货人姓名</th>\
 													<th>收货人电话</th>\
+													<th>商品总价</th>\
 													<th>物流费用</th>\
-													<th>总计(包含运费)</th>\
+													<th>总计(商品总价+物流费用)</th>\
 													<th>买家留言</th>\
 												</tr>\
 												<tr>' + (function () {
+                                                var temp_totalMoney = result["totalMoney"],
+                                                    temp_freight = result["freight"],
+                                                    temp_amount = result["amount"];
                                                 var panelstr = '<td>' + (result["customerName"] || "") + '</td>\
 														<td>' + (public_tool.phoneFormat(result["customerPhone"]) || "") + '</td>\
 														<td>' + (result["customerAddress"] || "") + '</td>\
 														<td>' + (result["consigneeName"] || "") + '</td>\
 														<td>' + (result["consigneePhone"] || "") + '</td>\
-														<td>￥' + (public_tool.moneyCorrect(result["freight"], 12, true)[0] || "0.00") + '</td>\
-														<td>￥' + (public_tool.moneyCorrect(result["totalMoney"], 12, true)[0] || "0.00") + '</td>\
+														<td>￥' + (public_tool.moneyCorrect(temp_totalMoney, 12, true)[0] || "0.00") + '</td>\
+														<td>￥' + (public_tool.moneyCorrect(temp_freight, 12, true)[0] || "0.00") + '</td>\
+														<td>￥' + (function () {
+
+                                                    if (typeof temp_amount === 'undefined') {
+                                                        return public_tool.moneyCorrect((temp_totalMoney + temp_freight), 12, true)[0] || "0.00";
+                                                    } else {
+                                                        return public_tool.moneyCorrect((temp_amount), 12, true)[0] || "0.00";
+                                                    }
+                                                }()) + '</td>\
 														<td>' + (result["remark"] || "") + '</td>';
                                                 return panelstr;
                                             }()) + '</tr>\
 												<tr>\
-													<th colspan="4">商品名称</th>\
+													<th colspan="5">商品名称</th>\
 													<th>批发价</th>\
 													<th>购买数量</th>\
 													<th colspan="2">商品属性</th>\
@@ -447,7 +460,7 @@
 
                                         if (len !== 0) {
                                             for (i; i < len; i++) {
-                                                res += '<tr><td colspan="4">' + (list[i]["goodsName"] || "") + '</td><td>￥' + (public_tool.moneyCorrect(list[i]["wholesalePrice"], 12, true)[0] || "0.00") + '</td><td>' + (list[i]["quantlity"] || "0") + '</td><td colspan="2">' + (list[i]["attributeName"] || "") + '</td></tr>';
+                                                res += '<tr><td colspan="5">' + (list[i]["goodsName"] || "") + '</td><td>￥' + (public_tool.moneyCorrect(list[i]["wholesalePrice"], 12, true)[0] || "0.00") + '</td><td>' + (list[i]["quantlity"] || "0") + '</td><td colspan="2">' + (list[i]["attributeName"] || "") + '</td></tr>';
 
                                             }
                                         }

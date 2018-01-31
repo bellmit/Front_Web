@@ -502,88 +502,93 @@
 		return /^[0-9]{0,}$/g.test(self.trims(str));
 	};
 	//自动补全纠错人民币(字符串,最大数位,是否可以返回为空)，返回一个数组['格式化后的数据',带小数点的未格式化数据]
-	public_tool.moneyCorrect=function(str,max,flag){
-		var self=this,
-			money=this.trimSep(str.toString(),','),
-			moneyarr,
-			len=0,
-			partz,
-			partx,
-			tempstr='';
+	public_tool.moneyCorrect=function (str, max, flag) {
+        if (typeof str === 'undefined' || str === null) {
+            if (flag) {
+                return ['', ''];
+            } else {
+                return ['0.00', '0.00'];
+            }
+        }
 
-		money=this.trims(money);
-		if(money===''){
-			if(flag){
-				return ['',''];
-			}else{
-				return ['0.00','0.00'];
-			}
-		}
-		if(flag&&(parseInt(money * 100,10)===0)){
-			return ['',''];
-		}
-		if(money.lastIndexOf('.')!==-1){
-			moneyarr=money.split('.');
-			len=moneyarr.length;
-			if(len>2){
-				partz=moneyarr[len-2];
-				partx=moneyarr[len-1];
-			}else{
-				partz=moneyarr[0];
-				partx=moneyarr[1];
-			}
-			if(!self.isNum(partx)){
-				partx=partx.replace(/\D*/g,'');
-			}
-			if(partx.length==0){
-				partx='.00';
-			}else if(partx.length==1){
-				partx='.'+partx+'0';
-			}else if(partx.length>=2){
-				partx='.'+partx.slice(0,2);
-			}
-		}else{
-			partz=money;
-			partx='.00';
-		}
-		if(!self.isNum(partz)){
-			partz=partz.replace(/\D*/g,'');
-		}
-		tempstr=partz+partx;
-		var templen=partz.length;
-		if(templen>3){
-			var i=0,j=1;
-			partz=partz.split('').reverse();
-			for(i;i<templen;i++){
-				if(j%3==0&&j!=templen){
-					partz.splice(i,1,','+partz[i].toString());
-				}
-				j++;
-			}
-			partz=partz.reverse().join('');
-		}else if(templen==0){
-			partz='0';
-		}
-		if(partz.length>=2){
-			if(partz.charAt(0)=='0'||partz.charAt(0)==0){
-				partz=partz.slice(1);
-			}
-		}
-		if(max){
-			if(partz.indexOf(',')!==-1){
-				var filterlen=partz.length,
-					k= 0,
-					filtercount=0;
-				for(k;k<filterlen;k++){
-					if(partx[k]===','){
-						filtercount++;
-					}
-				}
-				partz=partz.slice(filtercount);
-			}
-		}
-		return [partz+partx,tempstr];
-	};
+        var self = this,
+            money = this.trimSep(str.toString(), ','),
+            moneyarr,
+            len = 0,
+            partz,
+            partx,
+            tempstr = '';
+
+        money = this.trims(money);
+        if (money === '') {
+            if (flag) {
+                return ['', ''];
+            } else {
+                return ['0.00', '0.00'];
+            }
+        }
+        if (flag && (parseInt(money * 100, 10) === 0)) {
+            return ['', ''];
+        }
+        if (money.lastIndexOf('.') !== -1) {
+            moneyarr = money.split('.');
+            len = moneyarr.length;
+            if (len > 2) {
+                partz = moneyarr[len - 2];
+                partx = moneyarr[len - 1];
+            } else {
+                partz = moneyarr[0];
+                partx = moneyarr[1];
+            }
+            if (!self.isNum(partx)) {
+                partx = partx.replace(/\D*/g, '');
+            }
+            if (partx.length == 0) {
+                partx = '.00';
+            } else if (partx.length == 1) {
+                partx = '.' + partx + '0';
+            } else if (partx.length >= 2) {
+                partx = '.' + partx.slice(0, 2);
+            }
+        } else {
+            partz = money;
+            partx = '.00';
+        }
+        if (!self.isNum(partz)) {
+            partz = partz.replace(/\D*/g, '');
+        }
+        tempstr = partz + partx;
+        var templen = partz.length;
+        if (templen > 3) {
+            var i = 0, j = 1;
+            partz = partz.split('').reverse();
+            for (i; i < templen; i++) {
+                if (j % 3 == 0 && j != templen) {
+                    partz.splice(i, 1, ',' + partz[i].toString());
+                }
+                j++;
+            }
+            partz = partz.reverse().join('');
+        } else if (templen == 0) {
+            partz = '0';
+        }
+        if (partz.length >= 2) {
+            if (partz.charAt(0) == '0' || partz.charAt(0) == 0) {
+                partz = partz.slice(1);
+            }
+        }
+        if (typeof max !== 'undefined' && max > 3) {
+            var filterlen = partz.length;
+            if ((filterlen + 3) > max) {
+                partz = partz.slice(0, max - 3);
+                filterlen = partz.length;
+                if (partz.charAt(filterlen - 1) === ',') {
+                    partz = partz.slice(0, filterlen - 1);
+                }
+            }
+        }
+        return [partz + partx, tempstr];
+    };
 	//光标定位至具体位置(需定位元素,[元素中字符],定位位置，[是否在特定位置的前或者后])
 	public_tool.cursorPos=function(elem,str,index,flag){
 		var vals='',
