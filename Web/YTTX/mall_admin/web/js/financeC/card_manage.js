@@ -249,23 +249,8 @@
 
             /*格式化手机号码*/
             $.each([$search_phone], function () {
-                this.on('keyup focusout', function (e) {
-                    var etype = e.type,
-                        phoneno = this.value.replace(/\D*/g, '');
-
-                    if (etype === 'keyup') {
-                        if (phoneno === '') {
-                            this.value = '';
-                            return false;
-                        }
-                        this.value = public_tool.phoneFormat(this.value);
-                    } else if (etype === 'focusout') {
-                        if (!public_tool.isMobilePhone(phoneno)) {
-                            this.value = '';
-                            return false;
-                        }
-                        this.value = public_tool.phoneFormat(this.value);
-                    }
+                this.on('keyup', function (e) {
+                    this.value = this.value.replace(/\D*/g, '');
                 });
             });
 

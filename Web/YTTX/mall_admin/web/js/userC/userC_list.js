@@ -269,12 +269,14 @@
                 $.each([$search_searchColumn, $search_searchContent, $search_createTimeStart, $search_createTimeEnd], function () {
                     this.val('');
                 });
+                $search_searchContent.removeAttr('maxlength').off('keyup');
+                mobile_bind = false;
                 /*重置分页*/
                 user_page.page = 1;
                 user_page.total = 0;
                 user_config.config.ajax.data['page'] = user_page.page;
             }).trigger('click');
-            
+
             /*日历查询*/
             datePickWidget.datePick([$search_createTimeStart, $search_createTimeEnd]);
 
@@ -311,7 +313,7 @@
                 user_config.config.ajax.data = $.extend(true, {}, data);
                 getColumnData(user_page, user_config);
             });
-            
+
             /*绑定切换查询类型和查询关键字关联查询*/
             $search_searchColumn.on('change', function () {
                 var value = this.value;
@@ -322,7 +324,7 @@
                         /*昵称*/
                         /*取消绑定手机事件*/
                         if (mobile_bind) {
-                            $search_searchContent.removeAttr('maxlength').off('keyup focusout');
+                            $search_searchContent.removeAttr('maxlength').off('keyup');
                             mobile_bind = false;
                         }
                     } else if (value === 2) {
@@ -335,24 +337,9 @@
                         }
                         /*格式化手机号码*/
                         $search_searchContent.attr({
-                            'maxlength': 13
-                        }).on('keyup focusout', function (e) {
-                            var etype = e.type,
-                                phoneno = this.value.replace(/\D*/g, '');
-
-                            if (etype === 'keyup') {
-                                if (phoneno === '') {
-                                    this.value = '';
-                                    return false;
-                                }
-                                this.value = public_tool.phoneFormat(this.value);
-                            } else if (etype === 'focusout') {
-                                if (!public_tool.isMobilePhone(phoneno)) {
-                                    this.value = '';
-                                    return false;
-                                }
-                                this.value = public_tool.phoneFormat(this.value);
-                            }
+                            'maxlength': 11
+                        }).on('keyup', function (e) {
+                            this.value = this.value.replace(/\D*/g, '');
                         });
                         mobile_bind = true;
                     }
@@ -455,18 +442,18 @@
             }
 
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/operate",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: {
-                        shUserIds: id,
-                        operate: obj.actionmap[action],
-                        roleId: decodeURIComponent(logininfo.param.roleId),
-                        adminId: decodeURIComponent(logininfo.param.adminId),
-                        grade: decodeURIComponent(logininfo.param.grade),
-                        token: decodeURIComponent(logininfo.param.token)
-                    }
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/operate",
+                dataType: 'JSON',
+                method: 'post',
+                data: {
+                    shUserIds: id,
+                    operate: obj.actionmap[action],
+                    roleId: decodeURIComponent(logininfo.param.roleId),
+                    adminId: decodeURIComponent(logininfo.param.adminId),
+                    grade: decodeURIComponent(logininfo.param.grade),
+                    token: decodeURIComponent(logininfo.param.token)
+                }
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = testWidget.testSuccess('list');

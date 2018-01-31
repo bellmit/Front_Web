@@ -103,9 +103,11 @@
                             this.val('');
                         }
                     });
+                    $search_searchContent.removeAttr('maxlength').off('keyup');
+                    mobile_bind = false;
                     /*清除分页*/
-                    request_config.page=1;
-                    request_config.total=0;
+                    request_config.page = 1;
+                    request_config.total = 0;
                 }).trigger('click');
 
                 /*联合查询*/
@@ -148,7 +150,7 @@
                             /*昵称*/
                             /*取消绑定手机事件*/
                             if (mobile_bind) {
-                                $search_searchContent.removeAttr('maxlength').off('keyup focusout');
+                                $search_searchContent.removeAttr('maxlength').off('keyup');
                                 mobile_bind = false;
                             }
                         } else if (value === 2) {
@@ -161,24 +163,9 @@
                             }
                             /*格式化手机号码*/
                             $search_searchContent.attr({
-                                'maxlength': 13
-                            }).on('keyup focusout', function (e) {
-                                var etype = e.type,
-                                    phoneno = this.value.replace(/\D*/g, '');
-
-                                if (etype === 'keyup') {
-                                    if (phoneno === '') {
-                                        this.value = '';
-                                        return false;
-                                    }
-                                    this.value = public_tool.phoneFormat(this.value);
-                                } else if (etype === 'focusout') {
-                                    if (!public_tool.isMobilePhone(phoneno)) {
-                                        this.value = '';
-                                        return false;
-                                    }
-                                    this.value = public_tool.phoneFormat(this.value);
-                                }
+                                'maxlength': 11
+                            }).on('keyup', function (e) {
+                                this.value = this.value.replace(/\D*/g, '');
                             });
                             mobile_bind = true;
                         }
@@ -476,17 +463,17 @@
 
                     if (shUserId !== '' && parentId !== '') {
                         $.ajax({
-                                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/update",
-                                dataType: 'JSON',
-                                async: false,
-                                method: 'post',
-                                data: {
-                                    adminId: request_config.adminId,
-                                    token: request_config.token,
-                                    shUserId: shUserId,
-                                    parentId: parentId
-                                }
-                            })
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/update",
+                            dataType: 'JSON',
+                            async: false,
+                            method: 'post',
+                            data: {
+                                adminId: request_config.adminId,
+                                token: request_config.token,
+                                shUserId: shUserId,
+                                parentId: parentId
+                            }
+                        })
                             .done(function (resp) {
                                 if (debug) {
                                     var resp = testWidget.testSuccess('list');
@@ -530,18 +517,18 @@
             }
 
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/operate",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: {
-                        shUserIds: id,
-                        operate: obj.actionmap[action],
-                        roleId: decodeURIComponent(logininfo.param.roleId),
-                        adminId: decodeURIComponent(logininfo.param.adminId),
-                        grade: decodeURIComponent(logininfo.param.grade),
-                        token: decodeURIComponent(logininfo.param.token)
-                    }
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/operate",
+                dataType: 'JSON',
+                method: 'post',
+                data: {
+                    shUserIds: id,
+                    operate: obj.actionmap[action],
+                    roleId: decodeURIComponent(logininfo.param.roleId),
+                    adminId: decodeURIComponent(logininfo.param.adminId),
+                    grade: decodeURIComponent(logininfo.param.grade),
+                    token: decodeURIComponent(logininfo.param.token)
+                }
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = testWidget.testSuccess('list');
@@ -740,13 +727,13 @@
 
                     if (hassub) {
                         str += doItems(curitem, {
-                                flag: true,
-                                limit: limit,
-                                index: i,
-                                layer: layer,
-                                parentlabel: user_cache.nickname,
-                                parentid: request_config.parentId
-                            }) + '<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
+                            flag: true,
+                            limit: limit,
+                            index: i,
+                            layer: layer,
+                            parentlabel: user_cache.nickname,
+                            parentid: request_config.parentId
+                        }) + '<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
                     } else {
                         str += doItems(curitem, {
                             flag: false,
@@ -799,13 +786,13 @@
 
                     if (hassub) {
                         str += doItems(curitem, {
-                                flag: true,
-                                limit: limit,
-                                layer: layer,
-                                index: index,
-                                parentlabel: parentlabel,
-                                parentid: parentid
-                            }) + '<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
+                            flag: true,
+                            limit: limit,
+                            layer: layer,
+                            index: index,
+                            parentlabel: parentlabel,
+                            parentid: parentid
+                        }) + '<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
                     } else {
                         str += doItems(curitem, {
                             flag: false,
@@ -919,12 +906,12 @@
                 level: 1
             };
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/list",
-                    dataType: 'JSON',
-                    async: false,
-                    method: 'post',
-                    data: config
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/list",
+                dataType: 'JSON',
+                async: false,
+                method: 'post',
+                data: config
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = testWidget.test({
@@ -961,12 +948,12 @@
         /*请求属性*/
         function requestAttr(config) {
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/list",
-                    dataType: 'JSON',
-                    async: false,
-                    method: 'post',
-                    data: config
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/list",
+                dataType: 'JSON',
+                async: false,
+                method: 'post',
+                data: config
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = testWidget.test({
@@ -1036,15 +1023,15 @@
                 return false;
             }
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: {
-                        id: id,
-                        adminId: request_config.adminId,
-                        token: request_config.token
-                    }
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
+                dataType: 'JSON',
+                method: 'post',
+                data: {
+                    id: id,
+                    adminId: request_config.adminId,
+                    token: request_config.token
+                }
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = testWidget.testSuccess('list');
@@ -1130,16 +1117,16 @@
         /*请求属性*/
         function requestEditInfo(value) {
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
-                    dataType: 'JSON',
-                    async: false,
-                    method: 'post',
-                    data: {
-                        adminId: request_config.adminId,
-                        token: request_config.token,
-                        phone: value
-                    }
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
+                dataType: 'JSON',
+                async: false,
+                method: 'post',
+                data: {
+                    adminId: request_config.adminId,
+                    token: request_config.token,
+                    phone: value
+                }
+            })
                 .done(function (resp) {
                     if (debug) {
                         if (debug) {
@@ -1169,7 +1156,7 @@
                     if (result) {
                         /*解析属性*/
                         toggleEditQuery(result['nickname'], result['id']);
-                    }else{
+                    } else {
                         toggleEditQuery();
                     }
                 })
