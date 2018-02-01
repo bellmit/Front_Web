@@ -152,7 +152,7 @@ export class LoginService {
     loginSubmit(config) {
         let param = config.form.value,
             debug = config.debug;
-        this.http.post('http://112.74.207.132:8081/mall-buzhubms-api/user/list',null).subscribe(data => {
+        this.http.get('assets/json/test.json').subscribe(data => {
             console.log('ok');
         }, error => {
             console.log('error');
