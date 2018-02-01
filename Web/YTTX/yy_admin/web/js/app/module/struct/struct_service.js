@@ -1309,7 +1309,7 @@ angular.module('app')
                                                     struct[i] = toolUtil.phoneFormat(list[i]);
                                                     break;
                                                 case 'telephone':
-                                                    struct[i] = toolUtil.telePhoneFormat(list[i], 4);
+                                                    struct[i] = list[i];
                                                     break;
                                                 case 'province':
                                                     struct['province'] = list['province'];
@@ -1787,7 +1787,7 @@ angular.module('app')
                     param['adscriptionRegion'] = config[type]['adscriptionRegion'];
                     param['linkman'] = config[type]['linkman'];
                     param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
-                    param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
+                    param['telephone'] = config[type]['telephone'];
                     param['province'] = config[type]['province'];
                     param['city'] = config[type]['city'];
                     param['country'] = config[type]['country'] || '';
@@ -1836,7 +1836,7 @@ angular.module('app')
                     param['name'] = config[type]['name'];
                     param['type'] = config[type]['shoptype'];
                     param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
-                    param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
+                    param['telephone'] = config[type]['telephone'];
                     param['province'] = config[type]['province'];
                     param['city'] = config[type]['city'];
                     param['country'] = config[type]['country'] || '';
@@ -2227,7 +2227,7 @@ angular.module('app')
                                                         user[i] = toolUtil.phoneFormat(list[i]);
                                                         break;
                                                     case 'telephone':
-                                                        user[i] = toolUtil.telePhoneFormat(list[i], 4);
+                                                        user[i] = list[i];
                                                         break;
                                                     case 'province':
                                                         user['province'] = list['province'];
@@ -2576,16 +2576,34 @@ angular.module('app')
                     if (searchtype === 1) {
                         /*店铺手机号码*/
                         delete data['fullName'];
+                        delete data['name'];
+                        delete data['telephone'];
                         data['cellphone'] = toolUtil.trims(record.searchValue);
                     } else if (searchtype === 2) {
                         /*店铺全称*/
-                        data['fullName'] = record.searchValue;
                         delete data['cellphone'];
+                        delete data['name'];
+                        delete data['telephone'];
+                        data['fullName'] = record.searchValue;
+                    }else if (searchtype === 3) {
+                        /*姓名*/
+                        delete data['fullName'];
+                        delete data['cellphone'];
+                        delete data['telephone'];
+                        data['name'] = record.searchValue;
+                    }else if (searchtype === 4) {
+                        /*电话号码*/
+                        delete data['fullName'];
+                        delete data['name'];
+                        delete data['cellphone'];
+                        data['telephone'] = record.searchValue;
                     }
                 } else {
                     /*去除搜索条件*/
                     delete data['fullName'];
+                    delete data['name'];
                     delete data['cellphone'];
+                    delete data['telephone'];
                     /*没搜索值则默认为选中机构下查询*/
                     data['organizationId'] = id;
                 }

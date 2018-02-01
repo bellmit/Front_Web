@@ -243,9 +243,7 @@
                                 <label class="self-label g-w-percent15 g-t-r">电话号码</label>
 
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <input type="text" name="telephone" maxlength="13" placeholder=""  ng-model="struct_ctrl.struct.telephone"   class="ui-tele-phone4" />
-                                    <span ng-show="structFrom.telephone.$dirty && structFrom.telephone.$invalid" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">电话号码格式不合法</span>
-                                    <span ng-show="structFrom.telephone.$dirty && structFrom.telephone.$valid" class="self-tips self-tips-yes"></span>
+                                    <input type="text" name="telephone" maxlength="12" placeholder=""  ng-model="struct_ctrl.struct.telephone"   class="ui-int-number" />
                                 </div>
                             </div>
 
@@ -381,9 +379,9 @@
                             </div>
 
                             <div class="form-group-self1">
-                                <button type="submit" ng-show="struct_ctrl.struct.id===''" ng-disabled="!(struct_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid  && structFrom.adscriptionRegion.$dirty && structFrom.adscriptionRegion.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && (struct_ctrl.struct.telephone==='' || (structFrom.telephone.$dirty && structFrom.telephone.$valid)) && (struct_ctrl.struct.province!=='' && struct_ctrl.struct.city!=='') && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
+                                <button type="submit" ng-show="struct_ctrl.struct.id===''" ng-disabled="!(struct_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid  && structFrom.adscriptionRegion.$dirty && structFrom.adscriptionRegion.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && (struct_ctrl.struct.province!=='' && struct_ctrl.struct.city!=='') && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
 
-                                <button type="submit" ng-show="struct_ctrl.struct.id!==''" ng-disabled="!(struct_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.adscriptionRegion.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && (struct_ctrl.struct.telephone==='' || (struct_ctrl.struct.telephone!=='' && structFrom.telephone.$valid)) && (struct_ctrl.struct.province!=='' && struct_ctrl.struct.city!=='') && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid && structFrom.password.$valid && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="submit" ng-show="struct_ctrl.struct.id!==''" ng-disabled="!(struct_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.adscriptionRegion.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && (struct_ctrl.struct.province!=='' && struct_ctrl.struct.city!=='') && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid && structFrom.password.$valid && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
                                 <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_struct_reset" ng-click="struct_ctrl.formReset(structFrom,'struct')">重置</button>
                             </div>
                         </form>
@@ -474,9 +472,7 @@
                                 <label class="self-label g-w-percent10 g-t-r">电话号码</label>
 
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="telephone" maxlength="13" placeholder=""  ng-model="struct_ctrl.user.telephone" class="ui-tele-phone4" />
-                                    <span ng-show="userFrom.telephone.$dirty && userFrom.telephone.$invalid" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">电话号码格式不合法</span>
-                                    <span ng-show="userFrom.telephone.$dirty && userFrom.telephone.$valid" class="self-tips self-tips-yes"></span>
+                                    <input type="text" name="telephone" maxlength="12" placeholder=""  ng-model="struct_ctrl.user.telephone" class="ui-int-number" />
                                 </div>
                             </div>
 
@@ -572,8 +568,8 @@
 
 
                             <div class="form-group-self1">
-                                <button type="submit" ng-show="struct_ctrl.user.id===''" ng-disabled="!(struct_ctrl.user.id==='' && userFrom.fullName.$dirty && userFrom.fullName.$valid && userFrom.name.$dirty && userFrom.name.$valid && userFrom.cellphone.$dirty && userFrom.cellphone.$valid && (struct_ctrl.user.telephone==='' || (userFrom.telephone.$dirty && userFrom.telephone.$valid)) && (struct_ctrl.user.province!=='' && struct_ctrl.user.city!=='') && userFrom.address.$dirty && userFrom.address.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
-                                <button type="submit" ng-show="struct_ctrl.user.id!==''" ng-disabled="!(struct_ctrl.user.id!=='' && userFrom.fullName.$valid && userFrom.name.$valid && userFrom.cellphone.$valid && (struct_ctrl.user.telephone==='' || (struct_ctrl.user.telephone!=='' && userFrom.telephone.$valid)) && (struct_ctrl.user.province!=='' && struct_ctrl.user.city!=='') && userFrom.address.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="submit" ng-show="struct_ctrl.user.id===''" ng-disabled="!(struct_ctrl.user.id==='' && userFrom.fullName.$dirty && userFrom.fullName.$valid && userFrom.name.$dirty && userFrom.name.$valid && userFrom.cellphone.$dirty && userFrom.cellphone.$valid && (struct_ctrl.user.province!=='' && struct_ctrl.user.city!=='') && userFrom.address.$dirty && userFrom.address.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
+                                <button type="submit" ng-show="struct_ctrl.user.id!==''" ng-disabled="!(struct_ctrl.user.id!=='' && userFrom.fullName.$valid && userFrom.name.$valid && userFrom.cellphone.$valid && (struct_ctrl.user.province!=='' && struct_ctrl.user.city!=='') && userFrom.address.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
                                 <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2 g-d-hidei" id="admin_user_reset" ng-click="struct_ctrl.formReset(userFrom,'user')">重置</button>
                             </div>
                         </form>

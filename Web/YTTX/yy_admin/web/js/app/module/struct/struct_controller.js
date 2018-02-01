@@ -117,19 +117,25 @@ angular.module('app')
             structName: ''/*机构设置名称*/,
             structnode: null/*机构对象*/,
             layer: 0/*操作层*/,
-            searchActive:'',/*搜索店铺--激活状态*/
+            searchActive: '', /*搜索店铺--激活状态*/
             searchValue: ''/*搜索店铺--关键词*/,
-            searchtype:1/*搜索店铺--搜索类型*/
+            searchtype: 1/*搜索店铺--搜索类型*/
         };
 
 
         /*模型--用户搜索类型*/
-        this.usertype=[{
+        this.usertype = [{
             key: '店铺手机号码',
             value: 1
         }, {
             key: '店铺全称',
             value: 2
+        }, {
+            key: '姓名',
+            value: 3
+        }, {
+            key: '电话号码',
+            value: 4
         }];
 
 
@@ -280,8 +286,8 @@ angular.module('app')
                                         temp_param['pageSize'] = self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data = temp_param;
                                         structService.getColumnData({
-                                            table:self.table,
-                                            record:self.record
+                                            table: self.table,
+                                            record: self.record
                                         });
                                     }
                                 });
@@ -350,10 +356,7 @@ angular.module('app')
                             }
                         },
                         {
-                            "data": "telephone",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.telePhoneFormat(data, 4);
-                            }
+                            "data": "telephone"
                         },
                         {
                             "data": "province",
@@ -434,8 +437,8 @@ angular.module('app')
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_header:['','店铺全称','店铺简称','姓名','店铺类型','店铺手机号码','店铺电话号码','省市区','详细地址','状态','添加时间','操作'],
-                hide_list: [1, 5, 6, 7, 8, 10]/*需要隐藏的的列序号*/,
+                hide_header: ['', '店铺全称', '店铺简称', '姓名', '店铺类型', '店铺手机号码', '店铺电话号码', '省市区', '详细地址', '状态', '添加时间', '操作'],
+                hide_list: [2, 4, 6, 7, 8, 10]/*需要隐藏的的列序号*/,
                 hide_len: 6,
                 column_api: {
                     isEmpty: function () {
@@ -510,15 +513,15 @@ angular.module('app')
             /*切换省市时需要清空详细地址*/
             self[model_str]['address'] = '';
             /*查询关联*/
-            if(model_str==='user' && (type==='country')){
+            if (model_str === 'user' && (type === 'country')) {
                 structService.queryAddress({
                     model: self[model_str],
                     address: self[address_str],
                     type: type
-                },function () {
+                }, function () {
                     self.queryLngLat('select');
                 });
-            }else{
+            } else {
                 structService.queryAddress({
                     model: self[model_str],
                     address: self[address_str],
