@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Output, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LoginService} from "../../service/login.service";
 
@@ -8,21 +8,29 @@ import {LoginService} from "../../service/login.service";
 })
 
 export class LoginComponent implements OnInit {
-  private debug=true/*测试模式*/;
+  private debug = true/*测试模式*/;
 
-  loginForm: FormGroup;/*表单对象*/
-  bgTheme=this.loginservice.getBgTheme();/*登录面板背景设置*/
+  loginForm: FormGroup;
+  /*表单对象*/
+  bgTheme = this.loginservice.getBgTheme();
+  /*登录面板背景设置*/
+  @Output() login = {
+    islogin: false, /*是否登录*/
+    message: ''/*登录提示信息*/
+  };
+
 
   /*构造函数*/
-  constructor(private loginservice: LoginService, private fb: FormBuilder) {}
+  constructor(private loginservice: LoginService, private fb: FormBuilder) {
+  }
 
 
   /*接口实现:(钩子实现)*/
   ngOnInit() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
-      password:['', [Validators.required,Validators.minLength(6)]],
-      identifyingCode:['', [Validators.required,Validators.minLength(4)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      identifyingCode: ['', [Validators.required, Validators.minLength(4)]]
     });
   }
 
@@ -34,8 +42,9 @@ export class LoginComponent implements OnInit {
   /*表单提交*/
   loginSubmit() {
     this.loginservice.loginSubmit({
-      debug:this.debug,
-      form:this.loginForm
+      debug: this.debug,
+      form: this.loginForm,
+      login:this.login
     });
     /*for (const i in this.loginForm.controls) {
       this.loginForm.controls[i].markAsDirty();
