@@ -10,7 +10,6 @@ angular.module('app')
             var type = config.type/*类型：负责判断查询，省，市，区*/,
                 address = config.address/*模型：负责更新数据*/,
                 model = config.model,
-                isinit = config.isinit,
                 id;
 
             /*
@@ -25,10 +24,6 @@ angular.module('app')
             } else if (type === 'country') {
                 id = model['city'];
             }
-            /*更新模型*/
-            /*this.updateAddress(type, address);
-            config.address = address;
-            console.log(type);*/
 
             /*组合请求参数*/
             toolUtil
@@ -65,11 +60,11 @@ angular.module('app')
                                         if (len !== 0) {
                                             /*数据集合，最多嵌套层次*/
                                             var i = 0,
-                                                tempaddress = {},
-                                                address_item,
+                                                tempaddress = {};
+                                            var address_item,
                                                 list_item;
                                             if (model[type] !== '') {
-                                                /*模型有选中数据情况*/
+                                                /*有数据情况*/
                                                 for (i; i < len; i++) {
                                                     address_item = {};
                                                     list_item = list[i];
@@ -84,13 +79,13 @@ angular.module('app')
                                                 /*更新模型*/
                                                 address[type] = tempaddress;
                                             } else {
-                                                /*模型无选中数据则取第一个（初始化查询情况下）*/
+                                                /*无数据则取第一个*/
                                                 for (i; i < len; i++) {
                                                     address_item = {};
                                                     list_item = list[i];
                                                     address_item['key'] = list_item['name'];
                                                     address_item['value'] = list_item['code'];
-                                                    if (i === 0 && isinit) {
+                                                    if (i === 0) {
                                                         /*匹配即更新模型*/
                                                         model[type] = list_item['code'];
                                                     }
@@ -103,37 +98,34 @@ angular.module('app')
                                                 address[type] = tempaddress;
                                             }
                                             /*循环完毕根据类型判断是否开启下级查询*/
-                                            if (type === 'province' && isinit) {
+                                            if (type === 'province') {
                                                 /*查询市级*/
-                                                if (fn && typeof fn === 'function') {
+                                                if (fn) {
                                                     self.queryRelation({
                                                         model: config.model,
                                                         address: config.address,
-                                                        type: 'city',
-                                                        isinit: isinit
+                                                        type: 'city'
                                                     }, fn);
                                                 } else {
                                                     self.queryRelation({
                                                         model: config.model,
                                                         address: config.address,
-                                                        type: 'city',
-                                                        isinit: isinit
+                                                        type: 'city'
                                                     });
                                                 }
-                                            } else if (type === 'city' && isinit) {
-                                                if (fn && typeof fn === 'function') {
+                                            } else if (type === 'city') {
+                                                /*查询区级*/
+                                                if (fn) {
                                                     self.queryRelation({
                                                         model: config.model,
                                                         address: config.address,
-                                                        type: 'country',
-                                                        isinit: isinit
+                                                        type: 'country'
                                                     }, fn);
                                                 } else {
                                                     self.queryRelation({
                                                         model: config.model,
                                                         address: config.address,
-                                                        type: 'country',
-                                                        isinit: isinit
+                                                        type: 'country'
                                                     });
                                                 }
                                             } else if (type === 'country' && fn && typeof fn === 'function') {
@@ -141,52 +133,9 @@ angular.module('app')
                                                 fn.call(null);
                                             }
                                         } else {
-                                            if (type === 'province') {
-                                                /*更新表单模型*/
-                                                model[type] = '';
-                                                model['city'] = '';
-                                                model['country'] = '';
-                                                /*更新地址模型*/
-                                                delete address[type];
-                                                address[type] = {};
-                                                delete address['city'];
-                                                address['city'] = {};
-                                                delete address['country'];
-                                                address['country'] = {};
-                                                /*执行回调(主要为经纬度回调)*/
-                                                if (fn && typeof fn === 'function') {
-                                                    /*判断是否有回调:此处主要为查询经纬度操作*/
-                                                    fn.call(null);
-                                                }
-                                                return false;
-                                            } else if (type === 'city' && !isinit) {
-                                                /*更新表单模型*/
-                                                model[type] = '';
-                                                model['country'] = '';
-                                                /*更新地址模型*/
-                                                delete address[type];
-                                                address[type] = {};
-                                                delete address['country'];
-                                                address['country'] = {};
-                                                /*执行回调(主要为经纬度回调)*/
-                                                if (fn && typeof fn === 'function') {
-                                                    /*判断是否有回调:此处主要为查询经纬度操作*/
-                                                    fn.call(null);
-                                                }
-                                                return false;
-                                            } else {
-                                                /*更新表单模型*/
-                                                model[type] = '';
-                                                /*更新地址模型*/
-                                                delete address[type];
-                                                address[type] = {};
-                                                /*执行回调(主要为经纬度回调)*/
-                                                if (fn && typeof fn === 'function') {
-                                                    /*判断是否有回调:此处主要为查询经纬度操作*/
-                                                    fn.call(null);
-                                                }
-                                                return false;
-                                            }
+                                            /*置空模型*/
+                                            delete address[type];
+                                            address[type] = {};
                                         }
                                     } else {
                                         /*置空模型*/
@@ -454,6 +403,5 @@ angular.module('app')
                         }
                     });
         };
-
 
     }]);

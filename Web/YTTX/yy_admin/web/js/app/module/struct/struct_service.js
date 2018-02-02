@@ -2585,13 +2585,13 @@ angular.module('app')
                         delete data['name'];
                         delete data['telephone'];
                         data['fullName'] = record.searchValue;
-                    }else if (searchtype === 3) {
+                    } else if (searchtype === 3) {
                         /*姓名*/
                         delete data['fullName'];
                         delete data['cellphone'];
                         delete data['telephone'];
                         data['name'] = record.searchValue;
-                    }else if (searchtype === 4) {
+                    } else if (searchtype === 4) {
                         /*电话号码*/
                         delete data['fullName'];
                         delete data['name'];

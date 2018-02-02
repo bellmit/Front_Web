@@ -487,13 +487,15 @@ angular.module('app')
         structService.queryAddress({
             type: 'province',
             address: self.address,
-            model: self.struct
+            model: self.struct,
+            isinit:true
         });
         /*初始化服务--初始化地址信息*/
         structService.queryAddress({
             type: 'province',
             address: self.user_address,
-            model: self.user
+            model: self.user,
+            isinit:true
         }, function () {
             structService.queryLngLat({
                 model: self.user,
@@ -504,7 +506,8 @@ angular.module('app')
         structService.queryAddress({
             type: 'province',
             address: self.list_address,
-            model: self.list_addressdata
+            model: self.list_addressdata,
+            isinit:true
         });
 
 
@@ -517,7 +520,8 @@ angular.module('app')
                 structService.queryAddress({
                     model: self[model_str],
                     address: self[address_str],
-                    type: type
+                    type: type,
+                    isinit:false
                 }, function () {
                     self.queryLngLat('select');
                 });
@@ -525,7 +529,8 @@ angular.module('app')
                 structService.queryAddress({
                     model: self[model_str],
                     address: self[address_str],
-                    type: type
+                    type: type,
+                    isinit:false
                 });
             }
         };
@@ -719,6 +724,11 @@ angular.module('app')
                 model: self.user,
                 address: self.user_address
             }, $scope);
-        }
+        };
+
+        /*判断地址模型是否为空*/
+        this.equalAddressModel = function (type, model) {
+            return angular.equals({}, model[type]);
+        };
 
     }]);
