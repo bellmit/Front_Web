@@ -128,11 +128,11 @@ angular.module('app')
                                                         type: 'country'
                                                     });
                                                 }
-                                            } else if (type === 'country' && fn && typeof fn === 'function') {
+                                            }else if (type === 'country' && fn && typeof fn === 'function') {
                                                 /*判断是否有回调*/
                                                 fn.call(null);
                                             }
-                                        } else {
+                                        }else{
                                             /*置空模型*/
                                             delete address[type];
                                             address[type] = {};
@@ -355,8 +355,8 @@ angular.module('app')
                                     console.log('退出系统');
                                 }
                                 if (fn && typeof fn === 'function') {
-                                    fn.call(null, '');
-                                } else {
+                                    fn.call(null,'');
+                                }else{
                                     return address_str = '';
                                 }
                             } else {
@@ -366,21 +366,21 @@ angular.module('app')
                                     var name = result.name;
                                     if (name) {
                                         if (fn && typeof fn === 'function') {
-                                            fn.call(null, name);
-                                        } else {
+                                            fn.call(null,name);
+                                        }else{
                                             return address_str = name;
                                         }
                                     } else {
                                         if (fn && typeof fn === 'function') {
-                                            fn.call(null, '');
-                                        } else {
+                                            fn.call(null,'');
+                                        }else{
                                             return address_str = '';
                                         }
                                     }
                                 } else {
                                     if (fn && typeof fn === 'function') {
-                                        fn.call(null, '');
-                                    } else {
+                                        fn.call(null,'');
+                                    }else{
                                         return address_str = '';
                                     }
                                 }
@@ -397,8 +397,8 @@ angular.module('app')
                             console.log('请求失败');
                         }
                         if (fn && typeof fn === 'function') {
-                            fn.call(null, '');
-                        } else {
+                            fn.call(null,'');
+                        }else{
                             return address_str = '';
                         }
                     });

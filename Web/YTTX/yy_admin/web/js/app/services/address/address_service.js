@@ -83,6 +83,10 @@ angular.module('app')
                                                 }
                                                 /*更新模型*/
                                                 address[type] = tempaddress;
+                                                /*更新验证模型*/
+                                                if (address['valid_address']) {
+                                                    address['valid_address'][type] = true;
+                                                }
                                             } else {
                                                 /*模型无选中数据则取第一个（初始化查询情况下）*/
                                                 for (i; i < len; i++) {
@@ -101,6 +105,10 @@ angular.module('app')
                                                 }
                                                 /*更新模型*/
                                                 address[type] = tempaddress;
+                                                /*更新验证模型*/
+                                                if (address['valid_address']) {
+                                                    address['valid_address'][type] = true;
+                                                }
                                             }
                                             /*循环完毕根据类型判断是否开启下级查询*/
                                             if (type === 'province' && isinit) {
@@ -142,17 +150,8 @@ angular.module('app')
                                             }
                                         } else {
                                             if (type === 'province') {
-                                                /*更新表单模型*/
-                                                model[type] = '';
-                                                model['city'] = '';
-                                                model['country'] = '';
-                                                /*更新地址模型*/
-                                                delete address[type];
-                                                address[type] = {};
-                                                delete address['city'];
-                                                address['city'] = {};
-                                                delete address['country'];
-                                                address['country'] = {};
+                                                /*清空模型*/
+                                                self.emptyAddressModel(type, address, model);
                                                 /*执行回调(主要为经纬度回调)*/
                                                 if (fn && typeof fn === 'function') {
                                                     /*判断是否有回调:此处主要为查询经纬度操作*/
@@ -160,14 +159,8 @@ angular.module('app')
                                                 }
                                                 return false;
                                             } else if (type === 'city' && !isinit) {
-                                                /*更新表单模型*/
-                                                model[type] = '';
-                                                model['country'] = '';
-                                                /*更新地址模型*/
-                                                delete address[type];
-                                                address[type] = {};
-                                                delete address['country'];
-                                                address['country'] = {};
+                                                /*清空模型*/
+                                                self.emptyAddressModel(type, address, model);
                                                 /*执行回调(主要为经纬度回调)*/
                                                 if (fn && typeof fn === 'function') {
                                                     /*判断是否有回调:此处主要为查询经纬度操作*/
@@ -175,11 +168,8 @@ angular.module('app')
                                                 }
                                                 return false;
                                             } else {
-                                                /*更新表单模型*/
-                                                model[type] = '';
-                                                /*更新地址模型*/
-                                                delete address[type];
-                                                address[type] = {};
+                                                /*清空模型*/
+                                                self.emptyAddressModel(type, address, model);
                                                 /*执行回调(主要为经纬度回调)*/
                                                 if (fn && typeof fn === 'function') {
                                                     /*判断是否有回调:此处主要为查询经纬度操作*/
@@ -189,22 +179,20 @@ angular.module('app')
                                             }
                                         }
                                     } else {
-                                        /*置空模型*/
-                                        delete address[type];
-                                        address[type] = {};
+                                        /*清空模型*/
+                                        self.emptyAddressModel(type, address, model);
                                     }
                                 } else {
-                                    /*置空模型*/
-                                    delete address[type];
-                                    address[type] = {};
+                                    /*清空模型*/
+                                    self.emptyAddressModel(type, address, model);
                                 }
                             }
                         }
                     },
                     function (resp) {
                         /*置空模型*/
-                        delete address[type];
-                        address[type] = {};
+                        /*清空模型*/
+                        self.emptyAddressModel(type, address, model);
                         var data = resp.data,
                             message = data.message;
                         if (typeof message !== 'undefined' && message !== '') {
@@ -454,6 +442,54 @@ angular.module('app')
                         }
                     });
         };
+
+
+        /*清空模型*/
+        this.emptyAddressModel = function (type, address, model) {
+            if (type === 'province') {
+                /*更新表单模型*/
+                model['province'] = '';
+                model['city'] = '';
+                model['country'] = '';
+                /*更新地址模型*/
+                delete address['province'];
+                address['province'] = {};
+                delete address['city'];
+                address['city'] = {};
+                delete address['country'];
+                address['country'] = {};
+                /*切换验证状态*/
+                if (address['valid_address']) {
+                    address['valid_address']['province'] = false;
+                    address['valid_address']['city'] = false;
+                    address['valid_address']['country'] = false;
+                }
+            } else if (type === 'city') {
+                /*更新表单模型*/
+                model['city'] = '';
+                model['country'] = '';
+                /*更新地址模型*/
+                delete address['city'];
+                address['city'] = {};
+                delete address['country'];
+                address['country'] = {};
+                /*切换验证状态*/
+                if (address['valid_address']) {
+                    address['valid_address']['city'] = false;
+                    address['valid_address']['country'] = false;
+                }
+            } else if (type === 'country') {
+                /*更新表单模型*/
+                model['country'] = '';
+                /*更新地址模型*/
+                delete address['country'];
+                address['country'] = {};
+                /*切换验证状态*/
+                if (address['valid_address']) {
+                    address['valid_address']['country'] = false;
+                }
+            }
+        }
 
 
     }]);

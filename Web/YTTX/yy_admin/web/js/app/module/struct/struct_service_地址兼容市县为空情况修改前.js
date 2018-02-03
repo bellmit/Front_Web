@@ -1313,7 +1313,7 @@ angular.module('app')
                                                     break;
                                                 case 'province':
                                                     struct['province'] = list['province'];
-                                                    struct['city'] = list['city'] || '';
+                                                    struct['city'] = list['city'];
                                                     struct['country'] = list['country'] || '';
                                                     /*判断是否需要重新数据，并依此更新相关地址模型*/
                                                     self.isReqAddress({
@@ -1789,7 +1789,7 @@ angular.module('app')
                     param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
                     param['telephone'] = config[type]['telephone'];
                     param['province'] = config[type]['province'];
-                    param['city'] = config[type]['city'] || '';
+                    param['city'] = config[type]['city'];
                     param['country'] = config[type]['country'] || '';
                     param['address'] = config[type]['address'];
                     param['isAudited'] = config[type]['isAudited'];
@@ -1838,7 +1838,7 @@ angular.module('app')
                     param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
                     param['telephone'] = config[type]['telephone'];
                     param['province'] = config[type]['province'];
-                    param['city'] = config[type]['city'] || '';
+                    param['city'] = config[type]['city'];
                     param['country'] = config[type]['country'] || '';
                     param['address'] = config[type]['address'];
                     param['longitude'] = config[type]['longitude'];
@@ -2231,7 +2231,7 @@ angular.module('app')
                                                         break;
                                                     case 'province':
                                                         user['province'] = list['province'];
-                                                        user['city'] = list['city'] || '';
+                                                        user['city'] = list['city'];
                                                         user['country'] = list['country'] || '';
                                                         user['address'] = list['address'];
                                                         user['longitude'] = list['longitude'] || '';
@@ -2585,13 +2585,13 @@ angular.module('app')
                         delete data['name'];
                         delete data['telephone'];
                         data['fullName'] = record.searchValue;
-                    } else if (searchtype === 3) {
+                    }else if (searchtype === 3) {
                         /*姓名*/
                         delete data['fullName'];
                         delete data['cellphone'];
                         delete data['telephone'];
                         data['name'] = record.searchValue;
-                    } else if (searchtype === 4) {
+                    }else if (searchtype === 4) {
                         /*电话号码*/
                         delete data['fullName'];
                         delete data['name'];
@@ -2724,24 +2724,20 @@ angular.module('app')
                 if (city === '') {
                     search = province_value;
                 } else {
-                    if(address_map['city'][city]){
-                        city_value = address_map['city'][city]['key'];
-                        if (country !== '' && address_map['country'][country]) {
-                            country_value = address_map['country'][country]['key'];
-                            if (address !== '') {
-                                search = province_value + city_value + country_value + address;
-                            } else {
-                                search = province_value + city_value + country_value;
-                            }
+                    city_value = address_map['city'][city]['key'];
+                    if (country !== '' && address_map['country'][country]) {
+                        country_value = address_map['country'][country]['key'];
+                        if (address !== '') {
+                            search = province_value + city_value + country_value + address;
                         } else {
-                            if (address !== '') {
-                                search = province_value + city_value + address;
-                            } else {
-                                search = province_value + city_value;
-                            }
+                            search = province_value + city_value + country_value;
                         }
-                    }else{
-                        search = province_value;
+                    } else {
+                        if (address !== '') {
+                            search = province_value + city_value + address;
+                        } else {
+                            search = province_value + city_value;
+                        }
                     }
                 }
             } else {
@@ -2799,8 +2795,8 @@ angular.module('app')
                 }
             } else {
                 // 将地址解析结果显示在地图上,并调整地图视野
-                /*if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province_value)) {
-                    /!*解析几个直辖市和特区*!/
+                if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province_value)) {
+                    /*解析几个直辖市和特区*/
                     bd_Geocoder.getPoint(search, function (point) {
                         if (point) {
                             if ($scope) {
@@ -2848,30 +2844,7 @@ angular.module('app')
                             }
                         }
                     }, city_value);
-                }*/
-                bd_Geocoder.getPoint(search, function (point) {
-                    if (point) {
-                        if ($scope) {
-                            $scope.$apply(function () {
-                                config.model.longitude = point.lng;
-                                config.model.latitude = point.lat;
-                            });
-                        } else {
-                            config.model.longitude = point.lng;
-                            config.model.latitude = point.lat;
-                        }
-                    } else {
-                        if ($scope) {
-                            $scope.$apply(function () {
-                                config.model.longitude = '';
-                                config.model.latitude = '';
-                            });
-                        } else {
-                            config.model.longitude = '';
-                            config.model.latitude = '';
-                        }
-                    }
-                });
+                }
             }
         };
 
@@ -2944,8 +2917,8 @@ angular.module('app')
                 }
             } else {
                 // 将地址解析结果显示在地图上,并调整地图视野
-                /*if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province)) {
-                    /!*解析几个直辖市和特区*!/
+                if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province)) {
+                    /*解析几个直辖市和特区*/
                     bd_Geocoder.getPoint(search, function (point) {
                         if (point) {
                             pos.longitude = point.lng;
@@ -2965,16 +2938,7 @@ angular.module('app')
                             pos.latitude = '';
                         }
                     }, city);
-                }*/
-                bd_Geocoder.getPoint(search, function (point) {
-                    if (point) {
-                        pos.longitude = point.lng;
-                        pos.latitude = point.lat;
-                    } else {
-                        pos.longitude = '';
-                        pos.latitude = '';
-                    }
-                });
+                }
             }
         }
 

@@ -80,23 +80,13 @@ angular.module('app')
         this.address = {
             province: {},
             city: {},
-            country: {},
-            valid_address:{
-                province:true,
-                city:true,
-                country:true
-            }
+            country: {}
         };
         /*模型--店铺地址*/
         this.user_address = {
             province: {},
             city: {},
-            country: {},
-            valid_address:{
-                province:true,
-                city:true,
-                country:true
-            }
+            country: {}
         };
         /*模型--列表地址*/
         this.list_address = {
@@ -497,15 +487,13 @@ angular.module('app')
         structService.queryAddress({
             type: 'province',
             address: self.address,
-            model: self.struct,
-            isinit:true
+            model: self.struct
         });
         /*初始化服务--初始化地址信息*/
         structService.queryAddress({
             type: 'province',
             address: self.user_address,
-            model: self.user,
-            isinit:true
+            model: self.user
         }, function () {
             structService.queryLngLat({
                 model: self.user,
@@ -516,8 +504,7 @@ angular.module('app')
         structService.queryAddress({
             type: 'province',
             address: self.list_address,
-            model: self.list_addressdata,
-            isinit:true
+            model: self.list_addressdata
         });
 
 
@@ -527,46 +514,18 @@ angular.module('app')
             self[model_str]['address'] = '';
             /*查询关联*/
             if (model_str === 'user' && (type === 'country')) {
-                var valid=self[address_str]['valid_address'];
-                if(valid){
-                    if(type==='city'){
-                        /*市无数据则执行定位查询*/
-                        if(!valid['city']){
-                            structService.queryAddress({
-                                model: self[model_str],
-                                address: self[address_str],
-                                type: type,
-                                isinit:false
-                            }, function () {
-                                self.queryLngLat('select');
-                            });
-                        }
-                    }else if(type==='country'){
-                        structService.queryAddress({
-                            model: self[model_str],
-                            address: self[address_str],
-                            type: type,
-                            isinit:false
-                        }, function () {
-                            self.queryLngLat('select');
-                        });
-                    }
-                }else if(type==='country'){
-                    structService.queryAddress({
-                        model: self[model_str],
-                        address: self[address_str],
-                        type: type,
-                        isinit:false
-                    }, function () {
-                        self.queryLngLat('select');
-                    });
-                }
+                structService.queryAddress({
+                    model: self[model_str],
+                    address: self[address_str],
+                    type: type
+                }, function () {
+                    self.queryLngLat('select');
+                });
             } else {
                 structService.queryAddress({
                     model: self[model_str],
                     address: self[address_str],
-                    type: type,
-                    isinit:false
+                    type: type
                 });
             }
         };
@@ -760,7 +719,6 @@ angular.module('app')
                 model: self.user,
                 address: self.user_address
             }, $scope);
-        };
-
+        }
 
     }]);
