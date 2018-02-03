@@ -30,6 +30,7 @@ angular.module('app')
             config.address = address;
             console.log(type);*/
 
+
             /*组合请求参数*/
             toolUtil
                 .requestHttp({

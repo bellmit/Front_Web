@@ -1318,6 +1318,7 @@ angular.module('app')
                                                     /*判断是否需要重新数据，并依此更新相关地址模型*/
                                                     self.isReqAddress({
                                                         type: 'city',
+                                                        isinit: true,
                                                         address: config.address,
                                                         model: struct
                                                     }, true);
@@ -2242,6 +2243,7 @@ angular.module('app')
                                                             self.isReqAddress({
                                                                 type: 'city',
                                                                 address: config.address,
+                                                                isinit: true,
                                                                 model: user
                                                             }, true, function () {
                                                                 if (config.$scope) {
@@ -2261,6 +2263,7 @@ angular.module('app')
                                                             self.isReqAddress({
                                                                 type: 'city',
                                                                 address: config.address,
+                                                                isinit: true,
                                                                 model: user
                                                             }, true);
                                                         }
@@ -2724,7 +2727,7 @@ angular.module('app')
                 if (city === '') {
                     search = province_value;
                 } else {
-                    if(address_map['city'][city]){
+                    if (address_map['city'][city]) {
                         city_value = address_map['city'][city]['key'];
                         if (country !== '' && address_map['country'][country]) {
                             country_value = address_map['country'][country]['key'];
@@ -2740,7 +2743,7 @@ angular.module('app')
                                 search = province_value + city_value;
                             }
                         }
-                    }else{
+                    } else {
                         search = province_value;
                     }
                 }
