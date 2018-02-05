@@ -89,6 +89,7 @@
                                             name: 'name',
                                             cardNumber: 'card',
                                             bankName: 'text',
+                                            auditTime: 'datetime',
                                             auditStatus: 'rule,0,1,2',
                                             auditMark: 'remark'
                                         },
@@ -144,7 +145,7 @@
                         },
                         info: false,
                         searching: true,
-                        order: [[1, "desc"]],
+                        order: [[8, "desc"],[6, "desc"]],
                         columns: [
                             {
                                 "data": "nickName"
@@ -181,7 +182,13 @@
                                 }
                             },
                             {
+                                "data": "auditTime"
+                            },
+                            {
                                 "data": "auditMark"
+                            },
+                            {
+                                "data": "submitTime"
                             },
                             {
                                 "data": "id",

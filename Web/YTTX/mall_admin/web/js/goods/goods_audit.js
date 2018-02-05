@@ -207,7 +207,7 @@
                         },
                         info: false,
                         searching: true,
-                        order: [[4, "desc"]],
+                        order: [[8, "desc"],[7, "desc"],[4, "desc"]],
                         columns: [
                             {
                                 "data": "id",
@@ -261,6 +261,9 @@
                             },
                             {
                                 "data": "createTime"
+                            },
+                            {
+                                "data": "lastUpdate"
                             },
                             {
                                 "data": "id",

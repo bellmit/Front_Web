@@ -147,6 +147,7 @@
                                             goodsTypeName: 'value'/*分类名称*/,
                                             sort: 'id'/*商城排序*/,
                                             isForbidden: 'rule,true,false'/*是否禁售*/,
+                                            lastUpdate:'datetime',
                                             auditStatus: 'rule,0,1,2'/*审核状态,0:待审核，1审核成功，2：审核失败*/,
                                             status: 'rule,0,1,2,3'/*状态，0：仓库，1:上架,2:下架,3:删除,4:待审核*/,
                                             createTime: 'datetime'
@@ -204,7 +205,7 @@
                         },
                         info: false,
                         searching: true,
-                        order: [[5, "desc"]],
+                        order: [[7, "desc"],[5, "desc"]],
                         columns: [
                             {
                                 "data": "id",
@@ -256,6 +257,9 @@
                                     }
                                     return str;
                                 }
+                            },
+                            {
+                                "data": "lastUpdate"
                             },
                             {
                                 "data": "isForbidden",

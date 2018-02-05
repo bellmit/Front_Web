@@ -89,6 +89,8 @@
                                             cardNumber: 'card',
                                             bankName: 'text',
                                             auditStatus: 'rule,0,1,2',
+                                            auditTime:'datetime',
+                                            submitTime:'datetime',
                                             auditMark: 'remark'
                                         },
                                         mapmin: 5,
@@ -143,7 +145,7 @@
                         },
                         info: false,
                         searching: true,
-                        order: [[1, "desc"]],
+                        order: [[7, "desc"],[5, "desc"]],
                         columns: [
                             {
                                 "data": "cardholder"
@@ -176,7 +178,13 @@
                                 }
                             },
                             {
+                                "data": "auditTime"
+                            },
+                            {
                                 "data": "auditMark"
+                            },
+                            {
+                                "data": "submitTime"
                             },
                             {
                                 "data": "id",

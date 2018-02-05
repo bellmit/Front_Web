@@ -160,6 +160,7 @@
                                                     isForbidden: 'rule,true,false'/*是否禁售*/,
                                                     auditStatus: 'rule,0,1,2'/*审核状态,0:待审核，1审核成功，2：审核失败*/,
                                                     status: 'rule,0,1,2,3'/*状态，0：仓库，1:上架,2:下架,3:删除,4:待审核*/,
+                                                    lastUpdate: 'datetime'/*状态，0：仓库，1:上架,2:下架,3:删除,4:待审核*/,
                                                     createTime: 'datetime'
                                                 },
                                                 mapmin: 5,
@@ -215,7 +216,7 @@
                                 },
                                 info: false,
                                 searching: true,
-                                order: [[5, "desc"]],
+                                order: [[8, "desc"],[2, "desc"]],
                                 columns: [
                                     {
                                         "data": "id",
@@ -301,6 +302,9 @@
                                             }
                                             return str;
                                         }
+                                    },
+                                    {
+                                        "data": "lastUpdate"
                                     },
                                     {
                                         "data": "id",

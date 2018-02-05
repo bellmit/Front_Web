@@ -186,7 +186,7 @@
                         },
                         info: false,
                         searching: true,
-                        order: [[5, "desc"]],
+                        order: [[8, "desc"],[2, "desc"]],
                         columns: [
                             {
                                 "data": "id",
@@ -254,6 +254,9 @@
                                     }
                                     return str;
                                 }
+                            },
+                            {
+                                "data": "lastUpdate"
                             },
                             {
                                 "data": "id",

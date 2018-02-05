@@ -2802,56 +2802,6 @@ angular.module('app')
                 }
             } else {
                 // 将地址解析结果显示在地图上,并调整地图视野
-                /*if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province_value)) {
-                    /!*解析几个直辖市和特区*!/
-                    bd_Geocoder.getPoint(search, function (point) {
-                        if (point) {
-                            if ($scope) {
-                                $scope.$apply(function () {
-                                    config.model.longitude = point.lng;
-                                    config.model.latitude = point.lat;
-                                });
-                            } else {
-                                config.model.longitude = point.lng;
-                                config.model.latitude = point.lat;
-                            }
-                        } else {
-                            if ($scope) {
-                                $scope.$apply(function () {
-                                    config.model.longitude = '';
-                                    config.model.latitude = '';
-                                });
-                            } else {
-                                config.model.longitude = '';
-                                config.model.latitude = '';
-                            }
-                        }
-                    }, province_value);
-                } else {
-                    bd_Geocoder.getPoint(search, function (point) {
-                        if (point) {
-                            if ($scope) {
-                                $scope.$apply(function () {
-                                    config.model.longitude = point.lng;
-                                    config.model.latitude = point.lat;
-                                });
-                            } else {
-                                config.model.longitude = point.lng;
-                                config.model.latitude = point.lat;
-                            }
-                        } else {
-                            if ($scope) {
-                                $scope.$apply(function () {
-                                    config.model.longitude = '';
-                                    config.model.latitude = '';
-                                });
-                            } else {
-                                config.model.longitude = '';
-                                config.model.latitude = '';
-                            }
-                        }
-                    }, city_value);
-                }*/
                 bd_Geocoder.getPoint(search, function (point) {
                     if (point) {
                         if ($scope) {
@@ -2947,28 +2897,6 @@ angular.module('app')
                 }
             } else {
                 // 将地址解析结果显示在地图上,并调整地图视野
-                /*if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province)) {
-                    /!*解析几个直辖市和特区*!/
-                    bd_Geocoder.getPoint(search, function (point) {
-                        if (point) {
-                            pos.longitude = point.lng;
-                            pos.latitude = point.lat;
-                        } else {
-                            pos.longitude = '';
-                            pos.latitude = '';
-                        }
-                    }, province);
-                } else {
-                    bd_Geocoder.getPoint(search, function (point) {
-                        if (point) {
-                            pos.longitude = point.lng;
-                            pos.latitude = point.lat;
-                        } else {
-                            pos.longitude = '';
-                            pos.latitude = '';
-                        }
-                    }, city);
-                }*/
                 bd_Geocoder.getPoint(search, function (point) {
                     if (point) {
                         pos.longitude = point.lng;
