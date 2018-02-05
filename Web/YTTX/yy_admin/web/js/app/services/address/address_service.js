@@ -64,6 +64,10 @@ angular.module('app')
                                     if (list) {
                                         var len = list.length;
                                         if (len !== 0) {
+                                            /*清空模型*/
+                                            if(!isinit){
+                                                self.emptyAddressModel(type, address, model);
+                                            }
                                             /*数据集合，最多嵌套层次*/
                                             var i = 0,
                                                 tempaddress = {},
@@ -88,6 +92,7 @@ angular.module('app')
                                                 if (address['valid_address']) {
                                                     address['valid_address'][type] = true;
                                                 }
+
                                             } else {
                                                 /*模型无选中数据则取第一个（初始化查询情况下）*/
                                                 for (i; i < len; i++) {
