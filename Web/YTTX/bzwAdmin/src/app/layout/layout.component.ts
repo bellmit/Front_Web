@@ -11,7 +11,7 @@ import {SettingService} from "../service/setting.service";
 })
 export class LayoutComponent {
   /*是否登录*/
-  @Input() islogin = this.loginservice.isLogin(null);
+  private /*@Input() */islogin = this.loginservice.isLogin(null);
 
   /*布局模型*/
   layout = {

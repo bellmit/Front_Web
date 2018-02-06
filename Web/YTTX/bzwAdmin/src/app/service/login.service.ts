@@ -175,7 +175,7 @@ export class LoginService {
           config.islogin = false;
         } else {
           /*加载动画*/
-          toolUtil.loading({
+          /*toolUtil.loading({
             type: 'show',
             model: model.app_config
           });
@@ -189,11 +189,11 @@ export class LoginService {
               'token': encodeURIComponent(result.token),
               'organizationId': encodeURIComponent(result.organizationId)
             }
-          };
+          };*/
           /*设置缓存*/
-          setCache(tempcache)/*此处创建数据为空的初始化缓存*/;
+          /*setCache(tempcache)/!*此处创建数据为空的初始化缓存*!/;*/
           /*设置个人信息*/
-          appService.getLoginMessage(model.message, function () {
+          /*appService.getLoginMessage(model.message, function () {
             var temparr = [{
               name: '用户名：',
               value: tempcache.username
@@ -202,25 +202,25 @@ export class LoginService {
               value: tempcache.datetime
             }];
             return temparr;
-          });
+          });*/
           /*加载菜单*/
-          loadMenuData(model, function () {
-            /*更新缓存*/
+          /*loadMenuData(model, function () {
+            /!*更新缓存*!/
             cache = toolUtil.getParams(unique_key);
             toolUtil.loading({
               type: 'hide',
               model: model.app_config
             });
-            /*重置登录信息*/
+            /!*重置登录信息*!/
             model.login.username = '';
             model.login.password = '';
             model.login.identifyingCode = '';
             model.login.islogin = true;
             model.login.loginerror = '';
-          });
+          });*/
         }
       } else {
-        model.login.islogin = false;
+        //model.login.islogin = false;
       }
     }, error => {
       console.log(error);

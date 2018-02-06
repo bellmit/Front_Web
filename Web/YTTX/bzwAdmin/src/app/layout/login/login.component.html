@@ -1,54 +1,66 @@
 <div class="cl-login-container cl-mainbox-bg-{{bgTheme}}">
+  <div class="cl-login-message">验证码错误</div>
+  <div class="cl-login-logo"></div>
   <div class="cl-login-panel">
-    <div class="cl-login-header">
-      <div class="cl-login-logo"></div>
-    </div>
-    <div class="cl-login-main">
-      <form nz-form [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
-        <div nz-form-item nz-row>
-          <div nz-form-label nz-col [nzSm]="6">
-            <label for="admin_username" nz-form-item-required>用户名</label>
-          </div>
-          <div nz-form-control nz-col [nzSm]="16" nzHasFeedback>
-            <nz-input [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'请输入用户名'" formControlName="username" [nzId]="'admin_username'"></nz-input>
-            <div nz-form-explain *ngIf="getFormControl('username').dirty && getFormControl('username').hasError('required')">用户名不能为空</div>
-          </div>
-        </div>
-        <div nz-form-item nz-row>
-          <div nz-form-label nz-col [nzSm]="6">
-            <label for="admin_password" nz-form-item-required>密&nbsp;&nbsp;码</label>
-          </div>
-          <div nz-form-control nz-col [nzSm]="16" nzHasFeedback>
-            <nz-input [nzType]="'password'" [nzSize]="'large'" [nzPlaceHolder]="'请输入密码'" formControlName="password" [nzId]="'admin_password'"></nz-input>
-            <div nz-form-explain *ngIf="getFormControl('password').dirty && getFormControl('password').hasError('required')">密码不能为空</div>
-            <div nz-form-explain *ngIf="getFormControl('password').dirty && getFormControl('password').hasError('minlength')">密码长度不能小于6位</div>
-          </div>
-        </div>
-        <div nz-form-item nz-row>
-          <div nz-form-label nz-col [nzSm]="6">
-            <label for="admin_identifyingCode" nz-form-item-required>验证码</label>
-          </div>
-          <div nz-form-control nz-col [nzSm]="16">
-            <div nz-row>
-              <div nz-form-control nz-col [nzSm]="10" nzHasFeedback>
-                <nz-input [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'请输入验证码'" formControlName="identifyingCode" [nzId]="'admin_identifyingCode'"></nz-input>
-              </div>
-              <div nz-col [nzOffset]="1" [nzSm]="6">
-                <img class="ce-validcode-show" src="assets/images/bg/bg_default.png">
+    <div class="cl-login-wrap">
+      <div class="cl-login-posa cl-login-mask"></div>
+      <div class="cl-login-posa cl-login-show">
+        <h1 class="cl-login-header">布住网后台管理系统</h1>
+        <div class="cl-login-main">
+          <form nz-form [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
+            <!--用户名-->
+            <div nz-form-item nz-row>
+              <div nz-form-control nz-col [nzSm]="24" nzHasFeedback>
+                <nz-input [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'请输入用户名'" formControlName="username" [nzId]="'admin_username'">
+                  <ng-template #prefix>
+                    <i class="anticon anticon-user"></i>
+                  </ng-template>
+                </nz-input>
+                <div nz-form-explain *ngIf="getFormControl('username').dirty && getFormControl('username').hasError('required')">用户名不能为空</div>
               </div>
             </div>
-            <div nz-form-explain *ngIf="getFormControl('identifyingCode').dirty && getFormControl('identifyingCode').hasError('required')">验证码不能为空</div>
-            <div nz-form-explain *ngIf="getFormControl('identifyingCode').dirty && getFormControl('identifyingCode').hasError('minlength')">验证码长度不能小于4位</div>
-          </div>
+            <!--密码-->
+            <div nz-form-item nz-row>
+              <div nz-form-control nz-col [nzSm]="24" nzHasFeedback>
+                <nz-input [nzType]="'password'" [nzSize]="'large'" [nzPlaceHolder]="'请输入密码'" formControlName="password" [nzId]="'admin_password'">
+                  <ng-template #prefix>
+                    <i class="anticon anticon-lock"></i>
+                  </ng-template>
+                </nz-input>
+                <div nz-form-explain *ngIf="getFormControl('password').dirty && getFormControl('password').hasError('required')">密码不能为空</div>
+                <div nz-form-explain *ngIf="getFormControl('password').dirty && getFormControl('password').hasError('minlength')">密码长度不能小于6位</div>
+              </div>
+            </div>
+            <!--验证码-->
+            <div nz-form-item nz-row>
+              <div nz-form-control nz-col [nzSm]="18">
+                <div nz-row>
+                  <div nz-form-control nz-col [nzSm]="12" nzHasFeedback>
+                    <nz-input [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'请输入验证码'" formControlName="identifyingCode" [nzId]="'admin_identifyingCode'">
+                      <ng-template #prefix>
+                        <i class="anticon ce-btn-icon-vc"></i>
+                      </ng-template>
+                    </nz-input>
+                  </div>
+                  <div nz-col [nzOffset]="1" [nzSm]="6">
+                    <img class="ce-validcode-show" src="assets/images/bg/bg_default.png">
+                  </div>
+                </div>
+                <div nz-form-explain *ngIf="getFormControl('identifyingCode').dirty && getFormControl('identifyingCode').hasError('required')">验证码不能为空</div>
+                <div nz-form-explain *ngIf="getFormControl('identifyingCode').dirty && getFormControl('identifyingCode').hasError('minlength')">验证码长度不能小于4位</div>
+              </div>
+            </div>
+            <!--提交按钮-->
+            <div nz-row>
+              <div nz-col [nzSm]="24" class="g-t-c">
+                <button  nz-button [nzType]="'primary'" class="cl-login-submit g-w-percent20" [disabled]="!loginForm.valid">登录</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <div nz-row>
-          <div nz-col [nzOffset]="6" [nzSm]="24">{{message}}</div>
-          <div nz-col [nzOffset]="6" [nzSm]="24">
-            <button  nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="!loginForm.valid">登录</button>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
 
+<!--<div nz-col [nzSm]="24">验证码错误{{message}}</div>-->

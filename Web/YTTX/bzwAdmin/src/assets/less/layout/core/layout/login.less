@@ -9,46 +9,91 @@
   min-width: @ad-login-width;
   height: 100vh;
   width: 100vw;
+  /*logo*/
+  .cl-login-logo{
+    .layout-absolutel-base(0,10px);
+    width:@ad-login-icon-width;
+    height:@ad-login-icon-height;
+    background: transparent url('../images/logo_black.png') 0 0 no-repeat;
+  }
+  /*提示区域*/
+  .cl-login-message{
+    .layout-absolutel-base(50%,0);
+    background:rgba(255,255,255,.6);
+    width:0;
+    height:0;
+    color:@color-red1;
+    text-align: center;
+    line-height: 0;
+    margin-left: 0;
+    .transition-base(width height margin-left .4s ease-in .01s);
+    &:not(:empty){
+      margin-left: -@ad-login-width/2;
+      width:@ad-login-width;
+      height:@ad-login-icon-height;
+      line-height: @ad-login-icon-height;
+    }
+  }
+  /*外部框*/
   .cl-login-panel {
     .layout-absolutel-base(50%, 50%);
     .layout-base(@ad-login-width);
     height: @ad-login-height;
     margin-left: -@ad-login-width/2;
     margin-top: -@ad-login-height/2;
-    overflow: hidden;
   }
-  .cl-login-header {
-    .border-radius-base(5px 5px 0 0);
-    height: @ad-login-icon-height + 10;
-    background: darken(@color-light, 10%);
-  }
-  .cl-login-logo {
-    overflow: hidden;
+  .cl-login-wrap {
+    .layout-relative-base();
+    .layout-base();
     height: 100%;
-    width: @ad-login-icon-height;
-    background: transparent url('../images/logo.png') -7px center no-repeat;
-    margin-left: 20px;
+    .box-shadow-base(1px 1px 5px 0 @color-gray13);
+  }
+  .cl-login-posa {
+    position: absolute;
+  }
+  .cl-login-mask {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: @color-white;
+    .opacity-base(50);
+    z-index: 1;
+  }
+  .cl-login-show {
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    .layout-base();
+    height: 100%;
+  }
+  @login-header-height:@ad-login-icon-height * 2;
+  .cl-login-header {
+    .layout-base();
+    display: block;
+    height: @login-header-height;
+    line-height: @login-header-height;
+    font-size: @font-size-base + 8 !important;
+    text-align: center;
+    color:@color-gray6;
+    .user-select-base();
   }
   .cl-login-main {
-    overflow: hidden;
-    border-left: 1px solid @color-gray13;
-    border-right: 1px solid @color-gray13;
-    border-bottom: 1px solid @color-gray13;
-    background: @color-white;
     .layout-base();
-    height: @ad-login-height - @ad-login-icon-height - 10;
-    padding: 40px 20px 20px 20px;
-    .border-radius-base(0 0 5px 5px);
+    height: @ad-login-height - @login-header-height;
+    padding: 50px 100px 0 100px;
   }
-  .ce-validcode-show{
-    //margin:0 0 0 5px;
+  .ce-validcode-show {
     .box-sizing-base();
-    border:1px solid @color-gray9;
-    height:32px;
-    width:80px;
-    max-width:120px;
-    max-height:40px;
+    border: 1px solid @color-gray9;
+    height: 32px;
+    width: 70px;
+    max-width: 120px;
+    max-height: 40px;
     cursor: pointer;
+  }
+  .cl-login-submit{
+    .border-radius-base(14px) !important;
   }
 }
 
