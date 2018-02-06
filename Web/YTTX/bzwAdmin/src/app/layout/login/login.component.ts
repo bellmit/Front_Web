@@ -18,11 +18,13 @@ export class LoginComponent implements OnInit {
     islogin: false, /*是否登录*/
     message: ''/*登录提示信息*/
   };
+  /*验证码地址*/
+  
+  validcode_src='assets/images/bg/bg_default.png';
 
 
   /*构造函数*/
-  constructor(private loginservice: LoginService, private fb: FormBuilder) {
-  }
+  constructor(private loginservice: LoginService, private fb: FormBuilder) {}
 
 
   /*接口实现:(钩子实现)*/
@@ -32,6 +34,7 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       identifyingCode: ['', [Validators.required, Validators.minLength(4)]]
     });
+    this.getValidCode();
   }
 
   /*获取表单的内置提示信息*/
@@ -44,12 +47,35 @@ export class LoginComponent implements OnInit {
     this.loginservice.loginSubmit({
       debug: this.debug,
       form: this.loginForm,
-      login:this.login
+      login: this.login
     });
     /*for (const i in this.loginForm.controls) {
       this.loginForm.controls[i].markAsDirty();
     }*/
   }
+
+  /*测试信息显示*/
+  showMessage() {
+    let toggle = Math.floor(Math.random() * 10) % 2 === 0;
+    if (toggle) {
+      this.login.message = Math.random().toString();
+      setTimeout(() => {
+        this.login.message = '';
+      }, 3000);
+    } else {
+      this.login.message = '';
+    }
+  }
+
+
+  getValidCode(){
+    this.loginservice.getValidCode({
+      debug:this.debug,
+      src:this
+    });
+  }
+
+
 
 }
 

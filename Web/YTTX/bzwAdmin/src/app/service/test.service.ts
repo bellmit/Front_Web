@@ -608,4 +608,8 @@ export class TestService {
     return res;
   };
 
+  getMock(){
+    return Mock;
+  };
+
 }

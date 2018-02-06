@@ -227,4 +227,50 @@ export class LoginService {
     });
   }
 
+
+  /*获取验证码*/
+  getValidCode(config){
+    let debug=config.debug;
+    if (debug) {
+      let code = this.test.getMock().mock(/[a-zA-Z0-9]{4}/),
+        imgsrc = this.test.getMock().Random.image('80x40', '#ffffff', '#666666', code);
+
+      if (config.src) {
+        console.log(imgsrc);
+        config.src.validcode_src=imgsrc;
+      } else if (config.fn && typeof config.fn === 'function') {
+        config.fn.call(null, imgsrc);
+      }
+    } else {
+      let xhr = new XMLHttpRequest(),
+        url = ToolService.adaptReqUrl(config);
+      xhr.open("post", url, true);
+      xhr.responseType = "blob";
+      xhr.onreadystatechange = function () {
+        if (this.status === 200) {
+          let blob = this.response,
+            img = document.createElement("img");
+
+          img.alt = '验证码';
+          try {
+            img.onload = function (e) {
+              window.URL.revokeObjectURL(img.src);
+            };
+            img.src = window.URL.createObjectURL(blob);
+          } catch (e) {
+            console.log('不支持URL.createObjectURL');
+          }
+
+          if (config.src) {
+            config.src.validcode_src=img;
+          } else if (config.fn && typeof config.fn === 'function') {
+            config.fn.call(null, img);
+          }
+        }
+      };
+      xhr.send();
+    }
+  }
+
+
 }

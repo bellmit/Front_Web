@@ -1,5 +1,5 @@
 <div class="cl-login-container cl-mainbox-bg-{{bgTheme}}">
-  <div class="cl-login-message">验证码错误</div>
+  <div class="cl-login-message">{{login.message}}</div>
   <div class="cl-login-logo"></div>
   <div class="cl-login-panel">
     <div class="cl-login-wrap">
@@ -43,7 +43,7 @@
                     </nz-input>
                   </div>
                   <div nz-col [nzOffset]="1" [nzSm]="6">
-                    <img class="ce-validcode-show" src="assets/images/bg/bg_default.png">
+                    <img class="ce-validcode-show" src="{{validcode_src}}">
                   </div>
                 </div>
                 <div nz-form-explain *ngIf="getFormControl('identifyingCode').dirty && getFormControl('identifyingCode').hasError('required')">验证码不能为空</div>
@@ -55,6 +55,9 @@
               <div nz-col [nzSm]="24" class="g-t-c">
                 <button  nz-button [nzType]="'primary'" class="cl-login-submit g-w-percent20" [disabled]="!loginForm.valid">登录</button>
               </div>
+              <div nz-col [nzSm]="24" class="g-t-c">
+                <button  nz-button (click)="showMessage()" [nzType]="'default'" class="cl-login-submit g-w-percent10 g-gap-mt2">切换</button>
+              </div>
             </div>
           </form>
         </div>
@@ -63,4 +66,3 @@
   </div>
 </div>
 
-<!--<div nz-col [nzSm]="24">验证码错误{{message}}</div>-->
