@@ -8,33 +8,42 @@ import {LoginService} from "../../service/login.service";
 })
 
 export class LoginComponent implements OnInit {
-  private debug = true/*测试模式*/;
 
-  loginForm: FormGroup;
+  /*测试模式*/
+  debug = true;
+
+  /*表单规则限制*/
+  username_maxLength = 20;
+  password_minLength = 6;
+  validcode_minLength = 4;
+
   /*表单对象*/
-  bgTheme = this.loginservice.getBgTheme();
-  /*登录面板背景设置*/
-  @Output() login = {
+  loginForm: FormGroup;
+
+  /*登录信息*/
+  login = {
     islogin: false, /*是否登录*/
-    message: ''/*登录提示信息*/
+    message: ''/*登录提示信息*/,
+    validcode_wrap: 'login_validcode'/*验证码容器：正式*/,
+    bgTheme: this.loginservice.getBgTheme()/*登录面板背景设置*/
   };
-  /*验证码地址*/
-  
-  validcode_src='assets/images/bg/bg_default.png';
 
 
   /*构造函数*/
-  constructor(private loginservice: LoginService, private fb: FormBuilder) {}
+  constructor(private loginservice: LoginService, private fb: FormBuilder) {
+  }
 
 
   /*接口实现:(钩子实现)*/
   ngOnInit() {
+    /*初始化表单校验规则*/
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      identifyingCode: ['', [Validators.required, Validators.minLength(4)]]
+      username: ['', [Validators.required, Validators.maxLength(this.username_maxLength)]],
+      password: ['', [Validators.required, Validators.minLength(this.password_minLength)]],
+      identifyingCode: ['', [Validators.required, Validators.minLength(this.validcode_minLength)]]
     });
-    this.getValidCode();
+    /*初始化显示验证码*/
+    setTimeout(() => this.getValidCode(), 0);
   }
 
   /*获取表单的内置提示信息*/
@@ -49,9 +58,9 @@ export class LoginComponent implements OnInit {
       form: this.loginForm,
       login: this.login
     });
-    /*for (const i in this.loginForm.controls) {
+    for (const i in this.loginForm.controls) {
       this.loginForm.controls[i].markAsDirty();
-    }*/
+    }
   }
 
   /*测试信息显示*/
@@ -68,13 +77,14 @@ export class LoginComponent implements OnInit {
   }
 
 
-  getValidCode(){
+  /*获取验证码*/
+  getValidCode() {
     this.loginservice.getValidCode({
-      debug:this.debug,
-      src:this
+      debug: this.debug,
+      login: this.login,
+      url: '/sysuser/identifying/code'
     });
   }
-
 
 
 }

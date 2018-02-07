@@ -51,6 +51,7 @@
   .cl-login-posa {
     position: absolute;
   }
+  /*遮罩部分*/
   .cl-login-mask {
     width: 100%;
     height: 100%;
@@ -67,6 +68,7 @@
     .layout-base();
     height: 100%;
   }
+  /*登录头部*/
   @login-header-height:@ad-login-icon-height * 2;
   .cl-login-header {
     .layout-base();
@@ -78,19 +80,35 @@
     color:@color-gray6;
     .user-select-base();
   }
+  /*登录表单区域*/
   .cl-login-main {
     .layout-base();
     height: @ad-login-height - @login-header-height;
     padding: 50px 100px 0 100px;
   }
+  /*验证码*/
   .ce-validcode-show {
-    .box-sizing-base();
-    border: 1px solid @color-gray9;
-    height: 32px;
-    width: 70px;
-    max-width: 120px;
-    max-height: 40px;
-    cursor: pointer;
+    overflow: hidden;
+    display: inline-block;
+    padding:0 10px;
+    >img{
+      .layout-float-base(82px);
+      .border-radius-base(3px);
+      border: 1px solid @color-gray12;
+      height: 28px;
+      max-width: 120px;
+      max-height: 40px;
+      cursor: pointer;
+      display:block;
+      margin-top:2px;
+    }
+    &:after{
+      content:'看不清楚';
+      color:@color-red1;
+      text-indent:10px;
+      display:inline-block;
+      cursor: pointer;
+    }
   }
   .cl-login-submit{
     .border-radius-base(14px) !important;

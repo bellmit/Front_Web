@@ -450,7 +450,7 @@ export class TestService {
   };
 
   /*测试接口--生成凭证*/
-  testToken(type) {
+  testToken(type?) {
     let res,
       token = Mock.mock({
         "id": RULE_CONFIG.test_id,
@@ -561,7 +561,7 @@ export class TestService {
   };
 
   /*测试接口--生成凭证*/
-  testSuccess(type) {
+  testSuccess(type?) {
     let res;
 
     if (type) {

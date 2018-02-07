@@ -5,7 +5,7 @@ import {TestService} from './test.service';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-/*declare var moment: any;*/
+declare var moment: any;
 
 
 /*注入类型*/
@@ -16,6 +16,7 @@ export class LoginService {
   private bgTheme = 'default';
 
   constructor(private test: TestService, private http: HttpClient) {
+    console.log(this.cache);
   }
 
   /*
@@ -52,7 +53,7 @@ export class LoginService {
 
 
   /*是否登录*/
-  isLogin(cache) {
+  isLogin(cache?) {
     let logininfo = false,
       islogin = false,
       flag = cache && typeof cache !== 'undefined';
@@ -109,6 +110,7 @@ export class LoginService {
       this.cache[`${BASE_CONFIG.cache_list[0]}Map`][key] = false;
     }
     ToolService.setCache(this.cache);
+    return true;
   }
 
 
@@ -159,11 +161,14 @@ export class LoginService {
         debug: debug,
         url: '/sysuser/login',
       })
-    ).subscribe(response => {
-      let resp = debug ? this.test.testToken('list') : response,
+      , {
+        params: param
+      }).subscribe(response => {
+      let resp = debug ? this.test.testToken() : response,
         data = resp.data,
         status = parseInt(resp.status, 10);
 
+      console.log(status);
       if (status === 200) {
         let code = parseInt(data.code, 10),
           result = data.result,
@@ -174,25 +179,20 @@ export class LoginService {
           }
           config.islogin = false;
         } else {
-          /*加载动画*/
-          /*toolUtil.loading({
-            type: 'show',
-            model: model.app_config
-          });
-          var tempcache = {
-            'isLogin': true,
+          /*组装缓存*/
+          let tempcache = {
+            'islogin': true,
             'datetime': moment().format('YYYY-MM-DD|HH:mm:ss'),
-            'reqdomain': basedomain,
-            'username': model.login.username,
-            'param': {
-              'adminId': encodeURIComponent(result.adminId),
-              'token': encodeURIComponent(result.token),
-              'organizationId': encodeURIComponent(result.organizationId)
-            }
-          };*/
-          /*设置缓存*/
-          /*setCache(tempcache)/!*此处创建数据为空的初始化缓存*!/;*/
-          /*设置个人信息*/
+            'reqdomain': encodeURIComponent(BASE_CONFIG.domain),
+            'username': encodeURIComponent(config.form.controls.username.value),
+            'adminId': encodeURIComponent(result.adminId),
+            'token': encodeURIComponent(result.token),
+            'organizationId': encodeURIComponent(result.organizationId)
+          };
+          console.log(tempcache);
+          //设置缓存
+          config.islogin = this.setCache(tempcache, 'login')/*此处创建数据为空的初始化缓存*/;
+          //设置个人信息
           /*appService.getLoginMessage(model.message, function () {
             var temparr = [{
               name: '用户名：',
@@ -203,7 +203,7 @@ export class LoginService {
             }];
             return temparr;
           });*/
-          /*加载菜单*/
+          //加载菜单
           /*loadMenuData(model, function () {
             /!*更新缓存*!/
             cache = toolUtil.getParams(unique_key);
@@ -218,53 +218,65 @@ export class LoginService {
             model.login.islogin = true;
             model.login.loginerror = '';
           });*/
+          config.login.message = '登录成功';
+          setTimeout(() => {
+            config.login.message = '';
+          }, 3000);
         }
       } else {
-        //model.login.islogin = false;
+        config.login.islogin = false;
+        config.login.message = '登录失败';
+        setTimeout(() => {
+          config.login.message = '';
+        }, 3000);
       }
     }, error => {
       console.log(error);
+      config.login.islogin = false;
+      config.login.message = error;
+      setTimeout(() => {
+        config.login.message = '';
+      }, 3000);
     });
   }
 
 
   /*获取验证码*/
-  getValidCode(config){
-    let debug=config.debug;
-    if (debug) {
+  getValidCode(config) {
+    let image = document.createElement("img"),
+      imagedom;
+    image.alt = '验证码';
+    if (config.debug) {
+      /*测试模式*/
       let code = this.test.getMock().mock(/[a-zA-Z0-9]{4}/),
-        imgsrc = this.test.getMock().Random.image('80x40', '#ffffff', '#666666', code);
-
-      if (config.src) {
-        console.log(imgsrc);
-        config.src.validcode_src=imgsrc;
-      } else if (config.fn && typeof config.fn === 'function') {
-        config.fn.call(null, imgsrc);
+        imgsrc = this.test.getMock().Random.image('82x28', '#ffffff', '#666666', code);
+      image.src = imgsrc;
+      if (config.login) {
+        imagedom = document.getElementById(config.login.validcode_wrap);
+        imagedom.innerHTML = '';
+        imagedom.appendChild(image);
       }
     } else {
+      /*正式模式*/
       let xhr = new XMLHttpRequest(),
         url = ToolService.adaptReqUrl(config);
       xhr.open("post", url, true);
       xhr.responseType = "blob";
       xhr.onreadystatechange = function () {
         if (this.status === 200) {
-          let blob = this.response,
-            img = document.createElement("img");
-
-          img.alt = '验证码';
+          let blob = this.response;
           try {
-            img.onload = function (e) {
-              window.URL.revokeObjectURL(img.src);
+            image.onload = function (e) {
+              window.URL.revokeObjectURL(image.src);
             };
-            img.src = window.URL.createObjectURL(blob);
+            image.src = window.URL.createObjectURL(blob);
           } catch (e) {
             console.log('不支持URL.createObjectURL');
           }
-
-          if (config.src) {
-            config.src.validcode_src=img;
-          } else if (config.fn && typeof config.fn === 'function') {
-            config.fn.call(null, img);
+          if (config.login) {
+            imagedom = document.getElementById(config.login.validcode_wrap);
+            imagedom.innerHTML = '';
+            imagedom.appendChild(image);
           }
         }
       };

@@ -1,5 +1,5 @@
 import {ToolService} from '../service/tool.service';
-import {Component,Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {LayoutService} from "../service/layout.service";
 import {LoginService} from "../service/login.service";
@@ -11,7 +11,6 @@ import {SettingService} from "../service/setting.service";
 })
 export class LayoutComponent {
   /*是否登录*/
-  private /*@Input() */islogin = this.loginservice.isLogin(null);
 
   /*布局模型*/
   layout = {
@@ -25,8 +24,8 @@ export class LayoutComponent {
 
   /*用户模型*/
   user = {
-    islogin: this.islogin,
-    info: this.loginservice.getLoginInfo(this.islogin)
+    islogin: this.loginservice.isLogin(),/*是否登录*/
+    info: this.loginservice.getLoginInfo(this.user.islogin)/*登录信息*/
   };
 
   /*构造函数*/
