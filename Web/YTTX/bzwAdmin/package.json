@@ -1,0 +1,19 @@
+{
+  "name": "bzwAdmin",
+  "version": "1.0.0",
+  "description": "bzwAdmin",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"ni mei\"",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "yipin",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.0.0"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
