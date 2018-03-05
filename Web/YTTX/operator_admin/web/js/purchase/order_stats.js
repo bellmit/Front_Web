@@ -50,6 +50,9 @@
                 $admin_trackingNumber = $('#admin_trackingNumber'),
                 $admin_shippingExpressId = $('#admin_shippingExpressId'),
                 $admin_remark = $('#admin_remark'),
+                $show_freight_wrap = $('#show_freight_wrap'),
+                $admin_freight = $('#admin_freight'),
+                $edit_freight = $('#edit_freight'),
                 resetform0 = null,
                 islogistics = false,
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
@@ -188,7 +191,7 @@
 											</span>';
                                         }
 
-                                        btns += '<span  data-subitem=""  data-action="select" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                                        btns += '<span  data-subitem=""  data-action="select" data-state="' + state + '" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 										<i class="fa-angle-right"></i>\
 										<span>查看</span>\
 										</span>';
@@ -403,6 +406,7 @@
                                         }
 
                                         var i = 0,
+                                            newstate = parseInt($this.attr('data-state'), 10),
                                             newstr = '<colgroup>\
 												<col class="g-w-percent5">\
 												<col class="g-w-percent5">\
@@ -427,16 +431,29 @@
 													<th>买家留言</th>\
 												</tr>\
 												<tr>' + (function () {
-                                                var temp_totalMoney = result["totalMoney"],
-                                                    temp_freight = result["freight"],
-                                                    temp_amount = result["amount"];
+                                                var temp_totalMoney = result["totalMoney"]/*商品总价*/,
+                                                    temp_freight = result["freight"]/*物流费用*/,
+                                                    temp_amount = result["amount"]/*订单总价：(商品总价+物流费用)*/;
                                                 var panelstr = '<td>' + (result["customerName"] || "") + '</td>\
 														<td>' + (public_tool.phoneFormat(result["customerPhone"]) || "") + '</td>\
 														<td>' + (result["customerAddress"] || "") + '</td>\
 														<td>' + (result["consigneeName"] || "") + '</td>\
 														<td>' + (result["consigneePhone"] || "") + '</td>\
 														<td>￥' + (public_tool.moneyCorrect(temp_totalMoney, 12, true)[0] || "0.00") + '</td>\
-														<td>￥' + (public_tool.moneyCorrect(temp_freight, 12, true)[0] || "0.00") + '</td>\
+														<td>￥' + (function () {
+                                                    var edit_freight = public_tool.moneyCorrect(temp_freight, 12, true)[0] || "0.00";
+                                                    /*待发货状态可以修改物流价格*/
+                                                    if (newstate === 0) {
+                                                        var edit_totalMoney = public_tool.moneyCorrect(temp_totalMoney, 12, true)[0] || "0.00";
+
+                                                        return '<span>' + edit_freight + '</span>' + '&nbsp;&nbsp;<span data-totalMoney="' + edit_totalMoney + '" data-freight="' + edit_freight + '" data-action="edit_price" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                                                                <i class="fa-pencil"></i>\
+                                                                <span>修改</span>\
+                                                            </span>';
+                                                    } else {
+                                                        return edit_freight;
+                                                    }
+                                                })() + '</td>\
 														<td>￥' + (function () {
 
                                                     if (typeof temp_amount === 'undefined') {
@@ -483,20 +500,44 @@
                             }
                         }
                     }());
-
+                } else if (action === 'edit_price') {
+                    /*修改物流价格*/
+                    if (id === '') {
+                        return false;
+                    }
+                    /*显示弹窗*/
+                    $show_freight_wrap.modal('show', {
+                        backdrop: 'static'
+                    });
+                    /*赋值*/
+                    $admin_freight.attr({
+                        'data-totalMoney': $this.attr('data-totalMoney'),
+                        'data-freight': $this.attr('data-freight'),
+                        'data-id': id
+                    }).val('');
                 }
             });
 
 
             /*关闭弹出框*/
-            $show_send_wrap.on('hide.bs.modal', function () {
-                if (operate_item) {
-                    setTimeout(function () {
-                        operate_item.removeClass('item-lighten');
-                        operate_item = null;
-                    }, 1000);
-                }
-                admin_send_form.reset();
+            $.each([$show_send_wrap, $show_freight_wrap], function (index) {
+                this.on('hide.bs.modal', function () {
+                    if (operate_item) {
+                        setTimeout(function () {
+                            operate_item.removeClass('item-lighten');
+                            operate_item = null;
+                        }, 1000);
+                    }
+                    if (index === 0) {
+                        admin_send_form.reset();
+                    } else if (index === 1) {
+                        $admin_freight.attr({
+                            'data-totalMoney': '',
+                            'data-freight': '',
+                            'data-id': ''
+                        }).val('');
+                    }
+                });
             });
 
 
@@ -519,6 +560,77 @@
             } else {
                 $order_showall_btn.addClass('g-d-hidei');
             }
+
+
+            /*绑定限制物流费用输入*/
+            $admin_freight.on('keyup focusout', function (e) {
+                var etype = e.type,
+                    value = this.value,
+                    newvalue = '';
+                if (etype === 'keyup') {
+                    this.value = value.replace(/[^0-9\.]*/g, '');
+                } else if (etype === 'focusout') {
+                    newvalue = public_tool.moneyCorrect(value, 15, true)[0];
+                    this.value = newvalue;
+                }
+            });
+
+
+            /*提交修改物流费用*/
+            $edit_freight.on('click', function () {
+                setSure.sure('修改物流价格？', function (cf) {
+                    /*to do*/
+                    var tip = cf.dia || dia,
+                        orderid = $admin_freight.attr('data-id'),
+                        value = public_tool.trimSep($admin_freight.val(), ',');
+
+                    if (orderid === '') {
+                        /*过滤非法数据*/
+                        tip.content('<span class="g-c-bs-warning g-btips-warn">请选中</span>').show();
+                        setTimeout(function () {
+                            tip.close();
+                        }, 2000);
+                        return false;
+                    }
+
+                    var config = {
+                        url: "http://10.0.5.226:8082/mall-agentbms-api/order/freight/update",
+                        dataType: 'JSON',
+                        method: 'post',
+                        data: {
+                            token: decodeURIComponent(logininfo.param.token),
+                            adminId: decodeURIComponent(logininfo.param.adminId),
+                            goodsOrderId: orderid,
+                            freight: value
+                        }
+                    };
+
+                    $.ajax(config).done(function (resp) {
+                        var code = parseInt(resp.code, 10);
+                        if (code !== 0) {
+                            console.log(resp.message);
+                            tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "修改物流费用失败") + '</span>').show();
+                            setTimeout(function () {
+                                tip.close();
+                            }, 2000);
+                            return false;
+                        }
+                        tip.content('<span class="g-c-bs-success g-btips-succ">修改物流费用成功</span>').show();
+                        /*重新获取数据*/
+                        getColumnData(order_page, order_config);
+                        setTimeout(function () {
+                            tip.close();
+                            $show_freight_wrap.modal('hide');
+                        }, 2000);
+                    }).fail(function (resp) {
+                        console.log(resp.message);
+                        tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "修改物流费用失败") + '</span>').show();
+                        setTimeout(function () {
+                            tip.close();
+                        }, 2000);
+                    });
+                });
+            });
 
 
             /*表单验证*/
@@ -617,8 +729,6 @@
                     resetform0 = $admin_send_form.validate(form_opt0);
                 }
             }
-
-
         }
 
 
@@ -630,7 +740,6 @@
                 table.ajax.config(opt.config.ajax).load();
             }
         }
-
 
     });
 
