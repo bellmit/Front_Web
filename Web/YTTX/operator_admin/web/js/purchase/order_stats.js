@@ -446,7 +446,7 @@
                                                     if (newstate === 0) {
                                                         var edit_totalMoney = public_tool.moneyCorrect(temp_totalMoney, 12, true)[0] || "0.00";
 
-                                                        return '<span>' + edit_freight + '</span>' + '&nbsp;&nbsp;<span data-totalMoney="' + edit_totalMoney + '" data-freight="' + edit_freight + '" data-action="edit_price" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                                                        return edit_freight + '&nbsp;&nbsp;<span data-totalMoney="' + edit_totalMoney + '" data-freight="' + edit_freight + '" data-action="edit_price" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
                                                                 <i class="fa-pencil"></i>\
                                                                 <span>修改</span>\
                                                             </span>';
