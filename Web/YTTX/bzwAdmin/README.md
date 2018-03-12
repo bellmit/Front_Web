@@ -1,6 +1,6 @@
 # bzw
 
-> bzw
+> bzwAdmin
 
 ## Build Setup
 

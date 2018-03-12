@@ -1,11 +1,11 @@
 {
   "name": "bzw",
   "version": "1.0.0",
-  "description": "bzw",
+  "description": "bzwAdmin",
   "author": "yipin",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --open --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --open --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
