@@ -1,6 +1,6 @@
 (function () {
     Vue.component('cc-slide',{
-        
+
     });
 
 
