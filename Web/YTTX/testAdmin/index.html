@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>testAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="css/base.css">
+  <script src="js/vue.js"></script>
+  <script src="js/moment.min.js"></script>
+  <script src="js/mock-min.js"></script>
+</head>
+<body class="cl-body">
+  <div v-if="layout.support">
+    <div v-if="user.islogin">
+      业务操作
+    </div>
+    <div v-else="user.islogin">
+      登录区域
+    </div>
+  </div>
+  <div v-else="layout.support">
+    不兼容区
+  </div>
+</body>
+</html>
