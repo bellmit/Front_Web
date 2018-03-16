@@ -30,10 +30,28 @@
   }
   .index-device {
     .layout-absolutelb-base();
-    width: 100%;
+    width: 70%;
     height: 638px;
-    background: transparent url('../images/index_screen_device.png') no-repeat center center;
-    background-size: auto 100%;
+    background: transparent url('../images/index_screen_device.png') no-repeat left bottom;
+    background-size: 100% auto;
+  }
+  .index-download{
+    .layout-absoluterb-base();
+    .layout-base(30%);
+    height: 638px;
+    padding:0 0 50px 0;
+    >div{
+      width:100%;
+      height:50%;
+    }
+    .index-download-android{
+      background: transparent url('../images/android_code.png') no-repeat center center;
+      background-size:200px auto;
+    }
+    .index-download-ios{
+      background: transparent url('../images/ios_code.png') no-repeat center center;
+      background-size:200px auto;
+    }
   }
 }
 
@@ -673,6 +691,23 @@
       }
       .contact-icon6{
         background:transparent url('../images/icon_download.png') no-repeat left center;
+      }
+      /*二维码*/
+      .contact-download{
+        height:100px;
+        >div{
+          display: inline-block;
+          width:150px;
+          height:100%;
+        }
+        .contact-download-android{
+          background: transparent url('../images/android_code.png') no-repeat left center;
+          background-size:auto 100%;
+        }
+        .contact-download-ios{
+          background: transparent url('../images/ios_code.png') no-repeat left center;
+          background-size:auto 100%;
+        }
       }
     }
   }
