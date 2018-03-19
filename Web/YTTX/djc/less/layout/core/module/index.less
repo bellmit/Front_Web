@@ -35,22 +35,40 @@
     background: transparent url('../images/index_screen_device.png') no-repeat left bottom;
     background-size: 100% auto;
   }
-  .index-download{
+  .index-download {
     .layout-absoluterb-base();
     .layout-base(30%);
     height: 638px;
-    padding:0 0 50px 0;
-    >div{
-      width:100%;
-      height:50%;
+    padding: 0 0 50px 0;
+    > div {
+      .layout-relative-base();
+      width: 100%;
+      height: 50%;
+      span {
+        position: absolute;
+        left: 0;
+        text-align: center;
+        width: 100%;
+        height: 30px;
+        display: inline-block;
+        line-height: 30px;
+        color: @color-white;
+        font-size: @font-size-base + 10;
+      }
     }
-    .index-download-android{
+    .index-download-android {
       background: transparent url('../images/android_code.png') no-repeat center center;
-      background-size:200px auto;
+      background-size: 160px auto;
+      span {
+        bottom: 30px;
+      }
     }
-    .index-download-ios{
+    .index-download-ios {
       background: transparent url('../images/ios_code.png') no-repeat center center;
-      background-size:200px auto;
+      background-size: 160px auto;
+      span {
+        bottom: 30px;
+      }
     }
   }
 }
@@ -79,52 +97,52 @@
     font-size: 0;
     .layout-base();
     text-align: center;
-    padding:20px 0;
+    padding: 20px 0;
     li {
-      padding:0 40px;
+      padding: 0 40px;
       .layout-float-base(25%);
       height: 100%;
       display: inline-block;
     }
-    .about-item{
+    .about-item {
       .layout-base(140px);
-      display:block;
-      margin:0 auto 20px auto;
+      display: block;
+      margin: 0 auto 20px auto;
       .layout-relative-base();
-      height:140px;
-      border:3px solid @layout-color-blue1;
+      height: 140px;
+      border: 3px solid @layout-color-blue1;
       .border-radius-base(12px);
       overflow: hidden;
       &:before,
-      &:after{
+      &:after {
         .transform-origin(center center);
         position: absolute;
-        top:-70px;
-        content:'';
-        width:50%;
-        height:260px;
-        background:@layout-color-blue1;
-        display:inline-block;
+        top: -70px;
+        content: '';
+        width: 50%;
+        height: 260px;
+        background: @layout-color-blue1;
+        display: inline-block;
       }
-      &:before{
+      &:before {
         .transform-base(rotate(30deg));
-        left:-90%;
+        left: -90%;
         .opacity-base(30);
       }
-      &:after{
+      &:after {
         .opacity-base(20);
         .transform-base(rotate(-35deg));
-        right:-90%;
+        right: -90%;
       }
-      &:hover{
-        &:before{
+      &:hover {
+        &:before {
           .transition-base(left .5s ease-in 0s e(',') opacity .5s ease-in 0s);
-          left:150%;
+          left: 150%;
           .opacity-base(10);
         }
-        &:after{
+        &:after {
           .transition-base(right .8s ease-in .2s e(',') opacity .8s ease-in .2s);
-          right:150%;
+          right: 150%;
           .opacity-base(0);
         }
       }
@@ -155,16 +173,16 @@
     }
     /*图标*/
     .about-item1 {
-      background:@color-white url('../images/about_listicon1.png') no-repeat center center;
+      background: @color-white url('../images/about_listicon1.png') no-repeat center center;
     }
     .about-item2 {
-      background:@color-white url('../images/about_listicon2.png') no-repeat center center;
+      background: @color-white url('../images/about_listicon2.png') no-repeat center center;
     }
     .about-item3 {
-      background:@color-white url('../images/about_listicon3.png') no-repeat center center;
+      background: @color-white url('../images/about_listicon3.png') no-repeat center center;
     }
     .about-item4 {
-      background:@color-white url('../images/about_listicon4.png') no-repeat center center;
+      background: @color-white url('../images/about_listicon4.png') no-repeat center center;
     }
   }
 }
@@ -243,7 +261,7 @@
       padding: 0 0 0 @circle-icon-width + 10px;
       display: inline-block;
       overflow: hidden;
-      height:100%;
+      height: 100%;
       p {
         .text-of();
         .layout-base();
@@ -464,7 +482,7 @@
       &:after {
         position: absolute;
         z-index: 20;
-        left:0;
+        left: 0;
         content: '';
         display: block;
         width: 100%;
@@ -473,18 +491,18 @@
         .opacity-base(10) !important;
       }
       &:before {
-        top:0;
+        top: 0;
       }
       &:after {
         bottom: 0;
       }
       &:hover {
-        &:before{
-          left:-100%;
+        &:before {
+          left: -100%;
           .transition-base(left .5s ease-in .01s);
         }
-        &:after{
-          left:100%;
+        &:after {
+          left: 100%;
           .transition-base(left .5s ease-in .01s);
         }
       }
@@ -497,7 +515,7 @@
       &:after {
         position: absolute;
         z-index: 20;
-        left:0;
+        left: 0;
         content: '';
         display: block;
         width: 100%;
@@ -506,14 +524,14 @@
         .opacity-base(10) !important;
       }
       &:before {
-        top:0;
+        top: 0;
       }
       &:after {
         bottom: 0;
       }
       &:hover {
         &:before,
-        &:after{
+        &:after {
           height: 0;
           .transition-base(height .5s ease-in .01s);
         }
@@ -647,66 +665,75 @@
       font-size: 0;
       li {
         .layout-float-base();
-        height: 48px;
+        min-height: 48px;
         line-height: 48px;
         margin: 40px 0 0 0;
         &:first-child {
           margin: 0;
         }
-        span {
-          float:left;
-          display: inline-block;
-          width: 58px;
-          height: 48px;
-          overflow: hidden;
-        }
-        a,
         p {
           display: inline-block;
           height: 48px;
           line-height: 48px;
           font-size: @font-size-base + 10;
-        }
-        a{
-          color:rgba(255,238,0,1.0);
-        }
-        p{
-          color:@color-white;
+          float: left;
+          width: auto;
+          color: @color-white;
         }
       }
-      .contact-icon1{
-        background:transparent url('../images/icon_contacts.png') no-repeat left center;
+      .contact-icon {
+        padding-left: 50px;
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-color: transparent;
       }
-      .contact-icon2{
-        background:transparent url('../images/icon_phone.png') no-repeat left center;
+      .contact-icon1 {
+        background-image: url('../images/icon_contacts.png');
       }
-      .contact-icon3{
-        background:transparent url('../images/icon_telephone.png') no-repeat left center;
+      .contact-icon2 {
+        background-image: url('../images/icon_phone.png');
       }
-      .contact-icon4{
-        background:transparent url('../images/icon_e-mail.png') no-repeat left center;
+      .contact-icon3 {
+        background-image: url('../images/icon_telephone.png');
       }
-      .contact-icon5{
-        background:transparent url('../images/icon_address.png') no-repeat left center;
+      .contact-icon4 {
+        background-image: url('../images/icon_e-mail.png');
       }
-      .contact-icon6{
-        background:transparent url('../images/icon_download.png') no-repeat left center;
+      .contact-icon5 {
+        background-image: url('../images/icon_address.png');
+      }
+      .contact-icon6 {
+        background-image: url('../images/icon_download.png');
       }
       /*二维码*/
-      .contact-download{
-        height:100px;
-        >div{
+      .contact-download {
+        height: 100px;
+        > div {
+          .layout-relative-base();
           display: inline-block;
-          width:150px;
-          height:100%;
+          width: 100px;
+          height: 100%;
+          span {
+            position: absolute;
+            left: 0;
+            bottom: -25px;
+            text-align: center;
+            width: 100%;
+            height: 20px;
+            display: inline-block;
+            line-height: 20px;
+            color: @color-white;
+            font-size: @font-size-base + 2;
+          }
         }
-        .contact-download-android{
-          background: transparent url('../images/android_code.png') no-repeat left center;
-          background-size:auto 100%;
+        .contact-download-android {
+          background: transparent url('../images/android_code.png') no-repeat left top;
+          background-size: auto 100%;
         }
-        .contact-download-ios{
-          background: transparent url('../images/ios_code.png') no-repeat left center;
-          background-size:auto 100%;
+        .contact-download-ios {
+          background: transparent url('../images/ios_code.png') no-repeat left top;
+          background-size: auto 100%;
+          margin-left: 50px;
         }
       }
     }

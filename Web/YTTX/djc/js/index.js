@@ -190,10 +190,10 @@
     function getBaiDuMap() {
         /*地图调用*/
         var map = new BMap.Map("address_wrap"),
-            point = new BMap.Point(113.9272, 22.5802);
+            point = new BMap.Point(113.9533, 22.5368);
 
         /*初始化地图*/
-        map.centerAndZoom(point, 15);
+        map.centerAndZoom(point, 16);
 
         /*设置相关开启项*/
         map.enableScrollWheelZoom();
@@ -210,7 +210,7 @@
         /*设置文字覆盖物*/
         var label = new BMap.Label("大决策信息技术有限公司",{
             position: point,
-            offset: new BMap.Size(-80,10)
+            offset: new BMap.Size(-70,30)
         });
 
         label.setStyle({

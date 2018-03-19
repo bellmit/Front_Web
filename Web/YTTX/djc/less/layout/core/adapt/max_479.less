@@ -113,13 +113,26 @@
       height: 400px;
     }
     .index-download{
-      top:150px;
+      top:135px;
       height: 100px;
+      >div{
+        span{
+          font-size: @font-size-base + 6;
+          line-height: 24px;
+          height:24px;
+        }
+      }
       .index-download-android{
         background-size:80px auto;
+        span {
+          bottom: -25px;
+        }
       }
       .index-download-ios{
         background-size:80px auto;
+        span {
+          bottom: -25px;
+        }
       }
     }
   }
@@ -267,6 +280,9 @@
         .contact-download{
           >div{
             width:110px;
+          }
+          .contact-download-ios {
+            margin-left:20px;
           }
         }
       }

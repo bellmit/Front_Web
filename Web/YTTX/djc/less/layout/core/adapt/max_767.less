@@ -28,11 +28,11 @@
   /*头部*/
   .layout-header-wrap {
     .header-nav {
-      >li{
-        width:100px;
+      > li {
+        width: 100px;
       }
-      a{
-        font-size:@font-size-base + 2;
+      a {
+        font-size: @font-size-base + 2;
       }
     }
   }
@@ -47,14 +47,20 @@
     .index-device {
       height: 500px;
     }
-    .index-download{
-      top:180px;
+    .index-download {
+      top: 170px;
       height: 150px;
-      .index-download-android{
-        background-size:120px auto;
+      .index-download-android {
+        background-size: 100px auto;
+        span {
+          bottom: -10px;
+        }
       }
-      .index-download-ios{
-        background-size:120px auto;
+      .index-download-ios {
+        background-size: 100px auto;
+        span {
+          bottom: -10px;
+        }
       }
     }
   }
@@ -146,7 +152,7 @@
           &:first-child {
             margin-top: 30px;
           }
-          padding:0 20px;
+          padding: 0 20px;
           a,
           p {
             font-size: @font-size-base + 6;
