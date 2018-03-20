@@ -165,9 +165,20 @@
       .contact-list {
         li {
           margin: 20px 0 0 0;
-          a,
-          p {
-            font-size: @font-size-base + 4;
+          font-size: @font-size-base + 4;
+        }
+        .contact-icon{
+          padding-top:5px;
+          line-height: 30px;
+          background-size:40px auto;
+          padding-left:50px;
+        }
+        /*二维码*/
+        .contact-download {
+          @contact-width:140px;
+          height: @contact-width;
+          > div {
+            width: @contact-width;
           }
         }
       }

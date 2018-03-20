@@ -152,10 +152,14 @@
           &:first-child {
             margin-top: 30px;
           }
-          padding: 0 20px;
-          a,
-          p {
-            font-size: @font-size-base + 6;
+          font-size: @font-size-base + 6;
+        }
+        /*二维码*/
+        .contact-download {
+          @contact-width:120px;
+          height: @contact-width;
+          > div {
+            width: @contact-width;
           }
         }
       }

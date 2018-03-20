@@ -665,24 +665,19 @@
       font-size: 0;
       li {
         .layout-float-base();
-        min-height: 48px;
-        line-height: 48px;
-        margin: 40px 0 0 0;
+        margin: 30px 0 0 0;
+        height:auto;
+        font-size: @font-size-base + 6;
+        color: @color-white;
         &:first-child {
           margin: 0;
         }
-        p {
-          display: inline-block;
-          height: 48px;
-          line-height: 48px;
-          font-size: @font-size-base + 10;
-          float: left;
-          width: auto;
-          color: @color-white;
-        }
       }
       .contact-icon {
-        padding-left: 50px;
+        min-height: 48px;
+        line-height: 40px;
+        padding-top:4px;
+        padding-left: 60px;
         background-position: 0 0;
         background-repeat: no-repeat;
         background-color: transparent;
@@ -707,11 +702,12 @@
       }
       /*二维码*/
       .contact-download {
-        height: 100px;
+        @contact-width:180px;
+        height: @contact-width;
         > div {
           .layout-relative-base();
           display: inline-block;
-          width: 100px;
+          width: @contact-width;
           height: 100%;
           span {
             position: absolute;

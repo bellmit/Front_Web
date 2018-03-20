@@ -187,10 +187,14 @@
           &:first-child {
             margin-top: 20px;
           }
-          padding:0 10px;
-          a,
-          p {
-            font-size: @font-size-base + 4;
+          font-size: @font-size-base + 4;
+        }
+        /*二维码*/
+        .contact-download {
+          @contact-width:100px;
+          height: @contact-width;
+          > div {
+            width: @contact-width;
           }
         }
       }
