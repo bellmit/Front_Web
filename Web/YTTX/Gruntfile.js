@@ -3,7 +3,7 @@
 module.exports = function (grunt) {
 
     /*配置文件*/
-    var configfile = 'package_djc.json';
+    var configfile = 'package_bzwVue.json';
 
     // Project configuration.
     grunt.initConfig({
