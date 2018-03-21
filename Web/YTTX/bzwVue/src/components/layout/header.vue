@@ -4,9 +4,9 @@
       <div class="header-logo"></div>
       <div class="header-btn" id="header_btn"></div>
       <ul class="header-menu" id="header_menu">
-        <li v-for="hitem in headeritem">
-          <router-link v-bind:to="hitem.href">{{hitem.text}}</router-link>
-        </li>
+        <router-link tag="li" v-for="hitem in headeritem" v-bind:to="hitem.href" replace active-class="menu-active">
+          <a>{{hitem.text}}</a>
+        </router-link>
       </ul>
     </div>
   </div>

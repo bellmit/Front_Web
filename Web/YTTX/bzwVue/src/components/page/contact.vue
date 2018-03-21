@@ -16,6 +16,6 @@
 
 <script>
   export default {
-    name: 'cc_contact',
+    name: 'cc_contact'
   }
 </script>

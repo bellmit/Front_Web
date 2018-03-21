@@ -1,19 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import cc_index from '@/components/index.vue'
-import cc_product from '@/components/product.vue'
-import cc_news from '@/components/news.vue'
-import cc_scene from '@/components/scene.vue'
-import cc_contact from '@/components/contact.vue'
+
+import cc_index from '@/components/page/index.vue'
+import cc_product from '@/components/page/product.vue'
+import cc_news from '@/components/page/news.vue'
+import cc_scene from '@/components/page/scene.vue'
+import cc_contact from '@/components/page/contact.vue'
 
 
 Vue.use(Router);
+
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'index'
+      name: 'index',
+      redirect:'/index'
     },{
       path: '/index',
       name: 'index',
