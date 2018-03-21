@@ -28,6 +28,13 @@
 </template>
 
 <script>
+  import Vue from 'vue'
+  import axios from 'axios'
+  /*导入异步模块*/
+  import VueAxios from 'vue-axios'
+  //Vue.use(VueAxios, axios)
+
+
   export default {
     name: 'cc_news',
     data() {
@@ -87,38 +94,33 @@
       }
     },
     mounted() {
-      this.$nextTick(function () {
-        axios.get('static/json/test.json')
-          .then(() => {
-            /*测试模式*/
-            let result = window.testWidget.test({
-              map: {
-                name: 'value',
-                id: 'guid'
-              },
-              mapmin: 5,
-              mapmax: 10,
-              type: 'list'
-            });
-            console.log(result);
-            /*let code = parseInt(result.code, 10);
-            if (code !== 0) {
-              /!*请求异常*!/
-              console.log(result.message);
-              this.renderNewsTab(null);
-            } else {
-              /!*渲染数据*!/
-              this.renderNewsTab(result.result.list);
-            }*/
-          })
-      })
+      axios.get('static/json/test.json')
+        .then(() => {
+          /*测试模式*/
+          let result = Mock.mock({
+            // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
+            'list|3-10': [{
+              // 属性 id 是一个自增数，起始值为 1，每次增 1
+              'id|+1': 1,
+              'theme': /[a-zA-Z0-9]{2,10}/
+            }]
+          });
+
+          if (!result) {
+            /*请求异常*/
+            this.renderNewsTab(null);
+          } else {
+            /*渲染数据*/
+            this.renderNewsTab(result.list);
+          }
+        })
     },
     methods: {
       renderNewsTab(data) {
         console.log(data);
         if (data === null) {
 
-        }else{
+        } else {
 
         }
       }
