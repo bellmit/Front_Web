@@ -4,6 +4,7 @@
       <h3 class="theme g-c-base">新闻资讯</h3>
       <div class="screen-box" v-cloak>
         <div class="screen-newstab-wrap">
+
           <!--左按钮-->
           <template v-if="tabconfig.btn_left">
             <div class="tab-btn tab-btn-left" v-bind:class="tabconfig.tabindex===0?tabconfig.btnClass:''"
@@ -12,6 +13,7 @@
           <template v-else>
             <div class="tab-btn tab-btn-left" v-bind:class="tabconfig.btnClass"></div>
           </template>
+
           <!--展示区-->
           <template v-if="tabconfig.list>=2">
             <div class="tab-show">
@@ -26,6 +28,7 @@
                     v-for="(tab,index) in tablist">{{tab.theme}}</span>
             </div>
           </template>
+
           <!--右按钮-->
           <template v-if="tabconfig.btn_right">
             <div class="tab-btn tab-btn-right"
@@ -58,9 +61,9 @@
   import Vue from 'vue'
   import axios from 'axios'
   /*导入异步模块*/
-  import VueAxios from 'vue-axios'
+  //import VueAxios from 'vue-axios'
 
-  Vue.use(VueAxios, axios)
+  //Vue.use(VueAxios, axios)
 
 
   export default {
@@ -95,7 +98,7 @@
             'list|6-8': [{
               // 属性 id 是一个自增数，起始值为 1，每次增 1
               'id|+1': 1,
-              'theme': /[a-zA-Z0-9]{2,10}/
+              'theme|+1': 0/*/[a-zA-Z0-9]{2,10}/*/
             }]
           });
           if (!result) {
@@ -196,7 +199,7 @@
           } else {
             this.tabconfig.tabindex--;
             if (this.tabconfig.tabindex >= this.tabconfig.limit) {
-              this.tabconfig.hideindex = this.tabconfig.tabindex - this.tabconfig.limit;
+              this.tabconfig.hideindex = this.tabconfig.tabindex + 1 - this.tabconfig.limit;
             } else {
               this.tabconfig.hideindex = 0;
             }
@@ -208,7 +211,7 @@
           } else {
             this.tabconfig.tabindex++;
             if (this.tabconfig.tabindex >= this.tabconfig.limit) {
-              this.tabconfig.hideindex = this.tabconfig.tabindex - this.tabconfig.limit;
+              this.tabconfig.hideindex = this.tabconfig.tabindex + 1 - this.tabconfig.limit;
             } else {
               this.tabconfig.hideindex = 0;
             }
