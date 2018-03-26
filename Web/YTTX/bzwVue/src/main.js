@@ -5,8 +5,6 @@ import './assets/css/vue2-animate.min.css';
 import Vue from 'vue'/*导入vue核心库*/
 import App from './App'/*导入主容器*/
 import router from './router'/*导入路由*/
-import axios from 'axios'/*导入异步模块*/
-import VueAxios from 'vue-axios'
 
 
 
@@ -14,8 +12,6 @@ import VueAxios from 'vue-axios'
 Vue.config.productionTip = false;/*开发提示*/
 
 
-
-Vue.use(VueAxios, axios);
 
 /*创建vue实例,应用导出的主应用*/
 new Vue({
