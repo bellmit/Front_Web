@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-item screen-index" id="screen_index">
+  <div class="screen-item screen-index">
     <div class="index-content">
       <div class="index-bg"></div>
 
@@ -7,7 +7,9 @@
       <div class="index-codewrap"></div>
 
       <!--轮播组件-->
-      <div class="part-slide"></div>
+      <div class="part-slide">
+
+      </div>
 
     </div>
   </div>

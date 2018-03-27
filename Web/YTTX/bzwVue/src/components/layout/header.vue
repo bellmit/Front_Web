@@ -46,10 +46,9 @@
       /*初始化渲染*/
       this.viewRender();
       /*绑定滚动条*/
-      $(window).on('resize', function (e) {
-        self.bindResize();
+      window.addEventListener('resize',function () {
+        self.viewRender();
       });
-
     },
     methods: {
       /*视口参数*/
@@ -59,26 +58,15 @@
       /*初始化*/
       viewRender() {
         let width = this.getView();
-        if (width <= this.viewWidth) {
-          this.isMobile = true;
+        if (width <= this.mediaView.viewWidth) {
+          this.mediaView.isMobile = true;
         } else {
-          this.isMobile = false;
+          this.mediaView.isMobile = false;
         }
       },
       /*切换手机模式*/
       toggleMiniView() {
-        /*if (this.isMobile) {
-
-        }*/
-        /*this.menuHide = !this.menuHide;*/
-      },
-      /*绑定滚动条*/
-      bindResize() {
-        this.viewRender();
-        /*非手机模式清除手机模式下的相关样式*/
-        if (!this.isMobile) {
-          /*this.menuHide = false;*/
-        }
+        this.mediaView.isMobile = !this.mediaView.isMobile;
       }
     }
   }
