@@ -1,4 +1,5 @@
-const webpack = require('webpack');/*内置插件*/
+const webpack = require('webpack');
+/*内置插件*/
 const path = require('path')/*内置路径插件*/;
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')/*自动引用资源文件插件*/;
@@ -6,9 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')/*自动引用资源文�
 
 module.exports = {
     /*入口文件*/
-    entry: {
-        app: './src/js/index.js'
-    },
+    entry: './src/js/index.js',
     /*输出文件*/
     output: {
         filename: '[name].js'/*输出文件名*/,
@@ -58,8 +57,8 @@ module.exports = {
         ]
     },
     /*插件*/
-    plugins:[
-        new webpack.optimize.UglifyJsPlugin(),/*使用压缩工具*/
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin(), /*使用压缩工具*/
         new HtmlWebpackPlugin()/*自动帮你生成一个html 文件，并且引用相关的 assets资源文件*/
     ]
 };
