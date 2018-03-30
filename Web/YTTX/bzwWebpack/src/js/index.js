@@ -1,6 +1,4 @@
+import '../less/base.less';
 
-(function () {
-    'use strict';
-    console.log('test webpack');
-})();
+console.log('test');
 
