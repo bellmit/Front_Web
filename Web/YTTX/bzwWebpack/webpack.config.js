@@ -24,7 +24,12 @@ module.exports = {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                use: ['css-loader']
+                use: [{
+                    loader:'css-loader',
+                    options:{
+                        minimize: true
+                    }
+                }]
             })
         }, {
             test: /iconfont\.(ttf|woff|svg|eot)$/,
@@ -61,7 +66,7 @@ module.exports = {
         new copyWebpackPlugin([{
             from: __dirname + '/src/static',//打包的静态资源目录地址
             to: './static' //打包到dist下面的public
-        }]),
+        }])/*,
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.optimize\.css$/g,
             cssProcessor: require('cssnano'),
@@ -71,6 +76,6 @@ module.exports = {
                 }
             },
             canPrint: true
-        })/*压缩css*/
+        })*//*压缩css*/
     ]
 };

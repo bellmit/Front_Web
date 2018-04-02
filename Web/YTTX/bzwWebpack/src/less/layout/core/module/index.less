@@ -14,7 +14,7 @@
 
 /*首页*/
 .layout-index-wrap {
-  background: @layout-color-blue1 url('../images/index_screen_bg.png') repeat center top;
+  background: @layout-color-blue1 url('@{core-base-url}/index_screen_bg.png') repeat center top;
 }
 
 .index-content-wrap {
@@ -25,14 +25,14 @@
     width: 100%;
     margin: 50px 0 0 0;
     height: 158px;
-    background: transparent url('../images/index_screen_theme.png') no-repeat center center;
+    background: transparent url('@{core-base-url}/index_screen_theme.png') no-repeat center center;
     background-size: auto 100%;
   }
   .index-device {
     .layout-absolutelb-base();
     width: 70%;
     height: 638px;
-    background: transparent url('../images/index_screen_device.png') no-repeat left bottom;
+    background: transparent url('@{core-base-url}/index_screen_device.png') no-repeat left bottom;
     background-size: 100% auto;
   }
   .index-download {
@@ -57,14 +57,14 @@
       }
     }
     .index-download-android {
-      background: transparent url('../images/android_code.png') no-repeat center center;
+      background: transparent url('@{core-base-url}/android_code.png') no-repeat center center;
       background-size: 160px auto;
       span {
         bottom: 30px;
       }
     }
     .index-download-ios {
-      background: transparent url('../images/ios_code.png') no-repeat center center;
+      background: transparent url('@{core-base-url}/ios_code.png') no-repeat center center;
       background-size: 160px auto;
       span {
         bottom: 30px;
@@ -75,14 +75,14 @@
 
 /*关于我们*/
 .layout-about-wrap {
-  background: lighten(@color-gray14, 5%) url('../images/about_screen_bg.png') repeat center top;
+  background: lighten(@color-gray14, 5%) url('@{core-base-url}/about_screen_bg.png') repeat center top;
 }
 
 .about-content-wrap {
   height: 100%;
   padding: 50px 0;
   .about-theme {
-    background: transparent url('../images/about_screen_theme.png') no-repeat center center;
+    background: transparent url('@{core-base-url}/about_screen_theme.png') no-repeat center center;
   }
   .about-remark {
     width: 100%;
@@ -173,23 +173,23 @@
     }
     /*图标*/
     .about-item1 {
-      background: @color-white url('../images/about_listicon1.png') no-repeat center center;
+      background: @color-white url('@{core-base-url}/about_listicon1.png') no-repeat center center;
     }
     .about-item2 {
-      background: @color-white url('../images/about_listicon2.png') no-repeat center center;
+      background: @color-white url('@{core-base-url}/about_listicon2.png') no-repeat center center;
     }
     .about-item3 {
-      background: @color-white url('../images/about_listicon3.png') no-repeat center center;
+      background: @color-white url('@{core-base-url}/about_listicon3.png') no-repeat center center;
     }
     .about-item4 {
-      background: @color-white url('../images/about_listicon4.png') no-repeat center center;
+      background: @color-white url('@{core-base-url}/about_listicon4.png') no-repeat center center;
     }
   }
 }
 
 /*产品介绍*/
 .layout-introduction-wrap {
-  background: transparent url('../images/introduction_screen_bg.jpg') repeat center top;
+  background: transparent url('@{core-base-url}/introduction_screen_bg.jpg') repeat center top;
 }
 
 .introduction-content-wrap {
@@ -199,7 +199,7 @@
   height: 100%;
   padding: 50px 0;
   .introduction-theme {
-    background: transparent url('../images/introduction_screen_theme.png') no-repeat center center;
+    background: transparent url('@{core-base-url}/introduction_screen_theme.png') no-repeat center center;
   }
   .introduction-links {
     .layout-relative-base();
@@ -233,7 +233,7 @@
     .layout-absolutelb-base(-150px, 50px, 50);
     width: 400px;
     height: 400px;
-    background: transparent url('../images/introduction_screen_computer.png') no-repeat center center;
+    background: transparent url('@{core-base-url}/introduction_screen_computer.png') no-repeat center center;
     background-size: auto 100%;
     overflow: hidden;
   }
@@ -249,10 +249,10 @@
       height: 35px;
     }
     .introduction-itemblue .introduction-show {
-      background: transparent url('../images/img_blue.png') no-repeat 0 0;
+      background: transparent url('@{core-base-url}/img_blue.png') no-repeat 0 0;
     }
     .introduction-itemyellow .introduction-show {
-      background: transparent url('../images/img_yellow.png') no-repeat 0 0;
+      background: transparent url('@{core-base-url}/img_yellow.png') no-repeat 0 0;
     }
     .introduction-show {
       .layout-relative-base();
@@ -433,7 +433,7 @@
 
 /*产品描述*/
 .layout-description-wrap {
-  background: transparent url('../images/description_screen_bg.png') repeat center top;
+  background: transparent url('@{core-base-url}/description_screen_bg.png') repeat center top;
 }
 
 .description-content-wrap {
@@ -451,7 +451,7 @@
   padding: 50px 0;
   /*主题*/
   .description-theme {
-    background: transparent url('../images/description_screen_theme.png') no-repeat center center;
+    background: transparent url('@{core-base-url}/description_screen_theme.png') no-repeat center center;
   }
   /*照片墙*/
   .description-gallery {
@@ -477,7 +477,7 @@
     width: @side-item-width;
     .description-item1 {
       height: @side-item1-height;
-      background: transparent url('../images/description_side1.jpg') no-repeat center center;
+      background: transparent url('@{core-base-url}/description_side1.jpg') no-repeat center center;
       &:before,
       &:after {
         position: absolute;
@@ -510,7 +510,7 @@
     .description-item2 {
       margin-top: @gallery-height - (@side-item1-height + @side-item2-height);
       height: @side-item2-height;
-      background: transparent url('../images/description_side2.jpg') no-repeat center center;
+      background: transparent url('@{core-base-url}/description_side2.jpg') no-repeat center center;
       &:before,
       &:after {
         position: absolute;
@@ -543,7 +543,7 @@
     width: @main-item-width;
     .description-item1 {
       height: 100%;
-      background: transparent url('../images/description_main1.jpg') no-repeat center center;
+      background: transparent url('@{core-base-url}/description_main1.jpg') no-repeat center center;
       &:before,
       &:after {
         position: absolute;
@@ -639,7 +639,7 @@
 
 /*联系我们*/
 .layout-contact-wrap {
-  background: @layout-color-blue1 url('../images/contact_screen_bg.png') repeat center top;
+  background: @layout-color-blue1 url('@{core-base-url}/contact_screen_bg.png') repeat center top;
 }
 
 .contact-content-wrap {
@@ -647,7 +647,7 @@
   padding: 50px 0;
   /*主题*/
   .contact-theme {
-    background: transparent url('../images/contact_screen_theme.png') no-repeat center center;
+    background: transparent url('@{core-base-url}/contact_screen_theme.png') no-repeat center center;
   }
   .contact-show {
     .layout-base();
@@ -683,22 +683,22 @@
         background-color: transparent;
       }
       .contact-icon1 {
-        background-image: url('../images/icon_contacts.png');
+        background-image: url('@{core-base-url}/icon_contacts.png');
       }
       .contact-icon2 {
-        background-image: url('../images/icon_phone.png');
+        background-image: url('@{core-base-url}/icon_phone.png');
       }
       .contact-icon3 {
-        background-image: url('../images/icon_telephone.png');
+        background-image: url('@{core-base-url}/icon_telephone.png');
       }
       .contact-icon4 {
-        background-image: url('../images/icon_e-mail.png');
+        background-image: url('@{core-base-url}/icon_e-mail.png');
       }
       .contact-icon5 {
-        background-image: url('../images/icon_address.png');
+        background-image: url('@{core-base-url}/icon_address.png');
       }
       .contact-icon6 {
-        background-image: url('../images/icon_download.png');
+        background-image: url('@{core-base-url}/icon_download.png');
       }
       /*二维码*/
       .contact-download {
@@ -723,11 +723,11 @@
           }
         }
         .contact-download-android {
-          background: transparent url('../images/android_code.png') no-repeat left top;
+          background: transparent url('@{core-base-url}/android_code.png') no-repeat left top;
           background-size: auto 100%;
         }
         .contact-download-ios {
-          background: transparent url('../images/ios_code.png') no-repeat left top;
+          background: transparent url('@{core-base-url}/ios_code.png') no-repeat left top;
           background-size: auto 100%;
           margin-left: 50px;
         }
