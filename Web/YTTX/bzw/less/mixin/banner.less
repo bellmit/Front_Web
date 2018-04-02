@@ -44,3 +44,71 @@
     }
   }
 }
+
+
+///max 800px
+@media (max-width: 800px){
+  /*文章主体*/
+  .banner-wrap{
+    min-height: 250px;
+    max-height: 450px;
+    .banner-theme{
+      bottom: -30px;
+    }
+    > img {
+      min-height: 250px;
+      max-height: 450px;
+    }
+  }
+}
+
+///max 640px
+@media (max-width: 640px){
+  /*文章主体*/
+  .banner-wrap{
+    .banner-theme{
+      margin:0 0 0 -250px;
+      width:400px;
+    }
+    > img {
+      min-height: 200px;
+      max-height: 400px;
+    }
+  }
+}
+
+///max 480px
+@media (max-width: 480px){
+  /*文章主体*/
+  .banner-wrap{
+    min-height: 150px;
+    max-height: 350px;
+    .banner-theme{
+      bottom: 20px;
+      margin:0 0 0 -170px;
+      width:350px;
+    }
+    > img {
+      min-height: 150px;
+      max-height: 350px;
+    }
+  }
+}
+
+///max 320px
+@media (max-width: 320px){
+  /*文章主体*/
+  .banner-wrap{
+    min-height: 100px;
+    max-height: 300px;
+    .banner-theme{
+      bottom: 40px;
+      margin:0 0 0 -120px;
+      width:250px;
+    }
+    > img {
+      min-height: 100px;
+      max-height: 300px;
+    }
+  }
+}

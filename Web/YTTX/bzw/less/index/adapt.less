@@ -84,7 +84,7 @@
 	}
 
 
-	//第三屏适配
+	//第四屏适配
 	.scene-itemwrap{
 		li{
 			width:100%;
@@ -94,6 +94,13 @@
 		}
 	}
 
+	//第三屏适配
+	.screen-newstab-wrap{
+		padding:0;
+		.tab-btn{
+			display: none;
+		}
+	}
 
 }
 
@@ -107,6 +114,22 @@
 				.layout-base(49.5%);
 				img{
 					width:200px;
+				}
+			}
+		}
+	}
+
+	//第三屏适配
+	.screen-newstab-wrap{
+		width:460px;
+	}
+	.screen-newslist{
+		padding:20px 20px;
+		ul{
+			li{
+				padding: 10px;
+				div{
+					display: none;
 				}
 			}
 		}
@@ -145,6 +168,18 @@
 	}
 
 
+	//第三屏适配
+	.screen-newstab-wrap{
+		width:300px;
+		.tab-show{
+			span{
+				overflow: hidden;
+				font-size:@font-size-base - 2;
+			}
+		}
+	}
+
+
 	//第四屏
 	.screen-app{
 		height:600px;
@@ -159,4 +194,12 @@
 		}
 	}
 
+}
+
+///max 320px
+@media (max-width: 320px){
+	//第三屏适配
+	.screen-newstab-wrap{
+		width:280px;
+	}
 }

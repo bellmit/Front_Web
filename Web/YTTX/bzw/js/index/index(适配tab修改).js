@@ -20,6 +20,7 @@
             $tab_btn_right = $('#tab_btn_right'),
             $newstab_show = $('#newstab_show'),
             $newstab_more = $('#newstab_more'),
+            tabMax = 5/*tab显示数据项*/,
             $win = $(window),
             screen_pos = [{
                 node: $screen_index,
@@ -84,6 +85,7 @@
                 isMobile = true;
                 $screen_3d.removeClass('scene-itempc');
             }
+            _changeTabMax_(winwidth, tabMax);
 
 
         }());
@@ -176,9 +178,11 @@
                         $header_menu.removeClass('g-d-showi');
                         isMobile = false;
                         $screen_3d.addClass('scene-itempc');
+                        tabMax = 5;
                     } else {
                         isMobile = true;
                         $screen_3d.removeClass('scene-itempc');
+                        _changeTabMax_(winwidth, tabMax);
                     }
 
 
@@ -200,7 +204,6 @@
 
 
                 }());
-
             }
         });
 
@@ -216,6 +219,7 @@
                 btn_left: $tab_btn_left,
                 btn_right: $tab_btn_right,
                 wrap: $tab_btn,
+                tabMax: tabMax,
                 tpl: '<span data-id="_id_" data-type="_type_">_name_</span>'/*tab html 模板*/
             },
             tabshow: {
@@ -291,8 +295,7 @@
             _resetTab_(tab_config, tabshow);
         } else {
             /*渲染界面*/
-            var TABLEN = 5/*tab显示数据项*/,
-                debug = config.debug,
+            var debug = config.debug,
                 list = data,
                 tablen = list.length;
 
@@ -328,7 +331,7 @@
                     $tabs.addClass('tab-active').siblings().removeClass('tab-active');
 
                     /*初始化其他数据*/
-                    if (tablen > TABLEN) {
+                    if (tablen > tab_config.tabMax) {
                         if (tab_index === 0) {
                             tab_config.btn_left.addClass('tab-btn-disabled');
                         } else if (tab_index === tablen - 1) {
@@ -354,7 +357,7 @@
                                 if (tab_index === tablen - 2) {
                                     tab_config.btn_right.removeClass('tab-btn-disabled');
                                 }
-                                if (tab_index <= TABLEN) {
+                                if (tab_index <= tab_config.tabMax) {
                                     tempitem.eq(tab_index).removeClass('g-d-hidei');
                                 }
 
@@ -385,8 +388,8 @@
                                 if (tab_index === 1) {
                                     tab_config.btn_left.removeClass('tab-btn-disabled');
                                 }
-                                if (tab_index >= TABLEN) {
-                                    $tabs_items.eq(tab_index - TABLEN).addClass('g-d-hidei');
+                                if (tab_index >= tab_config.tabMax) {
+                                    $tabs_items.eq(tab_index - tab_config.tabMax).addClass('g-d-hidei');
                                 }
                                 tabshow['id'] = tempitem.attr('data-id');
                                 tabshow['type'] = tempitem.html();
@@ -414,7 +417,7 @@
                         tab_index = $this.index();
 
                         /*索引极限*/
-                        if (tablen > TABLEN) {
+                        if (tablen > tab_config.tabMax) {
                             if (tab_index === 0) {
                                 /*第一个的情况*/
                                 tab_config.btn_left.addClass('tab-btn-disabled');
@@ -564,4 +567,26 @@
         tab_config.wrap.html('');
         tabshow.wrap.html('');
     }
+
+
+    /*私有服务--窗口切换时更新tab显示长度*/
+    function _changeTabMax_(width, tabMax) {
+        if ((width >= 600 && width < 1200) || width >= 1200) {
+            tabMax = 5;
+        } else if (width >= 500 && width < 600) {
+            tabMax = 4;
+        } else if (width >= 400 && width < 500) {
+            tabMax = 3;
+        } else if (width < 400) {
+            tabMax = 2;
+        }
+    }
+
+
+    /*私有服务--重新渲染tab长度和相关视口*/
+    function _changeTabView() {
+        
+    }
+
+
 })(jQuery);
