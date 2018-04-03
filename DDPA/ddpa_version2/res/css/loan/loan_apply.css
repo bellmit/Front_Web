@@ -1,0 +1,71 @@
+﻿/* CSS Document */
+/*container*/
+.container{width:1000px;height:auto;margin:10px auto 80px auto;}
+#dealline_op{ width:164px; position: relative; left: 0px; z-index:2;}
+/*-----detail-----*/
+/*table*/
+.loan_applycontent{width:1000px;margin:0 auto;table-layout:fixed;border-collapse:collapse;empty-cells:show;border:0 none;background:#fff url(../../image/loan/loan_contentbg.png) repeat-y 0 0;}
+.loan_applycontent td{font-size:12px;word-break:break-all;word-wrap:break-word;}
+.loan_applycontent td.align_top{ vertical-align: top;}
+.loan_applycontent td span{ line-height:24px; color:#636363}
+.loan_applycontent td span.error{ color:#ff0;}
+.loan_applycg1{width:15% !important;}
+.loan_applycg2{width:40% !important;}
+.loan_applycg3{width:45% !important;}
+.loan_applytext .yearrate{padding: 0px; vertical-align: top; position: relative; top: -6px;}
+.loan_applytheme{font-size:12px;height:30px;line-height:30px;width:90%;margin-left: 60px; margin-bottom: 20px; margin-top: 10px; color:#9F9F9F;}
+/*label*/
+.loan_applyreadonly label,.loan_applytext label,.loan_applytextarea label,.loan_applydefault label,.loan_applydisabled label,.loan_applyremark label,.loan_applyselect label,.loan_applyother label{font-size:12px;float:right;width:80px;height:36px;display:block;line-height:36px;text-align:right;margin-right:20px;color:#9F9F9F;}
+/*input=text,textarea,select*/
+.loan_applyreadonly input{float:left;border:1px solid #ddd;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;line-height:24px;font-size:12px;color:#666;-moz-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;-ms-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;-o-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;-webkit-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;background:#fff;width:120px;height:24px;}
+.loan_applytext input,.loan_applytextarea textarea,.loan_applyselect select{border:1px solid #ccc;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;line-height:24px;font-size:12px;color:#636363;-moz-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;-ms-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;-o-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;-webkit-box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;box-shadow:1px 1px 3px #eee,1px 1px 3px #eee inset;background:#fff;}
+.loan_applytext input{float:left;height:22px;line-height:22px;width:154px; padding: 0px 5px;}
+#annualrate{ width:123px;}
+.loan_applydisabled input{float:left;height:24px;line-height:24px;font-size:12px;color:#666;background:transparent;width:70px;border-bottom:1px solid #aaa;}
+.loan_applytextarea textarea{float:left;width:684px;height:150px;margin-top:10px; line-height:22px; padding:5px;}
+.loan_applytext input:focus,.loan_applytextarea textarea:focus{border:1px solid #00a0e9;-moz-box-shadow:1px 1px 3px #a2d2e8,1px 1px 3px #fff inset;-ms-box-shadow:1px 1px 3px #a2d2e8,1px 1px 3px #fff inset;-o-box-shadow:1px 1px 3px #a2d2e8,1px 1px 3px #fff inset;-webkit-box-shadow:1px 1px 3px #a2d2e8,1px 1px 3px #fff inset;box-shadow:1px 1px 3px #a2d2e8,1px 1px 3px #fff inset;-moz-transition:all 0.4s ease 0.08s;-ms-transition:all 0.4s ease 0.08s;-o-transition:all 0.4s ease 0.08s;-webkit-transition:all 0.4s ease 0.08s;transition:all 0.4s ease 0.08s;}
+input.selferror{border:1px solid #f00;color:#f00;box-shadow:none;}
+input.selferror:focus{border:1px solid #f00;box-shadow:none;}
+.loan_applytext #loanamount{ width:123px;}
+/*select*/
+.loan_applyselect select{float:left;width:166px;height:24px;}
+.loan_applyselect option{color:#666;}
+/*table*/
+.remark_serverfee{width:519px;float:left;border-right:1px solid #ccc;border-bottom:1px solid #ccc;table-layout:fixed;border-collapse:collapse;empty-cells:show;font-size:12px;color:#666;margin:10px 0;background:#fff;}
+.remark_serverfee td{font-size:12px;color:#666;border-left:1px solid #ccc;border-top:1px solid #ccc;text-align:center;}
+/*p,div*/
+p.tipserror{position: relative;width:auto;height:14px;display:block;overflow:hidden;float:left;margin:5px 0 0 6px;background:#fff;font-size:12px;text-align:left;line-height:14px;color:#f00;}
+.loan_applytextarea p.tipserror{ min-width:200px; margin-top:3px;}
+.loan_applytextarea p.tipserror.tipssucc{ margin-top:0px;}
+p.tipssucc{position:relative; width:0px; height:0px;}
+.rate p.tipssucc{position: absolute;}
+.loan_explain{height:24px;line-height:24px;color:#999;float:left;margin-left:0px;}
+/*-----explain-----*/
+.loanamount p.tipserror{ width:0px; height:0px; display:none;position: absolute;}
+.explainwrap{width:0;*width:auto;height:20px;position:relative;left:0;top:0;z-index:10;}
+.loan_remark,.loan_remarklong{position:absolute;left:-230px;color:#fff;overflow:hidden;text-overflow:ellipsis;text-indent:10px;-moz-border-radius:2px;-ms-border-radius:2px;-o-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;display:none;z-index:50;}
+.loan_remark{top:0;width:300px;height:22px;line-height:22px;white-space:nowrap;background:#999 url(../../image/register/register_remarkbg.png) no-repeat 0 0;}
+.loan_remarklong{top:-10px;width:380px;height:44px;line-height:20px;background:#999 url(../../image/register/register_remarkbg.png) no-repeat 0 -29px;padding:0 5px 0 10px;}
+.loan_applycontent td .ratebtn{display:inline-block;background:#fff ;cursor:pointer;z-index:20; background: url(../../image/common/help.fw.png) no-repeat right top; padding-right: 12px;color: #9F9F9F;}
+.ratetips{position:absolute;left:120px;top:-30px;padding-top: 5px;z-index:100; background: url(../../image/common/tiparrow.fw.png) no-repeat center top;}
+.ratetips .arrow{ padding: 10px 10px 0px 10px; overflow: hidden; background: url(../../image/common/per60black.fw.png) repeat;}
+.ratetips p{height:20px;line-height:20px;float:left;text-align:center;font-size:12px;color:#fff; margin-bottom: 10px;}
+.ratetips table{background:#fff;width:600px;float:left;border-right:1px solid #ccc;border-bottom:1px solid #ccc;table-layout:fixed;border-collapse:collapse;empty-cells:show;font-size:12px;color:#666;}
+.ratetips table td{font-size:12px;color:#666;border-left:1px solid #ccc;border-top:1px solid #ccc;text-align:center;}
+/*checkbox,bottom*/
+.la_submit{font-family:"微软雅黑","Microsoft Yahei";float:left;width:116px;height:36px;margin:50px 0;font-size:14px;color:#fff;background:#ddd;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
+.la_submitsel{background:#fff url(../../image/common/register_submit.png) no-repeat 0 0;font-weight:bold;cursor:pointer;-moz-border-radius:0;-ms-border-radius:0;-o-border-radius:0;-webkit-border-radius:0;border-radius:0;}
+.la_submitsel:hover{background:#fff url(../../image/common/register_submit.png) no-repeat 0 -36px;}
+.la_agreexy{position:relative;left:0;top:0;width:0;height:0;}
+.la_agreexy div{width:13px;height:14px;background:#fff url(../../image/common/register_checkbox.png) no-repeat 0 0;overflow:hidden;cursor:pointer;position:absolute;left:0;top:4px;}
+.la_agreexy div.la_agreexysel{background:#fff url(../../image/common/register_checkbox.png) no-repeat 0 -14px;overflow:hidden;cursor:pointer;}
+.la_xy{float:left;margin-left:20px;width:200px;height:16px;*height:auto;line-height:16px;*line-height:auto;font-size:12px;color:#333;text-align:left;}
+.la_xy span{color:#f60;}
+/*div table*/
+#ratetips .table{ float:left; width:519px; background:#fff; border-color: #000;}
+.table{ border:1px solid #cecece; border-radius:6px;}
+.table .tr{ overflow: hidden; border-bottom:1px solid #cecece;}
+.table .tr.last, .table .tr.noborder{ border:none 0px;}
+.table .th, .table .td{ float:left; width:12%; text-align:center; font-size:12px; color:#636363; line-height:30px; border-right:1px solid #cecece;}
+.table .tr .td.last, .table .tr .td.noborder{ border:none 0px;}
+.table .td.first{ width:26%;}

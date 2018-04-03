@@ -1,0 +1,201 @@
+@charset "utf-8";
+/* CSS Document */
+.mainbox{
+	width:873px;}
+.bottomwrap{
+	margin-top:0px;}
+.tip{
+	font-size:12px;}
+.tip .content{
+	color:#646464;}
+.tip .closebtn{
+	float:right;
+	width: 15px;
+	height: 15px;
+	margin-top: 20px;
+	margin-right: 8px;
+	background:url(../../image/manage/icons_lyz.fw.png) no-repeat;
+	background-position:-97px -577px;
+	background-color: transparent;
+	text-indent:-9999px;
+	cursor:pointer;}
+.mainbox .tip{
+	width:834px;
+	height:55px;
+	margin-left:19px;
+	margin-bottom:10px;
+	line-height:55px;
+	background:#fff;
+	border:1px solid #ebebeb;
+	border-radius:5px;}
+.mainbox .tip label{
+	height:15px;
+	line-height:15px;
+	color:#9F9F9F;
+	margin:20px 0px 20px 15px;
+	background:url(../../image/manage/icons_lyz.fw.png) no-repeat;
+	padding-left:20px;
+	background-position:0px -1px;
+	display:block;
+	float:left;}
+
+.secbox{
+	width:834px;
+	margin-left:19px;}
+.sec_item{
+	border-bottom:1px solid #e7e7e7;}
+.sec_item:last-child{
+	border-bottom:none;}
+.sec_item .header_security{
+	height:90px;
+	line-height:90px;}
+.sec_item strong{
+	color:#434343;
+	font-family:"微软雅黑";
+	font-size:22px;
+	font-style:normal;
+	font-weight:lighter;
+	height: 40px;
+	line-height: 40px;
+	margin: 25px 0px;
+	display: block;
+	background:url(../../image/manage/icons_lyz.fw.png) no-repeat;
+	padding-left:50px;
+	float: left;}
+.sec_paw .header_security strong{
+	background-position:4px -21px}
+.sec_rn .header_security strong{
+	background-position:4px -59px}
+.sec_phone .header_security strong{
+	background-position:4px -106px}
+.sec_email .header_security strong{
+	background-position:4px -148px}
+.sec_tradepaw .header_security strong{
+	background-position:4px -190px}
+.sec_item .content{
+	color:#9f9f9f;
+	font-size:12px;
+	margin-left:232px;}
+.sec_item .header_security a{
+	font-size:12px;
+	color:#9F9F9F;
+	float:right;
+	margin-right:15px;}
+.sec_item .header_security a:hover,.sec_item .header_security a:active{
+	text-decoration:underline;}
+.sec_item a.gotoauth{
+	color:#E54127;}
+.sec_item .header_security .edit{
+	color:#009fe9;}
+.sec_item .authform{
+	margin-left:336px;
+	margin-bottom:20px;
+	display: none;}
+.sec_item .authform .changeedittype{
+	float: right;
+	font-family: "微软雅黑";
+	font-size: 12px;
+	margin-right: 60px;}
+.sec_item .authform input{
+	font-size:12px;
+	color:#9F9F9F;
+	width:164px;
+	height:20px;
+	border-radius:4px;
+	border:0px none;
+	box-shadow:0px 0px 2px #ccc;
+	padding-left: 5px;}
+.sec_item .authform input:focus{
+	box-shadow:0px 0px 2px #009FE9;
+	}
+.sec_item .authform span.value{
+	color: #9f9f9f;
+	font-size: 12px;}
+.sec_item .authform li{
+	margin-bottom:6px;
+	line-height: 30px;
+	height:30px;
+	overflow:hidden;}
+.sec_item .authform li.h22{
+	height: 20px;
+	line-height: 22px;}
+.sec_item .authform li.nomarginb{
+	margin-bottom:0px;}
+.sec_item .authform label{
+	display:block;
+	float:left;
+	width:5em;
+	height: 25px;
+	color: #9F9F9F;
+    font-family: 宋体;
+    font-size: 12px;
+	margin-right:10px;
+	text-align:right;}
+.sec_item .authform .authcode{
+	width:6em;}
+.sec_item .authform button{
+	width:85px;
+	height:27px;
+	line-height:27px;
+	margin-right:15px;
+	cursor:pointer;
+	border:0px none;
+	font-family:"微软雅黑";
+	font-size:12px;
+	color:#ddd;
+	border-radius: 4px;
+	background:url(../../image/manage/icons_lyz.fw.png) no-repeat;}
+.sec_item .authform button.submitbtn{
+	color:#fff;
+	background-position: -6px -569px;}
+.sec_item .authform button.cancle{
+	color:#555;
+	background-position: -6px -534px;}
+.sec_item .authform button.submitbtn:hover{
+	box-shadow:0px 0px 3px #009FE9;
+	}
+.sec_item .authform button.cancle:hover{
+	box-shadow:0px 0px 3px #D3D2D2;
+	}
+.sec_item .getauthcode{
+	font-size:12px; 
+	font-family:"微软雅黑";
+	margin-left:15px;}
+.closebtn{
+	border:0px none;}
+
+
+/*密码强度样式*/
+.pawlook_label{
+	float: left;
+	font-size: 12px;
+	color: #9F9F9F;}
+
+.pawlook{
+	display:block;
+	float:left;
+	margin-top:5px;
+	width:73px;
+	height:12px;
+	background:url(../../image/manage/icons_lyz.fw.png) no-repeat;
+	background-position:-6px -397px;}
+.pawlook.weak{
+	background-position:-6px -413px;}
+.pawlook.mid{
+	background-position:-6px -431px;}
+.pawlook.strength{
+	background-position:-6px -450px;}
+.txttip{
+	float: left;
+	font-size: 12px;
+	font-family: 微软雅黑;
+	margin-right: 5px;}
+.sec_item .authform .tip_label{
+	color:#E54127;
+	margin-right:0px;
+	}
+.linetip{
+	font-size:12px;
+	color: #cdcdcd;
+	display: inline-block;
+	float: left;}

@@ -1,0 +1,209 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
+/*常用组件或模块*/
+.store-showwrap,
+.common1-wrap {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  padding: 0 10px;
+}
+/*--主页显示模块--*/
+.store-showwrap h2 {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: normal;
+  border-bottom: 1px solid #ddd;
+  background: #f2f2f2;
+  margin: 5px 0 0 0;
+}
+.store-showwrap ul {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  background: #ffffff;
+  margin: 0 0 5px 0;
+}
+.store-showwrap li {
+  width: 33.33%;
+  float: left;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 4px 2px 0 2px;
+}
+.store-showwrap li a {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+.store-showwrap li img {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: auto;
+  display: inline-block;
+  margin: 0 auto;
+  vertical-align: top;
+  border: 1px solid #cccccc;
+}
+.store-showwrap li span {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 2px 2px 5px 2px;
+  text-align: center;
+  line-height: 18px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #666666;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+}
+/*--店铺信息--*/
+.common1-wrap {
+  min-height: 200px;
+  background: #ffffff;
+}
+.common1-wrap li {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  margin: 5px 0;
+  padding: 5px 10px;
+  word-break: break-all;
+  word-wrap: break-word;
+  border: 1px solid #cccccc;
+}
+.common1-wrap li:nth-child(2n) {
+  background: #f2f2f2;
+}
+.common1-wrap li .scoreinfo {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  padding: 2px 0;
+}
+.common1-wrap li .scoreinfo span {
+  padding: 0 0 0 5px;
+  font-size: 12px;
+  color: #bbbbbb;
+}
+.common1-wrap li .scoreinfo strong {
+  font-weight: normal;
+  padding: 0 0 0 5px;
+}
+.common1-wrap li .scoreinfo em {
+  font-style: normal;
+  color: #d91616;
+  padding: 0 0 0 5px;
+}
+.scorewrap {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  height: 36px;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 10px 0;
+  padding: 10px 10px;
+  line-height: 16px;
+  color: #666666;
+  font-size: 14px;
+  text-align: left;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+}
+.scorewrap div {
+  width: 70px;
+  height: 16px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+}
+.scorewrap p {
+  width: 70%;
+  padding: 0 0 0 70px;
+  background: #f2f2f2;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-clip: content-box;
+}
+.scorewrap p span {
+  width: auto;
+  float: left;
+  background: #d91616;
+}
+.scorewrap em {
+  color: #d91616;
+  padding: 0 0 0 5px;
+  font-style: normal;
+  font-size: 12px;
+}
+.scorewrap p,
+.scorewrap p span {
+  height: 10px;
+  display: inline-block;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.scorecompare {
+  display: inline-block;
+  vertical-align: middle;
+  height: 16px;
+  text-align: left;
+  line-height: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #d91616;
+  width: 100px;
+  font-size: 14px;
+}
+.scorecompare div {
+  background: #d91616;
+  color: #ffffff;
+  text-align: center;
+  width: 55px;
+  height: 16px;
+  display: inline-block;
+  margin: 0 0 0 5px;
+}

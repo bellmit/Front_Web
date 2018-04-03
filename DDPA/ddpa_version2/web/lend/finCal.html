@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>出借计算器 – 我要理财 - 贷贷平安(ddpa.com) – 最值得信赖的P2P网贷平台</title>
+<meta name="keywords" content="出借计算器,利息计算器,贷款计算器,p2p理财,p2p贷款,网贷平台,贷贷平安" />
+<meta name="description" content="贷贷平安采用的是通用的“等额本息还款法”，即出借人每月以相等的金额赎回出借本息，也是银行房贷等采用的方法。使用出借利息计算器，能帮您计算每月需要偿还的本息情况；同时，一份完整的本息偿还时间表，让您能更直观地了解还款本息详情(计算中采用四舍五入)。" />
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/manage/manage_layout.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/jquery.blockUI.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/Validform.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/jquery.selectbox.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/proLoan/LoanCal.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/js/common/Validform_v5.3.2_min.js"></script>
+<script src="../../res/js/common/jquery.blockUI.js"></script>
+<script src="../../res/js/common/BuscheckFuns.js"></script>
+<script src="../../res/js/common/jquery.selectBox.js"></script>
+<script src="../../res/js/manage/manage_menu.js"></script>
+<script src="../../res/plugins/common/jquery.placeholder.1.3.min.js"></script>
+<script src="../../res/js/proLoan/Loancal.js"></script>
+</head>
+
+<body>
+    <div class="loanCal container">
+    	<h1 class="fin">理财计算器</h1>
+    	<div class="innerbox">
+        	<div class="calform">
+            	<form name="calform" method="post" action="#">
+                    <div class="tr">
+                    	<div class="cell">
+                        	<label for="">借款金额</label>
+                        	<input type="text" datatype="n3K_50W" placeholder="3,000-500,000之间" maxlength="9" name="" nullmsg="请输入借款金额" errormsg="请输入3000-500000之间，两位小数" />&nbsp;<span class="unit">元</span>
+                            <div class="Validform_checktip"></div>
+                        </div>
+                        <div class="cell">
+                        	<label>年利率</label>
+                        	<input type="text" name="" placeholder="9-24之间" datatype="rate" maxlength="5" nullmsg="请输入9-24之间，两位小数" errormsg="请输入9-24之间，两位小数" />&nbsp;<span class="unit">%</span>
+                            <div class="Validform_checktip"></div>
+                        </div>
+                    </div>
+                    <div class="tr">
+                    	<div class="cell">
+                        	<label>借款限期</label>
+                        	<input type="text" name="" placeholder="1-36之间" datatype="deadline" maxlength="2" errormsg="请输入1-36之间的整数" nullmsg="请输入1-36之间的整数" />&nbsp;<span class="unit">月</span>
+                            <div class="Validform_checktip"></div>
+                        </div>
+                    </div>
+                    <div class="tr">
+                    	<div class="cell">
+                        	<label>还款方式</label>
+                            <span class="value">等额本息</span>
+                        </div>
+                    </div>
+                    <div><button type="submit">立即计算</button></div>
+                </form>
+            </div>
+            <div class="result">
+            	<div class="glance">
+                	<p>理财总览</p>
+                	<table>
+                    	<tr>
+                        	<td class="label">每月收本息</td>
+                            <td class="value">￥12,000.50</td>
+                            <td class="label">月利率</td>
+                            <td class="value">1.99%</td>
+                            <td class="other"></td>
+                        </tr>
+                        <tr>
+                        	<td class="label">待收本息总计</td>
+                            <td class="value">￥5,000.50</td>
+                            <td class="other" colspan="2">您将在<span class="dec">6个月</span>收回本息总额</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="returnDetail">
+                	<p>还款详情</p>
+                	<table>
+                    	<thead>
+                        	<tr>
+                            	<th>月份</th>
+                                <th>月收本息</th>
+                                <th>月收本金</th>
+                                <th>月收利息</th>
+                                <th>待收本息余额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>第1个月</td>
+                                <td>2,100.00</td>
+                                <td>1,020.00</td>
+                                <td>1,000.00</td>
+                                <td>52,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>第2个月</td>
+                                <td>2,100.00</td>
+                                <td>1,020.00</td>
+                                <td>1,000.00</td>
+                                <td>52,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>第3个月</td>
+                                <td>2,100.00</td>
+                                <td>1,020.00</td>
+                                <td>1,000.00</td>
+                                <td>52,000.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <p><a href="javascript:;" class="gotoloan" onclick="checkAuth()">立即投资</a></p>
+            <p class="tipholder">
+            	<span class="tiplabel">等额本息</span>
+              借款人每月以相等的金额偿还借款本息，也是银行房贷等采用的方法。因计算中存在四舍五入，最后一期还款金额与之前略有不同。</p>
+        </div>
+    </div>
+</body>
+</html>	

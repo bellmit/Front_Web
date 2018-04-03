@@ -1,0 +1,69 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	margin:0px;
+	padding:0px;
+	font-size:12px;
+	background:#E7E7E7;
+	}
+#yaojianju_web{
+	width:1000px;
+	margin:0 auto;
+	}
+#web_header{
+	background:url(img/head_bg.jpg) no-repeat;
+	height:172px;
+	}
+#web_menubox{
+	height:40px;
+    background:url(img/menubox_bg.jpg) repeat-x;
+	}
+#web_menubox ul{
+	list-style:none;
+    margin:0px;
+    padding:0px;
+	}
+#web_menubox ul li .gap {
+    float:left;
+    width:1px;
+    height:40px;
+	background:url(img/gap.jpg) no-repeat;
+}
+#web_menubox ul li a {
+    float:left;
+    width:140px;
+    height:40px;
+    line-height:43px;
+    font-size:15px;
+    font-weight:bold;
+    text-align:center;
+    text-decoration:none;
+    color:#FFF;
+	display:block;
+}
+#web_menubox ul li a:hover {
+    background: url(img/hover.jpg) no-repeat;
+}
+#web_mainer{
+	border-left:1px solid #B0B0B0;
+	border-right:1px solid #B0B0B0;
+	background: url(img/bbg3.jpg) no-repeat;
+}
+#list_list {
+	width:998px;
+	height:685px;
+}
+#web_footer{
+	background:url(img/footer_bg.jpg) repeat-x;
+	height:80px;
+	text-align:center;
+}
+.copyright{
+	padding-top:20px;
+}
+.copyright a{
+	color:#fff;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+}

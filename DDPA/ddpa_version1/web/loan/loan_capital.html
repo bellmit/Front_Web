@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>贷贷平安,贷贷平安借款人信息--资产信息</title>
+<meta name="description" content="贷贷平安借款人信息,贷贷平安借款人信息--资产信息,资产信息,贷贷平安借款">
+<meta name="keywords" content="贷贷平安借款人信息,贷贷平安借款人信息--资产信息,资产信息,贷贷平安借款">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/common.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/loan/loan_layout.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/loan/loan_capital.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/js/loan/loan_capital.js"></script>
+</head>
+<body>
+	<div class="header_wrap">
+    	<div class="header">
+       		<div class="head_logo"></div>
+            <ul class="head_submenu">
+            	<li class="head_submenu1"><a href="#" title=""></a></li>
+                <li class="head_submenu2"><a href="#" title=""></a></li>
+                <li class="head_submenu3"><a href="#" title=""></a></li>
+                <li class="head_submenu4"><a href="#" title=""></a></li>
+                <li class="head_submenu5"><a href="#" title=""></a></li>
+            </ul>
+            <ul class="head_login">
+            	<li class="head_login1"><a href="#" title="">用户登录</a></li>
+            	<li class="head_login2"><a href="#" title="">快速注册</a></li>
+            </ul>
+            <ul class="head_mainmenu">
+            	<li><a href="#" title="">我要借贷</a></li>
+                <li><a href="#" title="">我要理财</a></li>
+                <li><a href="#" title="">新手引导</a></li>
+                <li><a href="#" title="">本金保障</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="loan_banner">
+    	<img src="../../res/image/loan/loan_banner.jpg" alt="loan apply banner">
+        <div class="loan_bannershadow"><div></div></div>
+    </div>
+	<div class="loan_poswrap"><span>我要借款</span><span>工薪贷</span><span>借款人信息</span><span class="loan_curpos">个人信息</span></div>
+	<div class="loan_procedurewrap2">
+        <a href="#" class="procedure1" title="">1:借款申请</a>
+        <a href="#" class="procedure2" title="">2:借款人信息</a>
+        <a href="#" class="procedure3" title="">3:审&nbsp;&nbsp;核</a>
+        <a href="#" class="procedure4" title="">4:筹&nbsp;&nbsp;款</a>
+        <a href="#" class="procedure5" title="">5:放&nbsp;&nbsp;款</a>
+    </div>
+    <div class="container">
+    	<div class="loan_stepwrap2">
+            <ul>
+                <li><a href="#" title="" class="">个人信息</a></li>
+                <li><a href="#" title="" class="">工作信息</a></li>
+                <li><a href="#" title="" class="curstep">资产信息</a></li>
+                <li><a href="#" title="" class="">资料信息</a></li>
+            </ul>
+        </div>
+        <form method="post" action="#" id="loan_capitalaction">
+    	<table class="loan_capitalcontent">
+        	<colgroup>
+            	<col class="loan_capitalcg1"/>
+                <col class="loan_capitalcg2"/>      
+            </colgroup>
+            <tr><td colspan="2" style="height:50px;"></td></tr>
+            <tr>
+            	<td><label>房产信息</label></td>
+                <td>
+                <input type="hidden" name="House" id="house" value=""/>
+                <input type="hidden" name="HouseLoan" id="houseloan" value=""/>
+                <div class="radiowrap">
+                	<p>是否有房:</p>
+                    <ul id="house_radio">
+                        <li class="">有</li>
+                        <li class="">无</li>
+                    </ul>
+                </div>
+                <div class="radiowrap">
+                	<p>有无房贷:</p>
+                    <ul id="houseloan_radio">
+                        <li class="">有</li>
+                        <li class="">无</li>
+                    </ul>
+                </div>
+                </td>
+            </tr>
+            <tr>
+            	<td><label>车产信息</label></td>
+                <td>
+                <input type="hidden" name="Car" id="car" value=""/>
+                <input type="hidden" name="CarLoan" id="carloan" value=""/>
+                <div class="radiowrap">
+                	<p>是否有车:</p>
+                    <ul id="car_radio">
+                        <li class="">有</li>
+                        <li class="">无</li>
+                    </ul>
+                </div>
+                <div class="radiowrap">
+                	<p>有无车贷:</p>
+                    <ul id="carloan_radio">
+                        <li class="">有</li>
+                        <li class="">无</li>
+                    </ul>
+                </div>
+                </td>
+            </tr>
+            <tr>
+            	<td>&nbsp;</td>
+                <td><input type="button" class="pre_submit"  value="上一步" /><input type="submit" class="next_submit"  value="下一步" /></td>
+            </tr>
+            <tr><td colspan="2" style="height:50px;"></td></tr>
+        </table>
+        </form>
+    	<div class="loan_layoutb"></div>
+    </div>
+    <div class="footer_wrap">
+    	<div class="footer">
+        	<ul class="foot_join">
+            	<li><a href="#" title="">关于我们</a></li>
+                <li><a href="#" title="">媒体关注</a></li>
+                <li><a href="#" title="">联系我们</a></li>
+                <li><a href="#" title="">加入我们</a></li>
+                <li><a href="#" title="">合作伙伴</a></li>
+                <li class="joinlast"><a href="#" title="">意见反馈</a></li>
+            </ul>
+        	<div class="foot_theme"><p>安全：银行风控专家把关</p><p>专业：线下5年小额贷款经验</p><p>真实：所有借款均真实有效</p></div>
+            <p class="foot_phone">服务热线：400-990-6088&nbsp;（周一至周日&nbsp;9:00--21:00）</p>
+            <p class="foot_copyright">Copyright&copy;2013-2014&nbsp;版权所有：深圳市贷贷平安网络信息有限公司</p>
+            <ul class="foot_webrecord">
+            	<li>粤ICP备09157619号</li>
+                <li><a href="#" title="">国际联网备案</a></li>
+                <li><a href="#" title="">深圳网警备案</a></li>
+                <li><a href="#" title="">中国互联网协会</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="keywords" content="{label_Keyword}"/>
+<title>{label_title}</title>
+<link href="Css/base.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<script language="JavaScript">
+function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
+{var arVersion = navigator.appVersion.split("MSIE")
+   var version = parseFloat(arVersion[1])
+   if ((version >= 5.5) && (document.body.filters)) 
+   {
+      for(var j=0; j<document.images.length; j++)
+      {
+         var img = document.images[j]
+         var imgName = img.src.toUpperCase()
+         if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+         {
+            var imgID = (img.id) ? "id='" + img.id + "' " : ""
+            var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+            var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+            var imgStyle = "display:inline-block;" + img.style.cssText
+            if (img.align == "left") imgStyle = "float:left;" + imgStyle
+            if (img.align == "right") imgStyle = "float:right;" + imgStyle
+            if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+            var strNewHTML = "<span " + imgID + imgClass + imgTitle
+            + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+            + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+            + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>"
+            img.outerHTML = strNewHTML
+            j = j-1
+         }
+      }
+   }   
+}
+window.attachEvent("onload", correctPNG);
+</script> 
+<div align="center">
+<div id="container" align="center">
+{IncludeFile_top.html}
+
+  <div class="ping">
+    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="1000" height="320">
+      <param name="movie" value="Images/banner.swf" />
+      <param name="quality" value="high" />
+	  <param name="wmode" value="transparent"/>
+      <embed src="Images/banner.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="1000" height="320"></embed>
+    </object>
+  </div>
+  
+  <div><img src="Images/cv_03.png" /></div>
+  
+  
+
+  <table width="975" height="50" border="0" align="center" cellpadding="0" cellspacing="0" class="mj">
+    <tr>
+      <td width="756" align="left" valign="middle">&nbsp;&nbsp;&nbsp;&nbsp;{label_classNaviPic}</td>
+      <td width="219" align="left" valign="middle"><img src="Images/ii.jpg" width="7" height="7" />&nbsp;{label_currentPosition}</td>
+    </tr>
+  </table>
+  
+  <table width="975" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="185" height="450" valign="top" class="fws" id="subtd_menu">
+	  
+<ul>
+<li><a href="/index.asp?classId=31" class="Selected" >公司简介</a></li>
+<li><a href="/index.asp?classId=32"  >企业文化</a></li>
+<li><a href="/index.asp?classId=33"  >组织架构</a></li>
+<li><a href="/index.asp?classId=34"  >企业愿景</a></li>
+<li><a href="/index.asp?classId=35"  >联系我们</a></li>
+<li><a href="../flash-book/index.html"  target="_blank">企业宣传</a></li>
+</ul>
+	  
+	  </td>
+      <td align="left" valign="top"><table width="96%" border="0" cellpadding="0" cellspacing="0" class="cok">
+        <tr>
+          <td>{label_autoblock}</td>
+        </tr>
+      </table></td>
+    </tr>
+  </table>
+</div>
+{IncludeFile_bottom.html}
+</div>
+</body>
+</html>

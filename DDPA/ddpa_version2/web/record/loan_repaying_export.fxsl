@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+	<table width="70%" border="1" cellspacing="0" cellpadding="0"　style="border-collapse:collapse">  
+		<tr><td colspan="9" align="center">还款中的借款</td></tr>
+		<tr>
+			<td align="center">借款标题</td>
+            <td align="center">借款金额</td>
+            <td align="center">年利率</td>
+            <td align="center">还款方式</td>
+            <td align="center">借款利息</td>
+            <td align="center">月还款额</td>
+            <td align="center">实际年化率</td>
+            <td align="center">待还/总期数</td>
+            <td align="center">下个还款日</td>
+		</tr>
+		<#if recordList??>
+		<#list recordList as record>
+		<tr>
+			<td><#if record.productName??>${record.productName}</#if></td>
+			<td><#if record.investAmount??>${record.investAmount?string("###,##0.00")}</#if></td>
+			<td><#if record.expectedRate??>${record.expectedRate}</#if>%</td>
+			<td>${record.repayTypeStr!''}</td>
+			<td><#if record.loanInterest??>${record.loanInterest?string("###,##0.00")}</#if></td>
+			<td><#if record.repayAmount??>${record.repayAmount?string("###,##0.00")}</#if></td>
+			<td><#if record.annualRate??>${record.annualRate}</#if>%</td>
+			<td>`<#if record.paidPeriod??>${record.paidPeriod?string("##0")}</#if>`/`<#if record.loanPeriod??>${record.loanPeriod?string("##0")}</#if>`</td>
+			<td><#if record.dateOrTime??>${record.dateOrTime?string("yyyy-MM-dd")}</#if></td>
+		</tr>
+		</#list> 
+		</#if>
+		<#if sumRepaying?exists>
+		<tr>
+			<td>合计</td>
+			<td><#if sumRepaying.investAmount??>${(sumRepaying.investAmount)?string("###,##0.00")}</#if></td>
+			<td><#if sumRepaying.expectedRate??>${(sumRepaying.expectedRate)?string("##0.00")}%</#if></td>
+			<td></td>
+			<td><#if sumRepaying.loanInterest??>${(sumRepaying.loanInterest)?string("###,##0.00")}</#if></td>
+			<td><#if sumRepaying.repayAmount??>${(sumRepaying.repayAmount)?string("###,##0.00")}</#if></td>
+			<td><#if sumRepaying.annualRate??>${(sumRepaying.annualRate)?string("##0.00")}%</#if></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		</#if>
+	</table> 
+</body>
+</html>

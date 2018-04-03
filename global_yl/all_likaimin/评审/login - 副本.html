@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<link href="css.css" type="text/css" rel="stylesheet" />
+<title>无标题文档</title>
+<script type="text/javascript">
+function get(){
+var args = arguments, len = args.length, name = args[0], isStr = typeof name == 'string';
+var obj = document.getElementById(name);
+if(!len) return null;
+if(!args[1]) return isStr && (obj || document.getElementsByTagName(name.toUpperCase()));
+return isStr && typeof args[1] == 'string' && obj && obj.getElementsByTagName(args[1].toUpperCase());
+}
+function toArray(){
+var args = arguments, len = args.length, result = [];
+if(len){
+if(len > 1) result = Array.prototype.slice.call(args, 0);
+else{
+var list = args[0], type = typeof list;
+if(list && (type == 'object' || type == 'function'))
+for(var i = 0, len = list.length; i < len; i++) result.push(list[i]);
+if(type == 'number' || type == 'string') result.push(list);
+}
+}
+return result;
+}
+function each(a, f){
+var $break, len = a.length;
+for(var i = 0; i < len; i++){
+$break = f.call(a[i], i, a);
+if($break === true) break;
+}
+return a;
+}
+function setVisible(m, c){
+var id = this.childNodes[0].nodeValue;
+if(this.className == m[2] ) return;
+each(toArray(get(m[0], m[1])), function(){ this.className = '' });
+each(toArray(get(c[0], c[1])), function(){ this.className = '' });
+this.className = m[2];
+get(id).className = c[2];
+}
+function init(o){
+var menus = o.menulist.split('/'), contents = o.contentlist.split('/');
+each(toArray(get(menus[0], menus[1])), function(){
+var id = this.childNodes[0].nodeValue;
+this.className == menus[2] && id && get(id) && (get(id).className = contents[2]);
+this.onclick = function(){ setVisible.call(this, menus, contents); }
+});
+}
+window.onload = function(){
+init({
+menulist: 'tag/a/on',
+contentlist: 'news_box/div/thisclass'
+});
+}
+</script>
+</head>
+
+<body>
+<div class="mon">
+  
+  
+  <div id="news_box">
+<ul id="tag">
+<li><a class="on">管理登录</a></li>
+<li><a>用户登录</a></li>
+</ul>
+
+<div id="管理登录">
+   <form id="form1" method="post" action="">
+        <table width="270" border="0" style="line-height:38px; float:right; font-size:14px; margin-top:40px; color:#FFFFFF;">
+        <tr>
+          <td colspan="3">管理员：
+          <input type="text" name="textfield" /></td>
+        </tr>
+        <tr>
+          <td colspan="3">密&nbsp;&nbsp;码：
+          <input type="text" name="textfield2" /></td>
+        </tr>
+        <tr>
+          <td width="77">验证码：</td>
+          <td width="68"><input name="textfield3" type="text" size="6" /></td>
+          <td width="148">5275272</td>
+        </tr>
+        <tr>
+          <td colspan="3" align="center"><input type="submit" name="Submit" value="" / style="width:80px; height:28px; background:url(images/hd_10.png) no-repeat; border:0;">&nbsp;&nbsp;&nbsp; <input type="submit" name="Submit2" value="" / style="width:80px; height:28px; background:url(images/hd_12.png) no-repeat; border:0;"></td>
+        </tr>
+      </table>      
+   </form>
+</div>
+
+<div id="用户登录">
+      <form id="form1" method="post" action="">
+        <table width="270" border="0" style="line-height:38px; float:right; font-size:14px; margin-top:40px; color:#FFFFFF;">
+        <tr>
+          <td colspan="3">用&nbsp;&nbsp;户：
+          <input type="text" name="textfield" /></td>
+        </tr>
+        <tr>
+          <td colspan="3">密&nbsp;&nbsp;码：
+          <input type="text" name="textfield2" /></td>
+        </tr>
+        <tr>
+          <td width="77">验证码：</td>
+          <td width="68"><input name="textfield3" type="text" size="6" /></td>
+          <td width="148">5275272</td>
+        </tr>
+        <tr>
+          <td colspan="3" align="center"><input type="submit" name="Submit" value="" / style="width:80px; height:28px; background:url(images/hd_10.png) no-repeat; border:0;">&nbsp;&nbsp;&nbsp; <input type="submit" name="Submit2" value="" / style="width:80px; height:28px; background:url(images/hd_12.png) no-repeat; border:0;"></td>
+        </tr>
+      </table>      
+   </form>
+</div>
+
+</div> 
+  
+  
+</div>
+</body>
+</html>

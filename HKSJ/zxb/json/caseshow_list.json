@@ -1,0 +1,124 @@
+{
+	"caseList":[{
+		"space":"案例简介",
+		"remark":"这些装饰品可以有多种风格，但空间中的主体装 饰 物还 是中 国 画 、 宫 灯和紫砂陶 等传统饰物。这些 装饰物数量不多，在空间中却能起到 画 龙点 睛的作用"
+	},{
+		"space":"客厅",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee19.jpg",
+				"subsetRemark":"高端、大气、上档次，漂亮，真漂亮，贼漂亮"
+		},{
+				"url":"../../images/marquee/marquee20.jpg",
+				"subsetRemark":"一个老去的国度"
+		}]
+	},{
+		"space":"卧室",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee1.jpg",
+				"subsetRemark":"奢华不见了，浪漫 将之取代"
+		},{
+				"url":"../../images/marquee/marquee2.jpg",
+				"subsetRemark":"重在对 自然的表现，但 不同的田园有不同的自然"
+		}]
+	},{
+		"space":"餐厅",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee3.jpg",
+				"subsetRemark":"沉醉在午后花影藤风"
+		}]
+	},{
+		"space":"厨房",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee4.jpg",
+				"subsetRemark":"行走在流行时尚前沿"
+		}]
+	},{
+		"space":"卫生间",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee5.jpg",
+				"subsetRemark":"整个立体形式 都与有条不紊 的、有 节奏的曲线融为一体"
+		},{
+				"url":"../../images/marquee/marquee5.jpg",
+				"subsetRemark":"再次泛起心里无数的思念"
+		}]
+	},{
+		"space":"阳台",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee7.jpg",
+				"subsetRemark":"愿你此刻可会知，是我衷心的说声"
+		},{
+				"url":"../../images/marquee/marquee8.jpg",
+				"subsetRemark":"喜欢你，那双眼动人，笑声更迷人"
+		},{
+				"url":"../../images/marquee/marquee9.jpg",
+				"subsetRemark":"愿再可，轻抚你，那可爱面容"
+		}]
+	},{
+		"space":"书房",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee10.jpg",
+				"subsetRemark":"遗忘从此不再看到颤抖的伤痕"
+		},{
+				"url":"../../images/marquee/marquee11.jpg",
+				"subsetRemark":"由曲线 和非对称线条构成"
+		},{
+				"url":"../../images/marquee/marquee12.jpg",
+				"subsetRemark":"线 条 有 的柔美雅致，有的遒劲而富于节奏感"
+		}]
+	},{
+		"space":"玄关",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee13.jpg",
+				"subsetRemark":"中式风格是比较自由的 ，装饰品可以是绿色植物、布艺、装饰画，以及不同样式的灯 具 等"
+		},{
+				"url":"../../images/marquee/marquee14.jpg",
+				"subsetRemark":"现代中式风格是用简约的笔触构筑了空间的筋骨"
+		}]
+	},{
+		"space":"儿童房",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee15.jpg",
+				"subsetRemark":"其中细节赋予中式元素，看似简单平静 的现代简 约装饰中却蕴藏着典型的中式风格"
+		},{
+				"url":"../../images/marquee/marquee16.jpg",
+				"subsetRemark":"中式装饰风格的别墅住宅中，可以大面积使用 留 白的手法，再点缀气 宇不 凡的雕花花片"
+		}]
+	},{
+		"space":"衣帽间",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee17.jpg",
+				"subsetRemark":"或中式花格，或摆放精湛的中式手艺品，中式宫灯，中式瓷灯，古典风格 家具，丝绸绣花靠垫都是典型的中式风格元素"
+		}]
+	},{
+		"space":"花园",
+		"imageItem":[{
+				"url":"../../images/marquee/marquee18.jpg",
+				"subsetRemark":"强调以华丽的装饰、浓烈的色彩、精美的造型达到雍容华贵的装饰效果"
+		}]
+	}]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

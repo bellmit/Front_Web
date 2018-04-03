@@ -1,0 +1,16 @@
+/* CSS Document */
+.test_wrap{width:100%;min-width:1000px;background:#fff;}
+.model_wrap{width:800px;margin:0 auto;padding:50px 0;}
+.user_ui,.loan_ui{float:left;width:400px;height:auto;}
+.user_reg,.user_login,.loan_person,.loan_ent{width:250px;height:80px;display:block;margin:10px auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:80px;text-align:center;font-family:"微软雅黑","Microsoft Yahei";font-size:20px;border:1px solid #999;background:#f3f3f3;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+.user_reg:hover,.user_login:hover,.loan_person:hover,.loan_ent:hover{background:#e3e3e3;-moz-transition:all ease-in 0.4s 0.05s;-ms-transition:all ease-in 0.4s 0.05s;-o-transition:all ease-in 0.4s 0.05s;-webkit-transition:all ease-in 0.4s 0.05s;transition:all ease-in 0.4s 0.05s;}
+.user_reg{}
+.user_login{}
+.loan_person{}
+.loan_ent{}
+
+
+
+
+
+

@@ -1,0 +1,287 @@
+///组件--底部
+///作者：易品
+
+///*--底部--*/
+.footer-wrap{
+	width:100%;
+	margin:60px 0 0 0;
+	min-width:1190px;
+}
+
+.footer-linkwrap{
+	.layout-float-base;
+	background:@color-gray7;
+	border-top:1px solid @color-gray5;
+	padding:10px 0 50px 0;
+	>h3{
+		margin:0 auto;
+		height:30px;
+		width:1190px;
+		font-size:@font-size-small;
+		text-align:left;
+		line-height:30px;
+		color:@color-gray2;
+		border-bottom:1px solid @color-gray4;
+		a{
+			float:right;
+			color:@color-gray3;
+			display:e('inline-block;*+margin-top:-30px;');
+		}
+	}
+	>div{
+		width:1190px;
+		margin:0 auto;
+		a{
+			display:inline-block;
+			padding:0 10px 0 0;
+			color:@color-gray2;
+			font-size:@font-size-small;
+			&:hover{
+				color:@color-orange1;
+			}
+		}
+	}
+}
+
+.footer-infowrap{
+	.layout-float-base;
+	background:@color-gray9;
+	border-top:2px solid @color-orange1;
+	padding:20px 0;
+}
+
+.footer-content1,
+.footer-content2{
+	width:1190px;
+	margin:0 auto;
+	padding:0 0 20px 0;
+	&:after{
+		content:'';
+		clear:both;
+		display:block;
+		width:100%;
+	}
+}
+
+.footer-content1{
+	border-bottom:1px solid darken(@color-gray8,10%);
+}
+
+.footer-content2{
+	p{
+		float:left;
+		margin:10px 0 5px 0;
+		width:100%;
+		height:20px;
+		font-size:@font-size-small;
+		color:@color-gray3;
+		text-align:center;
+		line-height:20px;
+	}
+	div{
+		width:100%;
+		float:left;
+		margin:20px 0 0 0;
+		text-align:center;
+		a{
+			display:inline-block;
+			margin:0 5px;
+			overflow:hidden;
+		}
+	}
+	.info-credible1{
+	width:28px;
+	height:28px;
+	background:url(../images/icons.png) -355px 0 no-repeat;
+}
+	.info-credible2{
+		width:90px;
+		height:32px;
+		background:url(../images/icons.png) -383px 0 no-repeat;
+	}
+	.info-credible3{
+		width:26px;
+		height:28px;
+		background:url(../images/icons.png) -473px 0 no-repeat;
+	}
+}
+
+.footer-infobox1{
+	.layout-base(50%);
+	float:e('left;*+margin:0 0 0 -2px;');
+	>div{
+		.layout-float-base(33%);
+		h5,a{
+			font-size:@font-size-base;
+			width:100%;
+			float:left;
+			height:20px;
+			line-height:20px;
+			white-space:nowrap;
+			overflow:hidden;
+			text-overflow:ellipsis;
+		}
+		h5{
+			color:@color-white;
+		}
+		a{
+			color:@color-gray3;
+			margin:2px 0;
+			&:hover{
+				text-decoration:underline;
+			}
+		}
+	}
+}
+
+.footer-infobox2,
+.footer-infobox3{
+	.layout-base(25%);
+	float:e('left;*+margin:0 0 0 -2px');
+	border-left:1px solid @color-gray2;
+}
+
+.footer-infobox2{
+		>div{
+			width:80%;
+			margin:0 auto;
+			text-align:left;
+			padding:20px 0 20px 0;
+			h3,
+			p,
+			span{
+				float:left;
+				width:100%;
+				display:inline-block;
+			}
+			h5{
+				font-size:@font-size-base;
+				color:@color-white;
+			}
+			p{
+				font-size:@font-size-base + 10;
+				color:@color-red3;
+			}
+			span{
+				color:@color-gray3;
+				font-size:@font-size-base;
+			}
+		}
+}
+
+.footer-infobox3{
+	>dl{
+		width:45%;
+		float:left;
+		margin:0 0 0 20px;
+		dt{
+			font-size:@font-size-base;
+			width:100%;
+			float:left;
+			white-space:nowrap;
+			height:20px;
+			line-height:20px;
+			color:@color-white;
+		}
+		dd{
+			width:100%;
+			float:left;
+			a{
+				color:@color-gray3;
+				float:left;
+				width:100%;
+				height:20px;
+				line-height:20px;
+				margin:5px 0;
+				display:block;
+				font-size:@font-size-base;
+				span{
+					display:inline-block;
+					overflow:hidden;
+					vertical-align:middle;
+					margin:0 3px 0 0;
+				}
+			}
+		}
+	}
+	.xlwb{
+		span{
+			width:16px;
+			height:12px;
+			background:url(../images/icons.png) -309px 0 no-repeat;
+		}
+		&:hover{
+			color:#d6332a;
+			span{
+				background:url(../images/icons.png) -309px -12px no-repeat;
+			}
+		}
+	} 
+	.txwb{
+		span{
+			width:14px;
+			height:15px;
+			background:url(../images/icons.png) -325px 0 no-repeat;
+		}
+		&:hover{
+			color:#47adcf;
+			span{
+				background:url(../images/icons.png) -325px -15px no-repeat;
+			}
+		}
+	} 
+	.qqkj{
+		span{
+			width:16px;
+			height:14px;
+			background:url(../images/icons.png) -339px 0 no-repeat;
+		}
+		&:hover{
+			color:#eaaf00;
+			span{
+				background:url(../images/icons.png) -339px -14px no-repeat;
+			}
+		}
+	}
+	>div{
+		width:45%;
+		float:right;
+		a{
+			width:90px;
+			height:90px;
+			display:block;
+			overflow:hidden;
+			margin:0 auto;
+			.no-outline-base;
+			img{
+				max-width:90px;
+				max-height:90px;
+				margin:0 auto;
+				display:block;
+			}
+		}
+		span{
+			width:100%;
+			height:20px;
+			display:inline-block;
+			text-align:center;
+			line-height:20px;
+			font-size:@font-size-small;
+			color:@color-gray3;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

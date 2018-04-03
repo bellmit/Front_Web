@@ -1,0 +1,140 @@
+{
+	"total":100,
+	"earlyList":[{
+		"id":"1",
+		"dttheme":"2015-05-20",
+		"commentdatetime":"2015-04-25",
+		"theme":"行走在流行时尚前沿",
+		"imgtheme":["../../images/marquee/marquee6.jpg","../../images/marquee/marquee3.jpg","../../images/marquee/marquee5.jpg"],
+		"url":"../../images/zfx.png",
+		"content":"美式古典风 格 是众 多风格中的 一种，在传 承欧式文化的基础上结合了美国自身文化的特点，而形成的自己更格，其实它的风格是 一种混合 风 格",
+		"reply":[]
+	},{
+		"id":"2",
+		"dttheme":"2015-06-29",
+		"commentdatetime":"2015-08-20",
+		"theme":"沉醉在午后花影藤风",
+		"imgtheme":["../../images/marquee/marquee7.jpg","../../images/marquee/marquee12.jpg"],
+		"url":"../../images/iconfont-mianfeijianli.png",
+		"content":"美式乡村风格非常重视生活 的 自然舒适 性， 充分显现出乡村的朴实风味",
+		"reply":[]
+	},{
+		"id":"3",
+		"dttheme":"2015-04-05",
+		"commentdatetime":"2015-04-17",
+		"theme":"勾起怀旧思绪",
+		"imgtheme":["../../images/marquee/marquee8.jpg","../../images/marquee/marquee9.jpg"],
+		"url":"../../images/designer.jpg",
+		"content":"美式乡村风格 ，是美国西 部乡村的生活方式演变到今日的一种形式，它在美式家居设计中带有一点 随意，摒弃了过 多的繁琐与奢华， 兼 具古 典主义 的 优美 造型与新古典主义的功能 配 备 ，既简洁明快，又温暖舒适。",
+		"reply":[]
+	}],
+	"alterList":[{
+		"id":"1",
+		"dttheme":"2015-05-20",
+		"commentdatetime":"2015-04-25",
+		"theme":"行走在流行时尚前沿",
+		"imgtheme":["../../images/marquee/marquee6.jpg","../../images/marquee/marquee3.jpg","../../images/marquee/marquee5.jpg"],
+		"url":"../../images/zfx.png",
+		"content":"一般选择自然的柔和色彩，在组合设计上注意空间搭配，充分利用每一寸空间，集装饰 与 应 用于 一 体 ，在组合搭配上避免琐碎，显得大方、自然，散发出的古老尊 贵的 田 园 气息和文化品位",
+		"reply":[]
+	},{
+		"id":"2",
+		"dttheme":"2015-06-29",
+		"commentdatetime":"2015-08-20",
+		"theme":"沉醉在午后花影藤风",
+		"imgtheme":["../../images/marquee/marquee7.jpg","../../images/marquee/marquee12.jpg"],
+		"url":"../../images/iconfont-mianfeijianli.png",
+		"content":"这些 装饰物数量不多，在空间中却能起到 画 龙点 睛的作用",
+		"reply":[]
+	},{
+		"id":"3",
+		"dttheme":"2015-04-05",
+		"commentdatetime":"2015-04-17",
+		"theme":"勾起怀旧思绪",
+		"imgtheme":["../../images/marquee/marquee8.jpg","../../images/marquee/marquee9.jpg"],
+		"url":"../../images/designer.jpg",
+		"content":"这些装饰品可以有多种风格，但空间中的主体装 饰 物还 是中 国 画 、 宫 灯和紫砂陶 等传统饰物",
+		"reply":[]
+	}],
+	"waterList":[{
+		"id":"1",
+		"dttheme":"2015-05-20",
+		"commentdatetime":"2015-04-25",
+		"theme":"行走在流行时尚前沿",
+		"imgtheme":["../../images/marquee/marquee6.jpg","../../images/marquee/marquee3.jpg","../../images/marquee/marquee5.jpg"],
+		"url":"../../images/zfx.png",
+		"content":"中式风格是比较自由的 ，装饰品可以是绿色植物、布艺、装饰画，以及不同样式的灯 具 等",
+		"reply":[]
+	},{
+		"id":"2",
+		"dttheme":"2015-06-29",
+		"commentdatetime":"2015-08-20",
+		"theme":"沉醉在午后花影藤风",
+		"imgtheme":["../../images/marquee/marquee7.jpg","../../images/marquee/marquee12.jpg"],
+		"url":"../../images/iconfont-mianfeijianli.png",
+		"content":" 当零居室与美式 田园风格巧 遇，奢华不见了，浪漫 将之取代",
+		"reply":[]
+	},{
+		"id":"3",
+		"dttheme":"2015-04-05",
+		"commentdatetime":"2015-04-17",
+		"theme":"勾起怀旧思绪",
+		"imgtheme":["../../images/marquee/marquee8.jpg","../../images/marquee/marquee9.jpg"],
+		"url":"../../images/designer.jpg",
+		"content":"进而也衍生出多种家 具风 格，中式的、欧式 的 ，甚至 还有南亚的田园风情，各有各的 特色",
+		"reply":[]
+	}],
+	"woodList":[{
+		"id":"1",
+		"dttheme":"2015-05-20",
+		"commentdatetime":"2015-04-25",
+		"theme":"行走在流行时尚前沿",
+		"imgtheme":["../../images/marquee/marquee6.jpg","../../images/marquee/marquee3.jpg","../../images/marquee/marquee5.jpg"],
+		"url":"../../images/zfx.png",
+		"content":"重在对 自然的表现，但 不同的田园有不同的自然",
+		"reply":[]
+	},{
+		"id":"2",
+		"dttheme":"2015-06-29",
+		"commentdatetime":"2015-08-20",
+		"theme":"沉醉在午后花影藤风",
+		"imgtheme":["../../images/marquee/marquee7.jpg","../../images/marquee/marquee12.jpg"],
+		"url":"../../images/iconfont-mianfeijianli.png",
+		"content":"说呢?因为现在的商品房都是开发商统一开发建设，装修也是交给装修公司负责处理，所以对于没有建筑方面经验的业主来说，根本不知从哪里开始检查，需要检查什么",
+		"reply":[]
+	},{
+		"id":"3",
+		"dttheme":"2015-04-05",
+		"commentdatetime":"2015-04-17",
+		"theme":"勾起怀旧思绪",
+		"imgtheme":["../../images/marquee/marquee8.jpg","../../images/marquee/marquee9.jpg"],
+		"url":"../../images/designer.jpg",
+		"content":"买房不易，商品房验房亦不易，为什么这么说呢?",
+		"reply":[]
+	}],
+	"commentList":[{
+		"id":"1",
+		"dttheme":"2015-05-20",
+		"commentdatetime":"2015-04-25",
+		"title":"行走在流行时尚前沿",
+		"url":"../../images/zfx.png",
+		"content":"大量使用铁制构件，将玻璃、 瓷砖等新工艺， 以及铁艺制品、陶艺制品等综合运用于室内。注意室内外沟通，竭力给室内装饰艺术引入新意 ",
+		"reply":[]
+	},{
+		"id":"2",
+		"dttheme":"2015-06-29",
+		"commentdatetime":"2015-08-20",
+		"title":"沉醉在午后花影藤风",
+		"url":"../../images/iconfont-mianfeijianli.png",
+		"content":"线 条 有 的柔美雅致，有的遒劲而富于节奏感，整个立体形式 都与有条不紊 的、有 节奏的曲线融为一体。",
+		"reply":[]
+	},{
+		"id":"3",
+		"dttheme":"2015-04-05",
+		"commentdatetime":"2015-04-17",
+		"title":"勾起怀旧思绪",
+		"url":"../../images/designer.jpg",
+		"content":"由曲线 和非对称线条构成，如花梗、花蕾、葡萄藤、昆虫翅膀以及自然界各种优美、 波状的形体图案等，体现在墙面、栏杆 、窗棂和 家具等 装饰 上 。",
+		"reply":[]
+	}]
+}

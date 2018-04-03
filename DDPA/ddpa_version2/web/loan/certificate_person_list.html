@@ -1,0 +1,1197 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>借款人信息(资料信息) - 个人借款 - 我要借贷 - 贷贷平安(ddpa.com) - 最值得信赖的P2P网贷平台</title>
+<meta name="description" content="借款人信息(资料信息) - 贷贷平安网 (www.ddpa.com)是最可信赖的互联网金融中P2P信贷平台，为投资理财用户和贷款用户两端提供公平、透明、安全、高效的互联网金融服务。">
+<meta name="keywords" content="资料信息,借款人信息,个人借款,p2p理财,p2p贷款,贷贷平安">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/res/image/favicon144.png">
+<link rel="shortcut icon" href="../../res/image/favicon32.png">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/common.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/loan/loan_layout.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/InfoTips.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/loan/loan_data.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/messageshow.css">
+<link rel="stylesheet" type="text/css" href="../../res/plugins/common/kindeditor/themes/default/loan_upload.css">
+<link rel="stylesheet" type="text/css" href="../../res/plugins/fancybox/jquery.fancybox-1.3.4.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/plugins/common/kindeditor/kindeditor-all-extend.js"></script>
+<script src="../../res/plugins/common/kindeditor/lang/zh_CN.js"></script>
+<script src="../../res/plugins/common/jquery.form.js"></script>
+<script src="../../res/plugins/common/jquery.validate.js"></script>
+<script src="../../res/js/common/jquery.blockUI.js"></script>
+<script src="../../res/plugins/fancybox/jquery.fancybox-1.3.4.js"></script>
+<script src="../../res/plugins/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="../../res/plugins/fancybox/jquery.easing-1.3.pack.js"></script>
+<script src="../../res/plugins/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script src="../../res/plugins/common/jQueryRotate.min.js"></script>
+<!--script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js"></script-->
+</head>
+<body>
+	<div class="header_wrapcom">
+	<div class="header_sidewrap">
+		<div class="header_side">
+			<ul class="hs_part1">
+				<li class="hs_register"><a href="#" title="">客服热线：<span class="red">400-990-6088</span></a></li>
+				<li class="hs_forum"><a href="http://shang.qq.com/wpa/qunwpa?idkey=eafa687afc1099663278e39fa6532d584badb2d52980f8b0669112afc381bb1a" target="_blank" title="贷贷平安投资交流群">交流QQ群：109620517</a></li>
+			</ul>
+			<ul class="hs_part2">
+				<li class="hs_login"><a href="../index.html">首页</a></li>
+				<li class="hs_login" id="hs_login">
+						您好 ,<a href="../fund/user_account_detail.html" style="color:#00a0e9;" id="global_uid" title="">小易叔叔</a>
+						<div class="hs_louterwrap">
+								<div class="hs_linnerwrap" id="hs_louterwrap">
+									<ul class="hs_loginwrap">
+											<li><a href="../fund/fund_recharge.html"  title="">充值</a></li>
+											<li class="hs_lline"><a href="../fund/fund_withdraw.html"  title="">提现</a></li>
+											<li><a href="../fund/user_account_detail.html"  title="">我的账户</a></li>
+											<li><a href="../manage/wealth_report.html"  title="">我的理财</a></li>
+											<li class="hs_lline"><a href="../record/loan_report.html"  title="">我的借款</a></li>
+											<li><a href="../account/login.html"  title="">安全退出</a></li>
+									</ul>
+								</div>
+						</div>
+				</li>
+				<li  class="hs_message"><h6><a href="../msg/sitemsg.html" title="">
+				消息
+				    <span style="color:red" >(520条未读信息)</span>
+				</a></h6></li>
+				<li class="hs_login"><h6><a href="../account/login.html">登录</a></h6></li>
+				<li class="hs_register"><h6><a href="../account/register.html" title="">免费注册</a></h6></li>
+				<li class="hs_help"><h6><a href="../other/help.html" title="">帮助</a></h6></li>
+			</ul>
+		</div>
+	</div>
+	<div class="header_main">
+		<h1><a href="/"  class="logolinks" title="贷贷平安(www.ddpa.com)是值得您信赖的互联网投资理财借贷平台">贷贷平安(www.ddpa.com)是值得您信赖的互联网投资理财借贷平台</a></h1>
+		<ul class="hm_mainmenu" id="hm_mainmenu">
+			<li><h3><a class="" href="../fund/user_account_detail.html" title="">我要理财</a></h3></li>
+			<li><h3><a class="" href="../loan/loan_update.html" title="">我要借款</a></h3></li>
+			<li><h3><a class="" href="../other/sec.html" title="">安全保障</a></h3></li>
+			<li><h3><a class="" href="../other/about.html" title="">关于我们</a></h3></li>
+		</ul>
+	</div>
+	<div class="header_blines">
+			<div></div>
+	</div>
+</div>
+<script>
+    (function($){
+		$(function(){
+			/*移入显示隐藏子导航*/
+			var hs_louterwrap=$("#hs_louterwrap");
+			$("#hs_login").hover(function(){
+				hs_louterwrap.slideDown(200);
+			},function(){
+				hs_louterwrap.slideUp(100);
+			});
+			/*当前菜单高亮*/
+			var curHref = window.location.href, menu = $("#hm_mainmenu");
+			if(curHref.indexOf("/licai/") >= 0 && curHref.indexOf("/jiekuan/")<0){
+				$(menu.find("li").get(0)).find("a").addClass("hm_mmsel");
+			}else if(curHref.indexOf("/jiedai/") >= 0 || curHref.indexOf("/loan/") >= 0 || curHref.indexOf("/jiekuan/")>=0){
+				$(menu.find("li").get(1)).find("a").addClass("hm_mmsel");
+			}else if(curHref.indexOf("/baozhang/") >= 0){
+				$(menu.find("li").get(2)).find("a").addClass("hm_mmsel");
+			}else if(curHref.indexOf("/about/") >= 0){
+				$(menu.find("li").get(3)).find("a").addClass("hm_mmsel");
+			}
+			
+		});
+	})(jQuery);
+</script>
+	<div class="loan_poswrap"><a href="../index.html">首页</a><a href="/jiedai/">我要借款</a><a href="/jiedai/work-loan/">薪易贷</a><span>借款人信息</span><h1 class="loan_curpos">资料信息</h1></div>
+	<div class="loan_procedurewrap2">
+        <a href="#" class="procedure1" title="">1:借款申请</a>
+        <a href="#" class="procedure2" title="">2:借款人信息</a>
+        <a href="#" class="procedure3" title="">3:审&nbsp;&nbsp;核</a>
+        <a href="#" class="procedure4" title="">4:筹&nbsp;&nbsp;款</a>
+        <a href="#" class="procedure5" title="">5:放&nbsp;&nbsp;款</a>
+    </div>
+    <div class="container">
+    	<div class="loan_stepwrap2">
+            <ul>
+                <li><a href="#" title="" class="">个人信息</a></li>
+                <li><a href="#" title="" class="">工作信息</a></li>
+                <li><a href="#" title="" class="">资产信息</a></li>
+                <li><a href="#" title="" class="curstep">资料信息</a></li>
+            </ul>
+        </div>
+        <div class="loan_warp">
+        	<div class="loan_tipwrap">
+            	<div>
+                    <p class="themetips">尊敬的客户，为了尽快审核和处理您的贷款申请，请尽快上传如下清单中的所需文件。温馨提示：</p>
+                    <p>1.必须验证资料提供完整后才会进入人工信贷审核流程</p>
+                    <p>2.建议您尽可能提供更多的可选资料，以提升您的信用等级来获得更低的融资成本和缩短融资时间</p>
+                    <p>3.请务必提供清晰的彩色照片格式的文件，完整、未经PS剪裁等处理，不可上传复印件或扫描件，每份文件最大为<span>8M</span></p>
+                </div>
+            </div>
+            <div class="loan_datawrap">
+            	<p class="dataexplain">必须验证资料<span class="datatip" id="datatip"></span></p>
+            	<input type="hidden" value="0" id="borrowerTypeId"/><!--借款类型ID-->
+                <input type="hidden" value="1" id="loanId"/><!--借款ID-->
+                 <input type="hidden" value="1" id="userId"/>     <!--用户ID-->  
+            	<table id="datatable1">
+                    <colgroup>
+                        <col class="loan_datacg1"/>
+                        <col class="loan_datacg2"/>
+                        <col class="loan_datacg3"/>
+                        <col class="loan_datacg4"/>
+                        <col class="loan_datacg5"/>
+                        <col class="loan_datacg6"/>      
+                    </colgroup>
+                    <tr>
+                        <th class="formatrl">资料类型</th>
+                        <th>图片</th>
+                        <th>状态</th>
+                        <th>未通过理由</th>
+                        <th>最新上传时间</th>
+                        <th class="formatrr">操作</th>
+                    </tr>
+                    <tr>
+                         <td>身份证</td>
+                         <td>
+                           <span  class="dataimg" onclick="showSlideImage(this);">1张</span>
+                         </td>
+                         <td>     
+                             <p class="valid">待审核</p>                                                                      
+                        </td>
+                        <td></td>
+                        <td>                      
+                          2015-05-20 15:20:00                   
+                       </td>
+                        <td>
+                        <input type="button" value="上传" name="CardAdd" class="add" id="cardadd"/>
+                        <input type="button" value="删除" name="CardDelete" class="delete" id="carddelete"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>工作证明</td>
+                        <td>
+                          <span  class="dataimg" onclick="showSlideImage(this);">1张</span>
+                        </td>
+                        <td>
+                            <p class="unvalid">待提交</p>
+                        </td>
+                        <td></td>
+                        <td>
+                           2015-05-20 15:20:00  
+                        </td>
+                        <td>
+                        <input type="button" value="上传" name="WorkAdd" class="add" id="workadd"/>
+                        <input type="button" value="删除" name="WorkDelete" class="delete" id="workdelete"/> 
+                        </td>
+                    </tr>
+                       <tr>
+                        <td>收入证明</td>
+                        <td>
+                         <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                        </td>
+                        <td>
+                              <p class="unvalid"></p>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        <input type="button" value="上传" name="IncomeAdd" class="add" id="incomeadd"/>
+                        <input type="button" value="删除" name="IncomeDelete" class="delete deletenone" id="incomedelete"/>
+                        </td>
+                      </tr>
+                       <tr>
+                        <td>央行信用报告</td>
+                        <td>
+                          <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                        </td>
+                        <td>
+                            <p class="unvalid"></p> 
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        <input type="button" value="上传" name="CreditAdd" class="add" id="creditadd"/>
+                        <input type="button" value="删除" name="CreditDelete" class="delete deletenone" id="creditdelete"/>
+                        </td>
+                      </tr>   
+                </table>
+            </div>
+            <div class="loan_datawrap">
+            	<p class="dataexplain">可选验证资料<span class="dataremark">*贷贷平安根据您的等级来确定最低借款利率，为了尽量降低您的借款成本，建议您多上传相关资料</span></p>
+            	<table id="datatable2">
+                    <colgroup>
+                        <col class="loan_datacg1"/>
+                        <col class="loan_datacg2"/>
+                        <col class="loan_datacg3"/>
+                        <col class="loan_datacg4"/>
+                        <col class="loan_datacg5"/>
+                        <col class="loan_datacg6"/>      
+                    </colgroup>
+                    <tr>
+                        <th class="formatrl">资料类型</th>
+                        <th>图片</th>
+                        <th>状态</th>
+                        <th>未通过理由</th>
+                        <th>最新上传时间</th>
+                        <th class="formatrr">操作</th>
+                    </tr>
+                    <tr>
+                        <td>房产证</td>
+                        <td>
+                          <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                        </td>
+                        <td>
+                          <p class="unvalid"></p>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        <input type="button" value="上传" name="HouseAdd" class="add" id="houseadd"/>
+                        <input type="button" value="删除" name="HouseDelete" class="delete deletenone" id="housedelete"/>
+                        </td>
+                    </tr>
+                        <tr>
+                        <td>汽车及行驶证</td>
+                        <td>
+                          <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span></td>
+                        <td>
+                              <p class="unvalid"></p>
+                        </td>
+                        <td></td>
+                        <td>
+                        </td>
+                        <td>
+                        <input type="button" value="上传" name="DrivingAdd" class="add" id="drivingadd"/> 
+                        <input type="button" value="删除" name="DrivingDelete" class="delete deletenone" id="drivingdelete"/>
+                        </td>
+                    </tr>
+                    <tr>
+                          <td>结婚证</td>
+                          <td>
+                            <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                          </td>
+                          <td><p class="unvalid"></p></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                          <input type="button" value="上传" name="MarryAdd" class="add" id="marryadd"/>
+                          <input type="button" value="删除" name="MarryDelete" class="delete deletenone" id="marrydelete" />
+                          </td>
+                        </tr>
+                        <tr>
+                         <td>学历证</td>
+                         <td>
+                          <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                         </td>
+                         <td>
+                              <p class="unvalid"></p>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        <input type="button" value="上传" name="EducationAdd" class="add" id="educationadd"/>
+                        <input type="button" value="删除" name="EducationDelete" class="delete deletenone" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>职称资格证</td>
+                        <td>
+                          <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                        </td>
+                        <td>
+                          <p class="unvalid"></p> 
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        <input type="button" value="上传" name="TitleAdd" class="add" id="titleadd"/>
+                        <input type="button" value="删除" name="TitleDelete" class="delete deletenone" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>视频认证</td>
+                        <td>
+                          <span class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                        </td>
+                        <td>
+                           <p class="unvalid"></p>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        <input type="button" value="上传" name="VideoAdd" class="add" id="videoadd"/>
+                        <input type="button" value="删除" name="VideoDelete" class="delete deletenone" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>手机实名认证</td>
+                        <td>
+                          <span  class="dataimgnone" onclick="showSlideImage(this);">0张</span>
+                        </td>
+                        <td>
+                         <p class="unvalid"></p>
+                       </td>
+                       <td></td>
+                        <td></td>
+                        <td>
+                        <input type="button" value="上传" name="PhoneAdd" class="add" id="phoneadd"/>
+                        <input type="button" value="删除" name="PhoneDelete" class="delete deletenone" />
+                        </td>
+                    </tr>
+                      <tr>
+                        <td>居住地认证</td>
+                        <td>
+                          <span  class="dataimg" onclick="showSlideImage(this);">2张</span>
+                        </td>
+                        <td>
+                              <p class="valid">审核通过</p>
+                        </td>
+                        <td></td>
+                        <td>
+                          2015-05-20 15:52:00
+                        </td>
+                        <td>
+                        <input type="button" value="上传" name="LiveAdd" class="add" id="liveadd"/>
+                        <input type="button" value="删除" name="LiveDelete" class="delete" id="livedelete"/>
+                        </td>
+                    </tr>
+                    <tr>
+                          <td>社交账号认证</td>
+                          <td>
+                             <span  class="dataimg">2个</span>
+                          </td>
+                          <td><p class="unvalid">待提交</p></td>
+                          <td></td>
+                          <td>2015-05-20 15:52:00</td>
+                          <td>
+                          <input type="button" value="上传" name="WorldAdd" class="add" id="worldadd"/>
+                          <input type="button" value="删除" name="WorldDelete" class="delete"  />
+                          </td>
+                       </tr>
+                       <tr>
+                          <td>其他能证明还款能力资料</td>
+                          <td>
+                            <span  class="dataimg" onclick="showSlideImage(this);">5张</span>
+                          </td>
+                          <td>
+                             <p class="valid">审核未通过</p>
+                          </td>
+                          <td>
+                           图片不清晰
+                         </td>
+                          <td>
+                            2015-05-20 15:52:00
+                          </td>
+                          <td>
+                          <input type="button" value="上传" name="OtherAdd" class="add" id="otheradd"/>
+                          <input type="button" value="删除" name="OtherDelete" class="delete" id="otherdelete"/>
+                          </td>
+                      </tr>
+                </table>
+            </div>
+            <div class="loan_actionwrap">
+            	<div>
+            		<input type="submit" value="提交申请" class="datasubmit" id="loandata_apply"/>
+               	<input type="button" class="pre_submit" onclick="window.location.href='property_update.html'"  value="上一步" />
+            	</div>
+            </div>
+            <div class="clear_fixs"></div>
+        </div>
+    	<div class="loan_layoutb"></div>
+    </div>
+    <div class="floatBtn">
+   <a href="http://wpa.qq.com/msgrd?v=3&uin=2751736989&site=qq&menu=yes" class="serverqq" target="_blank"></a>
+   <a href="javascript:;" class="code" title="贷贷平安微信公众号及微博帐号">
+       <span>关注贷贷平安</span>
+       <img src="../../res/image/common/codes.png" alt="关注贷贷平安微信公众号及微博帐号">
+   </a>
+   <a href="#uptotop" class="backtotop" title="">返回顶部</a>
+</div>
+   
+<div class="footer_wrap">
+	<div class="footer">
+		<ul class="foot_join">
+			<li><h5><a href="../../about/" title="">关于我们</a></h5></li>
+			<li><h5><a href="../../about/report/" title="">资讯动态</a></h5></li>
+			<li><h5><a href="../../about/contactus/" title="">联系我们</a></h5></li>
+			<li><h5><a href="../../about/partner/" title="">合作伙伴</a></h5></li>
+			<li><h5><a href="javascript:;" title="" onclick="toSug()">意见反馈</a></h5></li>
+			<li><h5><a href="../../about/friend/" title="">友情链接</a></h5></li>
+			<li><h5><a class="fj_last" href="../../sitemap/" target="_blank" title="">网站地图</a></h5></li>
+		</ul>
+		<div class="foot_theme">
+			<h6>
+			<span>安全：银行风控专家把关</span>
+			<span>专业：线下5年小额贷款经验</span>
+			<span>真实：所有借款均真实有效</span>
+			
+		</div>
+		<p class="foot_phone">服务热线：400-990-6088<span>&nbsp;（周一至周五&nbsp;9:00--17:30）</span></p>
+		<p class="foot_copyright">Copyright&copy;2013-2014&nbsp;版权所有：<a href="http://www.ddpa.com" target="_blank"  title="深圳市贷贷平安网络信息有限公司">深圳市贷贷平安网络信息有限公司</a>&nbsp;&nbsp;备案号：<a href="http://www.miitbeian.gov.cn/ " target="_blank"  title="粤ICP备13074789号" rel="noffow">粤ICP备13074789号</a></p>
+	</div>
+	<div class="footerlogos">
+    	<a href="https://ss.knet.cn/verifyseal.dll?sn=e1402265101004686869o1000000&ct=df&a=1&pa=931969" target="_blank" class="knet" rel="noffow" title="symantec认证,可信网站身份验证,工商网监,认证联盟">可信网站认证</a>
+    	<a key ="539e5d72efbfb003fdf73616" target="_blank" rel="noffow" logo_size="124x47"  logo_type="realname"  href="http://www.anquan.org/authenticate/cert/?site=www.ddpa.com&at=realname" class="anquan" title="贷贷平安-安全联盟实名认证,电脑管家认证,工商注册认证,商标注册证,ICP备案认证" ></a>
+      	<a href="https://sealinfo.verisign.com/splash?form_file=fdf/splash.fdf&dn=WWW.DDPA.COM&lang=zh_cn" class="smt" target="_blank" rel="noffow"  title="symantec认证,可信网站身份验证,工商网监,认证联盟">SSL安全加密网站</a>
+        <a href="https://cert.ebs.gov.cn/256f8063-21e4-4390-9ff9-4d9da48d01b7" class="szgov" target="_blank" rel="noffow"  title="symantec认证,可信网站身份验证,工商网监,认证联盟">深圳电子商务服务监管网站</a>
+    	<a href="http://mingpian.360.cn/qp?query=ddpa.com&key=58d356a6135ea5de3849f9d6211ba91e" target="_blank" rel="noffow" title="symantec认证,可信网站身份验证,工商网监,认证联盟"  class="qihu">360安全网站认证</a>
+    </div>
+</div>
+<div id="sugform" class="modalwin" style="width:683px;display:none;">
+	<h3>意见反馈</h3>
+	<div class="winbox">
+		<form action="" method="post" name="sugform">
+			<p style="font-size:12px; color:#636363; width:615px; margin-bottom:30px;">贷贷平安高度重视用户体验，您对贷贷平安的批评和建议是我们前进的动力，同时也能更好的方便平台的所有用户。欢迎您提出宝贵意见，一旦采纳我们会在最短的时间内优化，谢谢。</p>
+			<p class="label">您对网站的评价：</p>
+			<textarea name="sug"></textarea>
+			<p class="ftip">仅限300字，还可以输入15字</p>
+			<p class="btn"><button type="button" style="margin-top:15px;" onclick="submitSug(this)">提交</button></p>
+		</form>
+	</div>
+	<a href="#" class="winclose" onclick="$.unblockUI();">X</a>
+</div>
+<script type="text/javascript">
+   	$(".backtotop").css("visibility","hidden");
+	
+	$(window).scroll(function(){
+		if ($(window).scrollTop()<100){
+			$(".backtotop").css("visibility","hidden");
+		}else{
+			$(".backtotop").css("visibility","visible");
+		}
+	});
+	
+	$(".backtotop").click(function(){
+		$('body,html').animate({scrollTop:0},1000);
+		return false;
+	});
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9bb9e9182e209aba0d4908303e0370d5";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+	var pluginUrl = 
+	 '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+	_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+	  _gaq.push(['_setAccount', 'UA-48725772-1']);
+	_gaq.push(['_setDomainName', 'ddpa.com']);
+	  _gaq.push(['_addOrganic', 'm.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'wap.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'baidu.mobi', 'word']);
+	  _gaq.push(['_addOrganic', 'news.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'opendata.baidu', 'wd']);
+	  _gaq.push(['_addOrganic', 'post.baidu', 'kw']);
+	  _gaq.push(['_addOrganic', 'mp3.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'mp3.baidu', 'song']);
+	  _gaq.push(['_addOrganic', 'box.zhangmen.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'image.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'top.baidu', 'w']);
+	  _gaq.push(['_addOrganic', 'baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'baidu', 'kw']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q1']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q2']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q3']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q4']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q5']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q6']);
+	  _gaq.push(['_addOrganic', 'news.google', 'q']);
+	  _gaq.push(['_addOrganic', 'image.soso', 'w']);
+	  _gaq.push(['_addOrganic', 'wenwen.soso', 'sp']);
+	  _gaq.push(['_addOrganic', 'wenwen.soso', 'w']);
+	  _gaq.push(['_addOrganic', 'wap.soso', 'key']);
+	  _gaq.push(['_addOrganic', 'soso', 'w']);
+	  _gaq.push(['_addOrganic', 'bing', 'q']);
+	  _gaq.push(['_addOrganic', '3721', 'name']);
+	  _gaq.push(['_addOrganic', '114', 'kw']);
+	  _gaq.push(['_addOrganic', 'youdao', 'q']);
+	  _gaq.push(['_addOrganic', 'vnet', 'kw']);
+	  _gaq.push(['_addOrganic', 'so.360', 'q']);
+	  _gaq.push(['_addOrganic', '360sou', 'q']);
+	  _gaq.push(['_addOrganic', '360so', 'q']);
+	  _gaq.push(['_addOrganic', '360', 'q']);
+	  _gaq.push(['_addOrganic', 'so', 'q']);
+	  _gaq.push(['_addOrganic', 'news.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'mp3.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'pic.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'blogsearch.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'wap.sogou', 'keyword']);
+	  _gaq.push(['_addOrganic', 'm.sogou', 'keyword']);
+	  _gaq.push(['_addOrganic', 'sogou', 'query']);
+	  _gaq.push(['_trackPageview']);
+	  _gaq.push(['_trackPageLoadTime']);
+
+		/*---用户类型追踪---*/
+		/*代码行1：是否登录*/
+		_gaq.push(['_setCustomVar', 1, 'LoginType', 'Login', 2]);
+		/*代码行4：用户手机号*/ 
+		_gaq.push(['_setCustomVar', 4, 'Uid', 'mobilePhone', 2]);
+		/*代码行2：第三方用户和非第三方用户*/
+		/*代码行3：用户类型(理财、薪易贷、商易贷、抵押贷、其他快配用户)*/
+			_gaq.push(['_setCustomVar', 2, 'MemberType', 'KPUser', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Borrow', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Lend', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Person', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Company', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Mortgage', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Others', 2]);
+			_gaq.push(['_setCustomVar', 2, 'RegisterType', 'NormalUser', 2]);
+		/*代码行5：成功完成过投标的历史记录*/
+			_gaq.push(['_setCustomVar', 5, 'BuyHistory', 'OrderWithoutBuy', 2]);
+			_gaq.push(['_setCustomVar', 5, 'BuyHistory', 'SucceedBuyed', 2]);
+			_gaq.push(['_setCustomVar', 5, 'BuyHistory', 'WithoutOrder', 2]);
+		/*代码行6：成功完成过借款的历史记录*/
+			_gaq.push(['_setCustomVar', 6, 'BorrowHistory', 'OrderWithoutBorrow', 2]);
+			_gaq.push(['_setCustomVar', 6, 'BorrowHistory', 'SucceedBorrowed', 2]);
+			_gaq.push(['_setCustomVar', 6, 'BorrowHistory', 'WithoutOrderBorrow', 2]);
+		/*代码行7：充值记录*/
+			_gaq.push(['_setCustomVar', 7, 'RechargeHistory', 'OrderWithoutRecharge', 2]);
+			_gaq.push(['_setCustomVar', 7, 'RechargeHistory', 'SucceedRecharged', 2]);
+			_gaq.push(['_setCustomVar', 7, 'RechargeHistory', 'WithoutOrderRecharge', 2]);
+		  _gaq.push(['_setCustomVar', 1, 'LoginType', 'UnLogin', 2]);
+
+
+	var cga_url=window.location;
+	var cga_pn=cga_url.pathname;
+	var cga_s=cga_url.search.slice(1);
+	/*---电子商务跟踪--投标、充值---*/	
+	if(/(\/licai\/)(\D*)$/.test(cga_pn)){
+		/**_gaq.push(['_addTrans','{当前标的ID}','{投标金额}','{可用金额}','{利息}','{空值}']);**/
+				_gaq.push(['_addTrans','${(product.productId)!"0"}','${(product.productName)!""}','<#if (product.loanType)?? && (product.loanType == 0 || product.loanType == 1)>信用标<#elseif (product.loanType)?? && (product.loanType == 2 || product.loanType == 3)>抵押标<#else>担保标</#if>','<#if (product.annualRate)??>${(product.annualRate)?string("##0.##")}<#else>0.00</#if>','']);
+		_gaq.push(['_trackTrans']);
+	}else if(/(\/licai\/)(\d+)$/.test(cga_pn)){
+		/**_gaq.push(['_addItem', '{当前标的ID}','{借款标题}','{借款人}','{借款人注册地}','{借款人注册日期}','{标的类型}','{信用登级}','{借款金额}','{年利率}','{借款期限}','{还款方式}', '{筹标进度}','{投标次数}','{剩余筹款金额}','{剩余时间}',]);**/
+			_gaq.push(['_addItem', '${(product.productId)!""}','${(product.productName)!""}','${(user.userName)!""}','<#if (product.loanType)?? && product.loanType == 4>${(corporation.householdAddress.province)!""}${(corporation.householdAddress.city)!""}<#else>${(person.householdAddress.province)!""}${(person.householdAddress.city)!""}</#if>','<#if (user.createTime)??>${user.createTime?string("yyyy-MM-dd")}</#if>','<#if (product.loanType)?? && (product.loanType == 0 || product.loanType == 1)>信用贷<#elseif (product.loanType)?? && (product.loanType == 2 || product.loanType == 3)>抵押贷<#else>担保贷</#if>','${(product.binLevel)!"F3"}','${(product.investAmount)!"0"}','${(product.annualRate)!"0"}','${(product.loanPeriod)!"0"}','等额本息', '${(tradeProgress/100)!""}','${(size)!"0"}','${(product.investAmount - totalTradeAmount)!""}','${(remainRaiseTimes["days"])!"0"}天${(remainRaiseTimes["hours"])!"0"}小时${(remainRaiseTimes["minutes"])!"0"}分钟${(remainRaiseTimes["seconds"])!"0"}秒']);
+			_gaq.push(['_trackTrans']);
+	}
+	/*---电子商务跟踪--充值---*/	
+	if(/(\/licai\/)(\D*)$/.test(cga_pn)){
+		/**_gaq.push(['_addTrans', '{当前充值订单编号}', '{充值金额}', '{可用金额}', '{付款方式}', '{空值}']);**/
+			_gaq.push(['_addTrans', '', '', '${balanceAmount!""}', '等额本息', '']);
+			_gaq.push(['_trackTrans']);
+	}else if(/(\/fund\/trade\/rechargeInit)/.test(cga_pn)){
+		/**_gaq.push(['_addItem', '{当前充值订单编号}', '{付款方式}', '{操作类型-充值}', '{充值金额}', '{可用金额}']);**/
+			_gaq.push(['_addItem', '', '', '充值',$("#tradeAmount").val(), '<#if userAccountVo.balanceAmount??><#assign balanceAmount = userAccountVo.balanceAmount/><#else><#assign balanceAmount = 0.00/></#if><#if userAccountVo.freezeAmount??><#assign freezeAmount = userAccountVo.freezeAmount/><#else><#assign freezeAmount = 0.00/>${(balanceAmount-freezeAmount)?string("###,##0.00")}']);
+			_gaq.push(['_trackTrans']);
+	}else if(/(\/sys\/payment\/thirdPaySend)/.test(cga_pn)){
+		/**_gaq.push(['_addItem', '{当前充值订单编号}', '{付款方式}', '{操作类型-充值}', '{充值金额}', '{可用金额}']);**/
+				_gaq.push(['_addItem', '${(v_oid!""}', '${pmode_id!""}', '充值', '${v_amount!""}', '']);
+		_gaq.push(['_trackTrans']);
+	}
+	
+	  $(document).ready(function(){
+		var ga = document.createElement('script'); 
+		ga.type = 'text/javascript'; 
+		ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	 })
+</script>
+<script type="text/javascript">
+function toSug(){
+	$.ajax({
+		url:"/jiedai/checkedDetail",
+		type:"post",
+		data:{},
+		success: function(data){
+			if(data){
+				if(data.login=="N"){
+					var url = location.href;
+					location.href = "/account/user/login?src="+location.pathname+"#tosug";
+				}else if(data.login == "Y"){
+					var left = getLeft("#sugform");
+					$.blockUI({ 
+						message:  $("#sugform"),
+						css:{
+							top:"20%",
+							left:left,
+							padding:"0px",
+							width:'683px',
+							border:'1px solid rgb(67, 67, 67)',
+							borderRadius:'8px',
+							boxShadow:"0px 0px 3px #434343",
+							cursor:'auto'
+							},
+						overlayCSS: {
+							cursor:'auto'
+							} 
+					});
+				}				
+			}else{
+				var url = location.href;
+				location.href = "/account/user/login?src="+location.href;
+			}
+		}
+	})
+}
+
+function submitSug(e){
+	var $target = $(e), f = $target.parents("form"), sug = f.find("textarea"), v = sug.val();
+		
+	if(sug.val()=="" || sug.val().length >300){
+		sug.addClass("error");
+		return false;
+	}else{
+		sug.removeClass("error");
+		$target.attr("disabled",true);
+		setTimeout(function(e){
+			$target.removeAttr("disabled");
+		},5000);
+		v = stripscript(v);
+		$.ajax({
+			url:"../../fund/feedback/addFeedBack",
+			type:"post",
+			data:{content:v},
+			success:function(data){
+				f.siblings(".result").replaceWith("");
+				if(data.success == true){
+					sug.val("");
+					f.find(".ftip").text("仅限300字，还可以输入300个字");
+					f.after("<div class='result ok' style='margin-left:0px;margin-bottom:15px;'><p><span class='ok'></span><span class='txt'>" + data.info + "&nbsp;<span id='timer'>3</span>秒后自动刷新...</span></p>");
+					var timer = setInterval(function(){ 
+							var t = $("#timer");
+							if((parseInt($("#timer").text())-1) < 0){
+								clearInterval(timer);
+								f.siblings(".result").replaceWith("");
+								$.unblockUI();
+							}
+						t.text(parseInt($("#timer").text())-1);},1000);
+				}else{
+					f.find("button").removeAttr("disabled");
+					f.after("<div class='result ok'><p><span class='ok'></span><span class='txt'>" + data.info + "</p>");
+				}
+			}
+		})
+	}
+}
+
+$("textarea[name='sug']").keyup(function(e){
+	var $target = $(e.target), ftip = $target.siblings(".ftip"),  v = $target.val(), l = v.length, n = 300-l;
+	ftip.text("仅限300字，还可以输入"+n+"个字");
+	if(n>0 && n<300){
+		$target.removeClass("error");
+		ftip.removeClass("error");
+	}else{
+		$target.addClass("error");
+		ftip.addClass("error");
+	}
+})
+
+//计算水平居中的左边距
+function getLeft(id){
+	var l = $(id).width();
+	var total_l = $("body").width();
+	
+	l = (total_l - l)*0.5;
+	left = Math.round((l/total_l)*100);
+	left += "%";
+	return left;
+}
+
+//防止xss和sql注入:JS特殊字符过滤正则
+function stripscript(s) 
+{ 
+	var pattern = new RegExp("[%--`~#$^&*()=|{}\\[\\]<>/~@#&*——|{}【】‘']")        //格式 RegExp("[在中间定义特殊过滤字符]")
+	var rs = ""; 
+	for (var i = 0; i < s.length; i++) { 
+	 rs = rs+s.substr(i, 1).replace(pattern, ''); 
+	}
+	return rs;
+}
+</script>
+<script src="/../../res/js/common/jquery.blockUI.js"></script>
+    <!--loan_data upload layer-->
+    <input id="datasuccess" type="hidden" value=""/>
+    <!--card(身份证证明)-->
+    <div class="datainfo_wrap" id="card_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>身份证认证</p><span id="card_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>1.请上传您本人身份证原件的正、反两面照片、本人与身份证（正面，显示身份证号码）合照。<a title="" href="../loan/loan_per_certificate_demo.html?sign=0" target="_blank">查看示例</a></p>
+    				<p>2.您上传的身份证照片需和您绑定的身份证一致，否则将无法通过认证</p>
+                </div>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                <h3 class="progress">上传身份证明：<p><input id="card_url" type="hidden"/>点击<input type="button" id="card_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="card_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="cardimg"/>
+                    <input type="button" value="" id="card_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="card_cance" class="datainfo_cance"/>
+                    <input type="hidden" value="1" id="cardType"/>
+                    
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="card_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="card_slide"></ul>
+					</div>
+                    <p class="card_next" id="card_next"></p>
+                </div>
+                <input type="button"  value="提交审核" class="datainfo_action" id="card_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--work(工作证明)-->
+    <div class="datainfo_wrap" id="work_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>工作证明</p><span id="work_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p class="noindent">需提交下面任意一项资料：</p>
+                    <p>1.加盖单位公章的劳动合同<a title="" href="../loan/loan_per_certificate_demo.html?sign=2" target="_blank">查看示例</a></p>
+    				<p>2.最近一个月内开具的加盖单位公章的在职证明。<a  href="../loan/loan_per_certificate_demo.html?sign=3" target="_blank">查看在职证明模板</a><a href="../../res/image/loan/certificate/zzzm_template.doc">下载模板</a></p>
+                </div>
+                <h3 class="datainfo_time">认证条件：<span>需在现单位工作<span>6个月</span>以上</span></h3>
+                <h3 class="datainfo_time">认证有效期：<span>6个月</span></h3>
+                <h3 class="progress">上传工作证明：<p><input id="work_url" type="hidden"/>点击<input type="button" id="work_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="work_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="workimg"/>
+                    <input type="button" value="" id="work_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="work_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="work_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="work_slide"></ul>
+					</div>
+                    <p class="card_next" id="work_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="work_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--income(收入证明)-->
+    <div class="datainfo_wrap" id="income_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>收入证明</p><span id="income_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p class="noindent">请您提交下面任意一项资料：</p>
+                    <p>a）可体现工资项的最近连续6个月工资卡银行流水单或网银电脑截屏+1个月内打印的带公司名称的最近3个月的社保缴费记录或最新的可体现缴费状态及公司名称的个人社保账户网络截屏<a title="" target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=4">查看示例</a></p>
+    				<p>b）1个月内公司开具的加盖公章的收入证明+最近连续6个月个人常用银行卡流水+1个月内打印的带公司名称的最近3个月的社保缴费记录或最新的可体现缴费状态及公司名称的个人社保账户网络截屏</p>
+                </div>
+                <h3 class="datainfo_time">认证条件：<span>申请人近3个月税后月收入在4000元以上</span></h3>
+                <h3 class="datainfo_time">认证有效期：<span>6个月</span></h3>
+                <h3 class="progress">上传收入证明：<p><input id="income_url" type="hidden"/>点击<input type="button" id="income_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="income_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="incomeimg"/>
+                    <input type="button" value="" id="income_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="income_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="income_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="income_slide"></ul>
+					</div>
+                    <p class="card_next" id="income_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="income_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--credit(央行信用报告)-->
+    <div class="datainfo_wrap" id="credit_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>央行信用报告</p><span id="credit_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>1.央行个人信用报告需<span>15日内</span>开具</p>
+    				<p>2.上传您的个人信用报告原件的照片，每页信用报告需独立照相，并将整份信用报告按页码先后顺序完整上传。<a  target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=5" title="">查看示例</a></p>
+                    <p><a target="_blank" href="#" title="" id="datainfo_popopen">如何办理个人信用报告？</a></p>
+                    <div class="datainfo_popwrap" id="datainfo_popwrap">
+                    	<div class="datainfo_popouter">
+	                    	<div class="datainfo_popinner">
+	                    		<div class="datainfo_pophead"><div id="datainfo_popclose"></div></div>
+	                    		<div class="datainfo_popshow">
+	                    				<h3>如何办理个人信用报告</h3>
+	                    				<p>个人信用报告可由本人或委托他人（即代理人）到中国人民银行征信中心办理（江苏、四川、重庆、北京、山东、辽宁、湖南、广西、广东、浙江、天津、新疆、上海、湖北、青海15省（市）用户也可以直接登录“互联网个人信用信息服务平台”获取您的信用报告：<a target="_blank" href="https://ipcrs.pbccrc.org.cn" title="">https://ipcrs.pbccrc.org.cn</a>)</p>
+	                    				<h3>（一）本人查询信用报告
+	                    				<p>携带本人有效身份证件原件及一份复印件（其中复印件留给征信分中心备查），到中国人民银行各地征信分中心查询。</p>
+	                    				<p>有效身份证件包括：身份证（第二代身份证须复印正反两面）、军官证、士兵证、护照、港澳居民来往内地通行证、台湾同胞来往内地通行证、外国人居留证等。</p>
+	                    				<h3>（二）委托他人查询信用报告</h3>
+	                    				<p>需要携带的材料有委托人及代理人双方的身份证件原件及复印件、授权委托书。其中身份证件复印件和授权委托书留给征信分中心备查。委托书格式请与当地征信分中心联系取得。</p>
+	                    				<p>全国各地征信中心联系方式查询<a target="_blank" href="http://www.pbccrc.org.cn/zxzx/lxfs/lxfs.shtml" title="">http://www.pbccrc.org.cn/zxzx/lxfs/lxfs.shtml</a></p>
+	                    		</div>
+	                    	</div>
+                    	</div>
+                    </div>
+                    <p><a target="_blank" href="http://www.pbccrc.org.cn/zxzx/lxfs/lxfs.shtml" title="">全国各地征信中心联系方式查询</a></p>
+                </div>
+                <h3 class="datainfo_time">认证条件：<span>信用记录良好</span></h3>
+                <h3 class="datainfo_time">认证有效期：<span>6个月</span></h3>
+                <h3 class="progress">上传央行信用报告：<p><input id="credit_url" type="hidden"/>点击<input type="button" id="credit_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="credit_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="creditimg"/>
+                    <input type="button" value="" id="credit_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="credit_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="credit_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="credit_slide"></ul>
+					</div>
+                    <p class="card_next" id="credit_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="credit_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--house(房产证明)-->
+    <div class="datainfo_wrap" id="house_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>房产证明</p><span id="house_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p class="noindent">请您提交下面任意一项或多项资料：</p>
+                    <p>a）房屋产权证明。<a title=""  target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=8">查看示例</a></p>
+    				<p>b）购房合同+近3个月的还贷流水</p>
+                    <p>c）购房发票+近3个月的还贷流水</p>
+                    <p>d）按揭合同+近3个月的还贷流水</p>
+                </div>
+                <h3 class="datainfo_time">认证条件：<span>必须是商品房且房产是本人名下所有或共有的</span></h3>
+                <h3 class="datainfo_time">认证有效期：<span>6个月</span></h3>
+                <h3 class="progress">上传房产证明：<p><input id="house_url" type="hidden"/>点击<input type="button" id="house_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="house_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="houseimg"/>
+                    <input type="button" value="" id="house_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="house_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="house_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="house_slide"></ul>
+					</div>
+                    <p class="card_next" id="house_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="house_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--driving(汽车证明)-->
+    <div class="datainfo_wrap" id="driving_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>汽车证明</p><span id="driving_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>1.请上传您所购买车辆行驶证原件的照片。<a title=""  target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=9">查看示例</a></p>
+    				<p>2.请上传您和您购买车辆的合影（照片须露出车牌号码）。<a title=""  target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=10">查看示例</a></p>
+                </div>
+                <h3 class="datainfo_time">认证有效期：<span>6个月</span></h3>
+                <h3 class="progress">上传汽车证明：<p><input id="driving_url" type="hidden"/>点击<input type="button" id="driving_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="driving_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="drivingimg"/>
+                    <input type="button" value="" id="driving_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="driving_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="driving_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="driving_slide"></ul>
+					</div>
+                    <p class="card_next" id="driving_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="driving_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--marry(结婚证明)-->
+    <div class="datainfo_wrap" id="marry_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>结婚证明</p><span id="marry_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>1.您结婚证书原件的照片。<a title="" target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=11">查看示例</a></p>
+    				<p>2.您配偶的身份证原件正反两面照片</p>
+                    <p>3.您和配偶的近照合影一张</p>
+                </div>
+                <h3 class="datainfo_time">认证条件：<span>您的配偶同意您将其个人资料提供给贷贷平安</span></h3>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                <h3 class="progress">上传结婚证明：<p><input id="marry_url" type="hidden"/>点击<input type="button" id="marry_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="marry_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="marryimg"/>
+                    <input type="button" value="" id="marry_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="marry_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="marry_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="marry_slide"></ul>
+					</div>
+                    <p class="card_next" id="marry_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="marry_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--education(学历证明)-->
+    <div class="datainfo_wrapspe" id="education_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>学历证明</p><span id="education_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>一、2001年至今获得学历，需学历证书编号</p>
+                    <p class="indent4">1.点击<a target="_blank" title="" href="http://www.chsi.com.cn">网上学历查询</a> ，选择“零散查询”</p>
+                    <p class="indent4">2.输入证书编号、查询码（通过手机短信获得，为12位学历查询码）、姓名、验证码进行查询</p>
+                    <p class="indent4">3.查询成功后，您将查获得《教育部学历证书电子注册备案表》</p>
+                    <p class="indent4">4.将该表右下角的12位在线验证码<a title="" target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=12">（见样本图01）</a>输入到下面的文本框中，点击“提交审核”</p>
+                    <p>二、1991年至今获得学历，无需学历证书编号</p>
+                    <p class="indent4">1.点击<a target="_blank" title="" href="http://www.chsi.com.cn">网上学历查询</a>，选择“本人查询”</p>
+                    <p class="indent4">2.注册学信网账号并登录，点击“学历信息”</p>
+                    <p class="indent4">3.选择您的最高学历，并点击“申请该学历电子注册备案表”（申请过程中，您需通过手机短信获得12位学历查询码）</p>
+                    <p class="indent4">4.申请成功后，您将获得12位在线验证码<a title="" target="_blank"  href="../loan/loan_per_certificate_demo.html?sign=12">（见样本图02）</a>，将其输入到下面的文本框中，点击“提交审核”</p>
+                </div>
+                <h3 class="datainfo_time">认证条件：<span>大专或以上学历（普通全日制）</span></h3>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                 <form id="education_xlzm" method="post" action="#">
+                <p class="datainfo_printin"><span>12位在线验证码：</span><input type="text" maxlength="12" name="EducationNo" id="education_online"/></p>
+                <h3 class="progress">上传学历证明：<p><input id="education_url" type="hidden"/>点击<input type="button" id="education_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="education_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="educationimg"/>
+                    <input type="button" value="" id="education_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="education_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="education_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="education_slide"></ul>
+					</div>
+                    <p class="card_next" id="education_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="education_action"/>
+                </form>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--title(职称资格认证)-->
+    <div class="datainfo_wrap" id="title_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>职称资格认证</p><span id="title_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>1.职称资格证书原件照片</p>
+    				<p>2.需国家承认的二级或中级职称及以上等级职称证书。例如律师证、会计证、 工程师证等</p>
+                </div>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                <h3 class="progress">上传职称资格证明：<p><input id="title_url" type="hidden"/>点击<input type="button" id="title_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="title_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="titleimg"/>
+                    <input type="button" value="" id="title_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="title_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="title_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="title_slide"></ul>
+					</div>
+                    <p class="card_next" id="title_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="title_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--video(视频认证)-->
+    <div class="datainfo_wrapspe" id="video_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>视频认证</p><span id="video_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>一、视频录制要求：</p>
+                    <p class="indent4">1.视频认证文件大小不得超过50M</p>
+                    <p class="indent4">2.请上传真实有效的本人的视频</p>
+                    <p class="indent4">3.视频认证必须图像清晰，声音清楚</p>
+                    <p class="indent4">4.视频认证必须衣冠整洁，禁止出现抽烟，赤裸等不良形象</p>
+                    <p class="indent4">5.视频文件格式可以是RMVB、WMV、mp4 、 AVI等类型的文件</p>
+                    <p>二、请针对本次借款录制视频，视频中需包括以下内容：</p>
+                    <p class="indent4">1.首先，请朗读如下文字：我是 ***，我在贷贷平安的用户名是***，我的身份证号是 ***********************，现在我正在做贷贷平安的视频确认。我在此做出以下承诺：我愿意接受贷贷平安的使用条款和借款协议；我提供给贷贷平安的信息及资料均是真实有效的；我愿意对我在贷贷平安上的行为承担全部法律责任；在我未能按时归还借款时，我同意贷贷平安采取法律诉讼、资料曝光等一切必要措施</p>
+                    <p class="indent4">2.读完声明后，请您将身份证正面(有身份证号)对准摄像头，并保持5秒，需要保证画面中能同时看到您和您的身份证，并且身份证内容清晰可见</p>
+                </div>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                <h3 class="progress">上传视频认证：<p><input id="video_url" type="hidden"/>点击<input type="button" id="video_up" value="上传文件"/></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="videoimg"/>
+                    <input type="button" value="" id="video_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="video_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <div class="videoslide_wrap" id="video_slide"></div>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="video_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--phone(手机实名认证)-->
+    <div class="datainfo_wrap" id="phone_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>手机实名认证</p><span id="phone_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>1.请您上传您<span>绑定的手机号码最近3个月</span>的手机详单原件的照片（每月详单均需清晰显示机主手机号码）</p>
+    				<p>2.如详单数量较多上传每月前5日部分及其一张结尾照片（显示打印地点）</p>
+                </div>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                <h3 class="progress">上传手机实名证明：<p><input id="phone_url" type="hidden"/>点击<input type="button" id="phone_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="phone_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="phoneimg"/>
+                    <input type="button" value="" id="phone_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="phone_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="phone_pre"></p>
+                    <div class="slide_wrap">
+						<ul id="phone_slide"></ul>
+					</div>
+                    <p class="card_next" id="phone_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="phone_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--live(居住地认证)-->
+    <div class="datainfo_wrap" id="live_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>居住地认证</p><span id="live_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p class="noindent">请您上传以下任何一项可证明现居住地址的证明文件原件的照片：</p>
+    				<p>1.用您姓名登记的水、电、气最近三期缴费单</p>
+                    <p>2.用您姓名登记固定电话最近三期缴费单</p>
+                    <p>3.您父母的房产证明、证明您和父母关系的证明材料</p>
+                </div>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                
+                <h3 class="progress">上传居住地证明：<p><input id="live_url" type="hidden"/>点击<input type="button" id="live_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="live_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="liveimg"/>
+                    <input type="button" value="" id="live_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="live_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="live_pre"></p>
+					<div class="slide_wrap">
+						<ul id="live_slide"></ul>
+					</div>
+                    <p class="card_next" id="live_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="live_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--world(社交账号认证)-->
+    <div class="datainfo_wrap" id="world_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>社交账号认证</p><span id="world_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>1.您可以填写QQ、微信、微博（支持新浪、腾讯）一项或多项账号</p>
+                    <p>2.微信账号需要添加贷贷平安的官方微信：<a href="javascript:;" class="wxpic"><span>二维码</span><img src="../../res/image/common/ddpa_wx.jpg" alt="关注贷贷平安微信账号" width="200" height="200" /></a></p>
+                    <p>3.微博账号需要关注贷贷平安的官方微博：</p>
+                    <div class="wbs">
+                    	<div class="sina"><a href="http://weibo.com/szddpa" target="_blank" title="关注贷贷平安官方新浪微博"></a></div>
+                    	<div class="txwb"><a href="http://t.qq.com/ddpacn" target="_blank" title="关注贷贷平安官方腾讯微博"></a></div>
+                    </div>
+                </div>
+                <h3 class="datainfo_time">认证有效期：<span>永久</span></h3>
+                <form id="world_sjzh" method="post" action="addCertificateForSocialNo">
+                <p class="datainfo_printin"><span>&nbsp;&nbsp;QQ账号：</span><input type="text" maxlength="20" name="WorldQQ" id="world_qq"/></p>
+                <p class="datainfo_printin"><span>微信账号：</span><input type="text" name="WorldWX" maxlength="20" id="world_wx"/></p>
+                <p class="datainfo_printin"><span>微博账号：</span><input type="text" name="WorldWB" maxlength="20" id="world_wb"/></p>
+                <input type="submit" value="提交审核" class="datainfo_action" id="world_action"/>
+                </form>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--other(其他资料)-->
+    <div class="datainfo_wrap" id="other_wrap">
+    	<div class="datainfo_show">
+            <div class="datainfo_title"><p>其他认证</p><span id="other_close"></span></div>
+            <div class="datainfo_content">
+            	<div class="datainfo_explain">
+                    <h3>认证说明:</h3>
+                    <p>您可以上传其他能证明还款能力的资料，信审人员会酌情评定。</p>
+                </div>
+                <h3 class="progress">其他证明：<p><input id="other_url" type="hidden"/>点击<input type="button" id="other_up" value="上传文件"/>&nbsp;&nbsp;<input type="button" id="other_batchup" value="批量上传" /></p></h3>
+                <div class="datainfo_progress">
+                	<p></p>
+                    <img src="../../res/image/loan/progress_img.gif" class="progressimg" id="otherimg"/>
+                    <input type="button" value="" id="other_sure" class="datainfo_sure"/>
+                    <input type="button" value="" id="other_cance" class="datainfo_cance"/>
+                </div>
+                <div class="clear_fixs"></div>
+                <div class="datainfo_slide">
+                    <p class="card_pre" id="other_pre"></p>
+					<div class="slide_wrap">
+						<ul id="other_slide"></ul>
+					</div>
+                    <p class="card_next" id="other_next"></p>
+                </div>
+                <input type="submit" value="提交审核" class="datainfo_action" id="other_action"/>
+                <p class="datainfo_footer"><span>警告：</span>贷贷平安是一个注重诚信的网络借贷互助平台。若您上传的资料有伪造或人工修改痕迹，为了保障投资人的权益，贷贷平安会将您加入黑名单（永久取消借款资格）。借贷有价，信用无价。</p>
+            </div>
+        </div>
+    </div>
+    <!--图片详细查看-->
+    <div class="detail_wrap">
+        	<div class="imgdetail" id="imgdetail"></div>
+    </div>
+    <script src="../../res/js/common/InfoTips.js"></script>
+	<script src="../../res/js/common/popupalert.js"></script>
+	<script src="../../res/js/loan/loan_data.js"></script>
+	<script src="../../res/js/common/Loan_UploadUtil.js"></script>
+</body>
+</html>

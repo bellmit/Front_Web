@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="keywords" content="图书管理系统,浦北县人民医院,浦北县人民医院图书馆,电子期刊,数字图书馆,浦北人民医院电子阅览室,浦北县人民医院书刊" />
+<meta http-equiv="description" content="图书管理系统,浦北县人民医院,浦北县人民医院图书馆,电子期刊,数字图书馆,浦北人民医院电子阅览室,浦北县人民医院书刊" />
+<title>电子阅览室--我的书架</title>
+<link type="text/css" rel="stylesheet" href="css/subpages.css"/>
+<link rel="stylesheet" type="text/css" href="css/flexigrid.pack.css"/>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/flexigrid.pack.js"></script>
+<script type="text/javascript" src="js/subpages.js"></script>
+</head>
+<body>
+	<div class="container">
+    	<div class="header">
+        	<div class="toptip-infos">
+            	<div class="logo">浦北县人民医院</div>
+                <div class="logins">
+                	<form method="post" action="#">
+                    	<table>
+                        	<tr>
+                            	<td><label for="readnum">借阅证：</label></td><td><img src="images/loginimgl.png" class="loginimgl"/><input type="text" name="librarycard" id="readnum" class="readnum"/><img src="images/loginimgr.png" class="loginimgr"/></td><td><label for="librarypd">密&nbsp;&nbsp;码：</label></td><td><img src="images/loginimgl.png" class="loginimgl"/><input type="password" name="password" id="librarypd" class="librarypd"/><img src="images/loginimgr.png" class="loginimgr"/></td><td><button type="button" class="loginbtn" id="loginbtn">登&nbsp;录</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="banner">
+            	<h1>电子阅览室</h1>
+            </div>
+            <div class="nav">
+            	<ul class="menu">
+                	<li><a href="index.html" title="">首&nbsp;&nbsp;页</a></li>
+                    <li><a href="news.html" title="">最新动态</a></li>
+                    <li><a href="books.html" title="">图书资源</a></li>
+                    <li><a href="borrowguide.html" title="">借书指南</a></li>
+                    <li><a href="mybookshelf.html" title="">我的书架</a></li>
+                    <li><a href="index.html" title="" id="nav-zol" class="nav-zol">业务指南</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            <p class="mbsposition">当前位置:<span>我的书架</span></p>
+            <div class="mbsmidbox">
+            	<div class="mbssidebox">
+                	<h3>读者个人信息</h3>
+                	<table class="mbsperson" cellpadding="0" cellspacing="0">
+                    	<tr>
+                        	<td class="personone">读者代号:</td>
+                        	<td class="persontwo"><p class="psno">1345345634564</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">借阅证号:</td>
+                        	<td class="persontwo"><p class="pscd">234523452345</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">读者名称:</td>
+                        	<td class="persontwo"><p>阿卡积分卡</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">性别:</td>
+                        	<td class="persontwo"><p>男</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">读者类别:</td>
+                        	<td class="persontwo"><p>妇科护士长</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">证据有效期:</td>
+                        	<td class="persontwo"><p class="psdt">2015-01-01</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">读者状态:</td>
+                        	<td class="persontwo"><p>在线</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">是否有效:</td>
+                        	<td class="persontwo"><p>有效</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">欠款额:</td>
+                        	<td class="persontwo"><p>0</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">外借数:</td>
+                        	<td class="persontwo"><p>5</p></td>
+                        </tr>
+                        <tr>
+                        	<td class="personone">现预约数:</td>
+                        	<td class="persontwo"><p>2</p></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mbsmainbox">
+                	<h3>当前借阅信息</h3>
+                    <div class="mbsborrow">
+                        <form action="#" method="post">
+                            <table class="mbsborrowtable" id="mbsborrowtable" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th width="80">条码号</th>
+                                        <th width="100">书名</th>
+                                        <th width="50">责任者</th>
+                                        <th width="60">借阅日期</th>
+                                        <th width="60">应还日期</th>
+                                        <th width="80">馆藏地</th>
+                                        <th width="50">续&nbsp;&nbsp;借</th>
+                                    </tr>
+                                </thead> 
+                                <tbody>
+                                    <tr>
+                                        <td><img alt="" title="" src="images/mbs_borrowicon.png"/>4574575363</td>
+                                        <td>书名书名书名书名</td>
+                                        <td>张三</td>
+                                        <td>2012-03-01</td>
+                                        <td>2012-05-01</td>
+                                        <td>abc室</td>
+                                        <td><button type="submit" class="mbsxj">续&nbsp;&nbsp;借</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><img alt="" title="" src="images/mbs_borrowicon.png"/>4574575363</td>
+                                        <td>书名书名书名书名</td>
+                                        <td>张三</td>
+                                        <td>2012-03-01</td>
+                                        <td>2012-05-01</td>
+                                        <td>abc室</td>
+                                        <td><button type="submit" class="mbsxj">续&nbsp;&nbsp;借</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><img alt="" title="" src="images/mbs_borrowicon.png"/>4574575363</td>
+                                        <td>书名书名书名书名</td>
+                                        <td>张三</td>
+                                        <td>2012-03-01</td>
+                                        <td>2012-05-01</td>
+                                        <td>abc室</td>
+                                        <td><button type="submit" class="mbsxj">续&nbsp;&nbsp;借</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><img alt="" title="" src="images/mbs_borrowicon.png"/>4574575363</td>
+                                        <td>书名书名书名书名</td>
+                                        <td>张三</td>
+                                        <td>2012-03-01</td>
+                                        <td>2012-05-01</td>
+                                        <td>abc室</td>
+                                        <td><button type="submit" class="mbsxj">续&nbsp;&nbsp;借</button></td>
+                                    </tr><tr>
+                                        <td><img alt="" title="" src="images/mbs_borrowicon.png"/>4574575363</td>
+                                        <td>书名书名书名书名</td>
+                                        <td>张三</td>
+                                        <td>2012-03-01</td>
+                                        <td>2012-05-01</td>
+                                        <td>abc室</td>
+                                        <td><button type="submit" class="mbsxj">续&nbsp;&nbsp;借</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><img alt="" title="" src="images/mbs_borrowicon.png"/>4574575363</td>
+                                        <td>书名书名书名书名</td>
+                                        <td>张三</td>
+                                        <td>2012-03-01</td>
+                                        <td>2012-05-01</td>
+                                        <td>abc室</td>
+                                        <td><button type="submit" class="mbsxj">续&nbsp;&nbsp;借</button></td>
+                                    </tr>                     
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="7">分页部分</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="mbsbottombox">
+            	<div class="mbslog">
+                    <table class="mbslogtable" id="mbslogtable" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th width="100">序列号</th>
+                                    <th width="100">条码号</th>
+                                    <th width="150">书名</th>
+                                    <th width="50">责任者</th>
+                                    <th width="60">借阅日期</th>
+                                    <th width="60">归还日期</th>
+                                    <th width="80">索书号</th>
+                                    <th width="80">馆藏地</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><img alt="" title="" src="images/mbs_historyicon.png"/>24352524</td>
+                                    <td>21345245234524</td>
+                                    <td>书名</td>
+                                    <td>责任者</td>
+                                    <td>2012-03-01</td>
+                                    <td>2012-05-01</td>
+                                    <td>23345234</td>
+                                    <td>馆藏地</td>
+                                </tr>
+                                <tr>
+                                    <td><img alt="" title="" src="images/mbs_historyicon.png"/>24352524</td>
+                                    <td>21345245234524</td>
+                                    <td>书名</td>
+                                    <td>责任者</td>
+                                    <td>2012-03-01</td>
+                                    <td>2012-05-01</td>
+                                    <td>23345234</td>
+                                    <td>馆藏地</td>
+                                </tr>
+                                <tr>
+                                    <td><img alt="" title="" src="images/mbs_historyicon.png"/>24352524</td>
+                                    <td>21345245234524</td>
+                                    <td>书名</td>
+                                    <td>责任者</td>
+                                    <td>2012-03-01</td>
+                                    <td>2012-05-01</td>
+                                    <td>23345234</td>
+                                    <td>馆藏地</td>
+                                </tr>
+                                <tr>
+                                    <td><img alt="" title="" src="images/mbs_historyicon.png"/>24352524</td>
+                                    <td>21345245234524</td>
+                                    <td>书名</td>
+                                    <td>责任者</td>
+                                    <td>2012-03-01</td>
+                                    <td>2012-05-01</td>
+                                    <td>23345234</td>
+                                    <td>馆藏地</td>
+                                </tr>
+                                <tr>
+                                    <td><img alt="" title="" src="images/mbs_historyicon.png"/>24352524</td>
+                                    <td>21345245234524</td>
+                                    <td>书名</td>
+                                    <td>责任者</td>
+                                    <td>2012-03-01</td>
+                                    <td>2012-05-01</td>
+                                    <td>23345234</td>
+                                    <td>馆藏地</td>
+                                </tr>
+                                <tr>
+                                    <td><img alt="" title="" src="images/mbs_historyicon.png"/>24352524</td>
+                                    <td>21345245234524</td>
+                                    <td>书名</td>
+                                    <td>责任者</td>
+                                    <td>2012-03-01</td>
+                                    <td>2012-05-01</td>
+                                    <td>23345234</td>
+                                    <td>馆藏地</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="8">分页部分</th>
+                                </tr>
+                            </tfoot>
+                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" id="footer">
+        <div class="footinfos">
+        	<p>医院热线电话:0777-8211105&nbsp;&nbsp;地址:浦北县城金浦大道&nbsp;&nbsp;邮编:535300</p>
+            <p>浦北县人民医院版权所有</p>
+            <p>Copyright@2010-2015&nbsp;pbrmyy.com.All.Rights.Reserved</p>
+        </div>
+    </div>
+</body>
+</html>

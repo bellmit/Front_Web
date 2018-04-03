@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的账户--充值</title>
+<meta name="description" content="贷贷平安,贷贷平安网贷平台,平安网贷,我的账户,我的账户-充值,充值,贷贷平安-我的账户,贷贷平安-我的账户-充值">
+<meta name="keywords" content="贷贷平安,贷贷平安网贷平台,平安网贷,我的账户,我的账户-充值,充值,贷贷平安-我的账户,贷贷平安-我的账户-充值">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/common.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/manage/manage_layout.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/manage/manage_reload_change3.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/plugins/common/jquery.form.js"></script>
+<script src="../../res/plugins/common/jquery.validate.js"></script>
+<script src="../../res/plugins/common/jquery.blockUI.min.js"></script>
+<script src="../../res/js/manage/manage_menu.js"></script>
+<script src="../../res/js/common/Validate_Funs.js"></script>
+<script src="../../res/js/manage/manage_reload_change3.js"></script>
+</head>
+<body>
+	<div class="header_wrap">
+    	<div class="header">
+       		<div class="head_logo"></div>
+            <ul class="head_submenu">
+            	<li class="head_submenu1"><a href="#" title=""></a></li>
+                <li class="head_submenu2"><a href="#" title=""></a></li>
+                <li class="head_submenu3"><a href="#" title=""></a></li>
+                <li class="head_submenu4"><a href="#" title=""></a></li>
+                <li class="head_submenu5"><a href="#" title=""></a></li>
+            </ul>
+            <ul class="head_login">
+            	<li class="head_login1"><a href="#" title="">用户登录</a></li>
+            	<li class="head_login2"><a href="#" title="">快速注册</a></li>
+            </ul>
+            <ul class="head_mainmenu">
+            	<li><a href="#" title="">我要借贷</a></li>
+                <li><a href="#" title="">我要理财</a></li>
+                <li><a href="#" title="">新手引导</a></li>
+                <li><a href="#" title="">本金保障</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="manage_poswrap"><span>账户管理</span><span>我的账户</span><span class="manage_curpos">充值</span></div>
+	<div class="container">
+    	<div class="topwrap"></div>
+        <div class="mainwrap">
+            <div class="mainbox" id="mainbox">
+                <div class="mr_wrap">
+                	<div class="mr_tips">
+                    	<span>充值：</span>财产性收入是每个人享有的权利，贷贷平安致力于让每个国人都能获得安全稳定的财产性收入，赶紧充值去吧，体验钱生活的乐趣！
+                    </div>
+                    <div class="mr_step"><div>第一步，请选择支付方式</div><p id="mr_bankseltips"></p></div>
+                    <input type="hidden" name="BeforeBank" value="" id="beforebank"/>
+                    <div class="mr_alreadywrap" id="mr_alreadywrap">
+                    	<ul class="mr_bankwrap" id="mr_bankwrap"></ul>
+                    	<div class="mr_morewrap">
+                            <p id="mr_morebtn" class="">更多银行</p>
+                        </div>
+                    </div>
+                    <div class="mr_selectwrap" id="mr_selectwrap">
+                        <ul class="mr_tag" id="mr_tag">
+                            <li style="margin-left:30px;*+margin-left:15px;" class="mr_tagsel">借记卡</li>
+                            <li class="">信用卡</li>
+                        </ul>
+                        <ul class="mr_selectjjk" id="mr_selectjjk">
+                            <li class="">1025<p></p><div class="bio_gs"></div></li>
+                            <li class="">105<p></p><div class="bio_js"></div></li>
+                            <li class="">103<p></p><div class="bio_ny"></div></li>
+                            <li class="">104<p></p><div class="bio_zg"></div></li>
+                            <li class="">316<p></p><div class="bio_nj"></div></li>
+                            <li class="">3080<p></p><div class="bio_zs"></div></li>
+                            <li class="">301<p></p><div class="bio_jt"></div></li>
+                            <li class="">3230<p></p><div class="bio_yzcx"></div></li>
+                            <li class="">307<p></p><div class="bio_pa"></div></li>
+                            <li class="">309<p></p><div class="bio_xy"></div></li>
+                            <li class="">313<p></p><div class="bio_zx"></div></li>
+                            <li class="">312<p></p><div class="bio_gd"></div></li>
+                            <li class="">311<p></p><div class="bio_hx"></div></li>
+                            <li class="">305<p></p><div class="bio_ms"></div></li>
+                            <li class="">306<p></p><div class="bio_gf"></div></li>
+                            <li class="">314<p></p><div class="bio_pf"></div></li>
+                            <li class="">324<p></p><div class="bio_hz"></div></li>
+                            <li class="">302<p></p><div class="bio_nb"></div></li>
+                            <li class="">310<p></p><div class="bio_bj"></div></li>
+                            <li class="">326<p></p><div class="bio_sh"></div></li>
+                            <li class="">342<p></p><div class="bio_cqns"></div></li>
+                            <li class="">335<p></p><div class="bio_bjns"></div></li>
+                            <li class="">336<p></p><div class="bio_cd"></div></li>
+                      </ul>
+                      <ul class="mr_selectxyk" id="mr_selectxyk">
+                            <li class="">1027<p></p><div class="bio_gs"></div></li>
+                            <li class="">308<p></p><div class="bio_zs"></div></li>
+                            <li class="">1054<p></p><div class="bio_js"></div></li>
+                            <li class="">106<p></p><div class="bio_zg"></div></li>
+                            <li class="">3112<p></p><div class="bio_hx"></div></li>
+                            <li class="">3051<p></p><div class="bio_ms"></div></li>
+                            <li class="">3121<p></p><div class="bio_gd"></div></li>
+                            <li class="">3231<p></p><div class="bio_yzcx"></div></li>
+                            <li class="">3241<p></p><div class="bio_hz"></div></li>
+                            <li class="">303<p></p><div class="bio_nb"></div></li>
+                            <li class="">3261<p></p><div class="bio_sh"></div></li>
+                            <li class="">301<p></p><div class="bio_jt"></div></li>
+                            <li class="">309<p></p><div class="bio_xy"></div></li>
+                            <li class="">307<p></p><div class="bio_pa"></div></li>
+                      </ul>
+                      <div class="mr_dsfwrap">
+                      	<p class="mr_dsftips">您也可以选择一下第三方支付平台</p>
+                      	<ul class="mr_selectdsf" id="mr_selectdsf">
+                            <li class="">1<p></p><div class="bio_gfb"></div></li>
+                            <li class="">2<p></p><div class="bio_ttf"></div></li>
+                      	</ul>
+                      </div>
+                    </div>
+                </div>
+                <div class="mr_wrap">
+                	<div class="mr_step"><div>第二步，填写充值金额</div></div>
+                    <form action="../trade/recharge" id="mr_reload" method="post">
+                    	<input type="hidden" name="token" value=""> 
+	                	<div class="mr_textitem">
+	                    	<label>可用金额：</label>
+	                        <div class="mr_textro">￥54756754.67</div> 
+	                    </div>
+	                	<div class="mr_textitem">
+	                    	<label>充值金额：</label>
+	                        <input type="hidden" name="ThirdPayType" value="" id="thirdPayType"/>
+	                        <input name="TradeAmount" maxlength="12"  class="mr_text" id="tradeAmount"/><span class="mr_unit">元</span><div class="mr_uppercase" id="mr_uppercase"></div>
+	                        <p class="mr_errorinfo" id="mr_errorinfo"></p>
+	                    </div>
+	                    <div class="mr_btnitem">
+	                    	<input type="submit" value="" class="mr_submit"/>
+	                    </div>
+                    </form>
+                    <form action="../../sys/payment/chinaBankSend" method="POST" name="E_FORM" id="E_FROM" target="_blank">
+                        <input id="v_oid" type="hidden" name="v_oid" value="">
+						<input id="v_amount" type="hidden" name="v_amount" value="">
+						<input id="remark1" type="hidden"  name="remark1" value="">
+						<input id="pmode_id" type="hidden"  name="pmode_id" value="">
+					</form>
+                </div>
+                <div class="popup_reloadbox" id="popup_reloadbox">
+                    <div class="popup_reloadtitle"><span>提示</span><p></p><div id="popup_reloadclose"></div></div>  
+                        <div class="popup_reloaditem">
+                            <p class="popup_reloadinfo1">请在新打开的支付页面完成充值操作。若充值失败，请<span id="popup_reloadway">重新选择支付方式</span></p>
+                        </div>
+                        <div class="popup_reloaditem">
+                        	<p class="popup_reloadinfo2"><span>*</span>若确认已完成支付,可能存在数据延迟,30秒后刷新本页面即可。</p>
+                            <p class="popup_reloadinfo2">若无法成功支付,请<a href="http://www.baidu.com" target="_blank" title="">联系在线客户</a></p>
+                            <input type="hidden" name="ReReloadAmount" value="" id="rereloadamount" />
+                            <p class="popup_sure" id="popup_sure">已完成支付</p>
+                        </div>
+                        <div class="popup_reloadformat"></div>
+                </div>
+                <div class="clear_fixs"></div>
+            </div>
+            <div class="bottomwrap"></div>
+        </div>
+        <div class="sidewrap">
+        	<ul class="sidebox" id="sidebox">
+            <li class="mainmenu">
+                <p class="menutheme0 menuthemesel" id="menutheme0">我的账户</p>
+                <ul class="submenu" style="display:block">
+                    <li class=""><a href="manage_home.html" title="">账户总览</a></li>
+                    <li class=""><a href="manage_tradenotes.html" title="">交易记录</a></li>
+                    <li class=""><a href="manage_personinfo.html" title="">个人信息</a></li>
+                    <li class=""><a href="bankcard.html" title="">银行卡信息</a></li>
+                    <li class=""><a href="authinfo.html" title="">认证中心</a></li>
+                    <li class=""><a href="security.html" title="">安全中心</a></li>
+                    <li class=""><a href="#" title="">站内消息</a></li>
+                    <li class=""><a href="#" title="">提醒设置</a></li>
+                </ul>
+            </li>
+            <li class="mainmenu">
+                <p class="menutheme1" id="menutheme1">我的理财</p>
+                <ul class="submenu">
+                    <li class=""><a href="wealth_report.html" title="">理财报表</a></li>
+                    <li class=""><a href="#" title="">理财记录</a></li>
+                    <li class=""><a href="#" title="">回款记录</a></li>
+                </ul>
+            </li>
+            <li class="mainmenu">
+                <p class="menutheme2" id="menutheme2">我的借款</p>
+                <ul class="submenu">
+                    <li class=""><a href="#" title="">借款报表</a></li>
+                    <li class=""><a href="#" title="">借款记录</a></li>
+                    <li class=""><a href="#" title="">还款记录</a></li>
+                </ul>
+            </li>
+            <li class="mainmenu_format"></li>
+        </ul>
+        </div>
+    </div>
+    <div class="clear_fixs"></div>
+    <div class="footer_wrap">
+    	<div class="footer">
+        	<ul class="foot_join">
+            	<li><a href="#" title="">关于我们</a></li>
+                <li><a href="#" title="">媒体关注</a></li>
+                <li><a href="#" title="">联系我们</a></li>
+                <li><a href="#" title="">加入我们</a></li>
+                <li><a href="#" title="">合作伙伴</a></li>
+                <li class="joinlast"><a href="#" title="">意见反馈</a></li>
+            </ul>
+        	<div class="foot_theme"><p>安全：银行风控专家把关</p><p>专业：线下5年小额贷款经验</p><p>真实：所有借款均真实有效</p></div>
+            <p class="foot_phone">服务热线：400-990-6088&nbsp;（周一至周日&nbsp;9:00--21:00）</p>
+            <p class="foot_copyright">Copyright&copy;2013-2014&nbsp;版权所有：深圳市贷贷平安网络信息有限公司</p>
+            <ul class="foot_webrecord">
+            	<li>粤ICP备09157619号</li>
+                <li><a href="#" title="">国际联网备案</a></li>
+                <li><a href="#" title="">深圳网警备案</a></li>
+                <li><a href="#" title="">中国互联网协会</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

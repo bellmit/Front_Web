@@ -1,0 +1,223 @@
+@charset "utf-8";
+/* CSS Document */
+.about{width:802px; margin:0px auto; min-height:500px;}
+.about h1{
+	font-size:22px;
+	font-family:"微软雅黑";
+	color:#f2462a;
+	margin-bottom:15px;
+	font-weight:normal;
+	}
+.about p{
+	margin:15px 0px;
+	font-size:14px;
+	font-family:"宋体" Arial;
+	color:#656565;
+	line-height:171%;}
+.about .comcul{
+	font-size:12px;
+	font-family:"微软雅黑";
+	color:#454545;}
+.about .comcul li{
+	font-size:14px;
+	line-height:160%;
+	color:#656565;}
+.about h3{
+	font-size:18px;
+	color:#f2462a;
+	font-family:"微软雅黑";
+	margin-top:30px;}
+.teamer{
+	margin-top:30px;
+	width:802px;}
+.teamer li{
+	overflow:hidden;
+	margin-bottom:30px;
+	padding-bottom:30px;
+	width:802px;}
+.teamer .photo{
+	display:block;
+	width:120px;
+	height:145px;
+	padding:2px;
+	border:1px solid #eee;
+	float:left;}
+
+.teamer .des{
+	display:block;
+	width:654px;
+	margin-left:20px;
+	float:left;}
+.cocoms .teamer .photo{
+	width:254px;
+}
+.cocoms .teamer .des{
+	width:520px;
+}
+.teamer dt,.teamer dt.name{
+	font-size:18px;
+	font-family:"微软雅黑";
+	border-bottom:1px solid  #f2462a;
+	color:#f2462a;
+	padding-bottom: 12px;
+	margin-bottom:15px;}
+.teamer dt.name .sex, .teamer dt.name .pos{
+	font-size:12px;
+	color:#999;
+	font-family: 微软雅黑;
+	font-weight:normal;}
+.teamer dt.name .pos{
+	color:#666;
+	font-size: 14px;
+	font-family:"宋体";
+}
+.teamer dt.name .pos{
+	font-family: 微软雅黑;
+	font-size: 18px;
+	color: #656565;
+	margin-right: 5px;
+	}
+.teamer dd{
+	font-size:14px;
+	color:#999;
+	line-height: 150%;}
+.contactinfo{
+	margin-bottom:15px;}
+.contactinfo li,.contactinfo label{
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#454545;}
+.contactinfo a{
+	color:#f2462a;}
+.contactinfo label{
+	display:block;
+	width:4em;
+	float:left;
+	margin-right:15px;}
+.secUl{
+	margin-top:15px;}
+.secUl li{
+	font-size:14px;
+	color:#666;
+	font-family:"微软雅黑";
+	margin-bottom:10px;}
+.secDl{
+	margin-top:15px;}
+.secDl dt{
+	font-size: 14px;
+	font-weight: bold;
+	color: #656565;}
+.secDl dd{
+	margin-bottom:40px;}
+.ques{
+	margin-top:20px;
+}
+.quesdes{
+	font-size:12px;
+	color:#03F;
+	margin-bottom:15px;
+	margin-top:15px;
+	cursor:pointer;}
+.ques  p{
+	margin:5px 0px;
+	margin-left: 10px;}
+.ques  p a{
+	color:#00A0E9;
+}
+.ques  p a:hover{
+	text-decoration: underline;
+}
+.about table{
+	border-collapse:collapse;
+	border:1px solid #cecece;
+	margin-left:10px;}
+.about table tr{
+	border-bottom:1px solid #cecece;}
+.about table td{
+	padding:4px 10px;
+	text-align:center;
+	font-size:12px;
+	color:#666;}
+.about .sectit{
+	margin-bottom:30px;
+	margin-top:20px;}
+.about .ta_center{
+	text-align:center;
+	margin-top:0px;}
+.jobs div{
+	border-bottom:1px solid #ddd;
+	margin-bottom:30px;}
+.jobs h2{
+	font-size:18px;
+	color:#f2462a;
+	margin-bottom:20px;}
+.jobs dt{
+	font-size:14px;
+	color:#656565;}
+.mainwrap{
+ 	margin-bottom: 0px;
+ }
+ .newslist li{
+	 list-style-image:url(../../image/other/newsliststyle.fw.png);
+	 list-style-position:inside;
+	 *list-style-image:none;
+	 *background:url(../../image/other/newsliststyle.fw.png) no-repeat left center;
+	 padding:16px 0px 16px 10px;
+	 *padding-left:0px;
+	 border-bottom:1px dashed #cecece;
+	 *position:relative;}
+.newslist a{
+	font-size:14px;
+	color:#656565;
+	font-weight:normal;
+	max-width: 400px;
+	*float:left;
+	*margin-left:15px;
+	position:relative;}
+.newslist .date{
+	float:right;
+	margin-right:10px;
+	font-size:14px;
+	color:#999;
+	margin-left:15px;}
+.newdetail h3{
+	font-size: 24px;
+	color:#454545;}
+.newdetail .date{
+	color:#999; 
+	float:right;
+	margin-bottom:15px;}
+.newdetail .c{
+	margin-top:50px;}
+.newdetail .c .pre_next{ 
+	border-top:1px solid #ddd;
+	padding-top: 15px;
+	margin-top: 30px;}
+.newdetail .c .pre_next a{
+	font-size:12px;
+	color:#656565;
+	font-weight: bold;
+}
+.newdetail .c .pre_next a:hover{
+	color:#EC4125;
+}
+.newdetail p.img{
+	text-align:center;}
+.newdetail p.img img{
+	max-width:812px;}
+.newdetail .subtit{
+	font-size:18px;
+	font-family:"微软雅黑";
+	}
+.newdetail li, .newdetail dd, .newdetail dt{
+	font-size:14px;
+	color:#999;
+	line-height:140%;
+	font-family:"微软雅黑";}
+.newdetail dd{
+	padding-left:15px;
+	}
+.newsTab{
+	margin-top:30px;
+}
+

@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*选择子页面*/
+body{margin:0;padding:0;background:url(../images/bodyselect_bg.png) repeat-x;_behavior:url("css/csshover.htc");width:100%;position:relative;}
+body *{margin:0;padding:0;list-style:none;font-size:12px;font-family:"宋体", "宋体-PUA", "仿宋_GB2312", serif, sans-serif, Vrinda;text-decoration:none;color:#000;}
+/*医疗机构查询中部,药品缺陷批号中部*/
+/*查询部分*/
+.dselectform,.cselectform{float:left;width:100%;}
+.dselectbasetxt,.cselectbasetxt,.dselectbasebtn,.cselectbasebtn{float:left;margin-top:20px;}
+.dselectbasetxt label,.cselectbasetxt label{float:left;font-size:14px;padding:5px 0;cursor:pointer;margin:0 5px;}
+.dselectbasetxt label:hover,.cselectbasetxt label:hover{color:red;}
+.dselectbasetxt img,.cselectbasetxt img{float:left;width:4px;height:25px;border:none;overflow:hidden;}
+.dselecttxt,.cselecttxt{float:left;width:210px;height:25px;border:none;overflow:hidden;background:url(../images/druglist_seltxtm.png) repeat-x center center;line-height:2em;border-left:1px solid #a9a8a8;border-right:1px solid #a9a8a8;}
+.dselecttxt:focus,.cselecttxt:focus{outline:none;}
+.dselectbtn,.cselectbtn{float:left;margin:0 5px;width:63px;height:25px;border:none;overflow:hidden;background:url(../images/druglist_selbtn.png) no-repeat center center;cursor:pointer;}
+.dselectbtn:hover,.cselectbtn:hover{color:#F00;}
+.dselectbasebtn img,.cselectbasebtn img{float:left;width:1px;height:19px;margin:3px 0 3px 5px;overflow:hidden;border:none;}
+/*表格（包括高级部分）*/
+.dselectlist,.cselectlist{float:left;width:99%;margin:10px 2px 0 2px;}
+.dselecttable,.cselecttable{float:left;border:1px solid #03578c;background:#fff;width:100%;border-collapse:collapse;}
+/*医疗机构表格*/
+/**/
+.dselectthead,.cselectthead{width:100%;height:38px;background:url(../images/druglist_tbg.png) repeat-x center center;text-align:center;line-height:2em;}
+.dselectthead img,.cselectthead img{width:2px;height:23px;border:none;overflow:hidden;float:right;*+margin-top:-23px;margin-right:-2px;padding-right:2px;}
+.dselecttbody tr,.cselecttbody tr{cursor:pointer;text-align:center;}
+.dselecttbody tr td,.cselecttbody tr td{padding-top:2px;padding-bottom:2px;border-bottom:1px dotted #03578c;height:27px;overflow:hidden;border-right:1px solid #03578c;}
+.dselecttbody tr td a,.cselecttbody tr td a{overflow:hidden;display:block;}
+.dselecttbodyjq,.cselecttbodyjq{cursor:pointer;background:#bbe7fe;}
+.dselecttfoot tr,.cselecttfoot tr{width:100%;height:38px;background:url(../images/druglist_fbg.png) repeat-x center center;}

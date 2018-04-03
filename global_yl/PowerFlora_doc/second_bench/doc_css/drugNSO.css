@@ -1,0 +1,53 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+/*layout*/
+.container{width:auto;height:auto;margin:0 auto;padding-top:30px;}
+.header{width:745px;height:auto;margin:0 auto;}
+.content{width:745px;height:auto;margin:0 auto;padding-bottom:30px;}
+/*header*/
+/*h1-h6*/
+.header h1{width:auto;height:auto;padding:5px 0;text-align:center;font-size:26px;font-weight:normal;}
+.header h2{width:auto;height:auto;padding:5px 0;text-align:center;font-size:24px;font-weight:bold;}
+/*content*/
+/*table*/
+.opi_remark{width:745px;height:auto;margin:0 auto;border-left:1px dashed #333;border-top:1px dashed #333;border-bottom:1px dashed #333;}
+.opi_remark_sub,.adv_remark_sub{width:745px;height:auto;margin:0 auto;border:none;}
+.dnso_o_info,.dnso_a_info{width:745px;height:auto;margin:0 auto;border-left:2px solid #000;border-top:2px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;}
+.dnso_o_foot{width:745px;height:auto;margin:0 auto;border:0 none;}
+/*tr td*/
+.opi_remark tr td{border-right:1px dashed #333;}
+.opi_remark_sub tr td,.adv_remark_sub tr td{padding:3px 0;}
+.dnso_o_info tr td,.dnso_a_info tr td{border-bottom:1px solid #000;border-right:1px solid #000;padding:5px 0;}
+.dnso_o_foot tr td{padding:5px 0;}
+/*table-layout*/
+.dnso_org1{width:34% !important;}
+.dnso_org2{width:32% !important;}
+.dnso_org3{width:34% !important;}
+.dnso_orsg1{width:70% !important;}
+.dnso_orsg2{width:30% !important;}
+.dnso_oig1{width:15% !important;}
+.dnso_oig2{width:35% !important;}
+.dnso_oig3{width:15% !important;}
+.dnso_oig4{width:35% !important;}
+/*form-detail*/
+/*fieldset*/
+.dnso_o_info fieldset,.dnso_a_info fieldset{float:left;width:99% !important;height:auto;padding:2px 0;}
+.dnso_o_foot fieldset{float:right;width:30%;padding:2px 0;}
+/*label*/
+.opi_remark label{float:left;padding:5px 3px;font-size:14px;}
+.dnso_o_foot fieldset label{float:left;padding:3px 0;text-align:center;width:auto;display:block;cursor:pointer;font-size:14px;}
+.opi_remark_sub label,.adv_remark_sub label{float:right;padding:3px 0;font-size:14px;cursor:pointer;}
+.dnso_o_info label,.dnso_a_info label{padding:3px 0;text-align:center;width:100%;font-size:14px;display:block;cursor:pointer;}
+.dnso_o_info fieldset label,.dnso_a_info fieldset label{float:left;padding:3px 0;text-align:right;width:18% !important;font-size:14px;display:block;cursor:pointer;}
+/*text*/
+.opi_remark input,.acceptedno{float:left;height:22px;line-height:1.5em;font-size:14px;color:#333;}
+.acceptedno{width:99%;}
+.dnso_o_info input,.dnso_a_info input{float:left;height:22px;line-height:1.5em;font-size:14px;color:#333;width:98%;}
+.dnso_o_info fieldset input,.dnso_a_info fieldset input{float:left;height:22px;line-height:1.5em;font-size:14px;color:#333;width:80% !important;}
+.dnso_o_foot fieldset input{float:left;height:22px;line-height:1.5em;font-size:14px;color:#333;width:30px;}
+/*textarea*/
+.companyissue,.departcheck,.manager{width:94%;min-height:100px;_height:100px;overflow:auto;float:right;font-size:14px;background:#FFF;}
+.dnso_o_info textarea,.dnso_a_info textarea{width:99%;min-height:100px;_height:100px;overflow:auto;float:left;font-size:14px;display:table-cell;vertical-align:middle;margin:5% 0;}

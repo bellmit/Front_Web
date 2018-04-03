@@ -1,0 +1,120 @@
+///组件--登陆展现组件
+
+
+
+//顶部logo
+.header-info{
+	.info-login{
+		.layout-absolutelb-base(160px,20px);
+		width:160px;
+		font-size:@font-size-base + 8;
+		height:24px;
+		border-left:1px solid @color-gray5;
+		text-indent:15px;
+		line-height:24px;
+		color:@color-gray2;
+	}		
+}
+
+
+///*--登陆--*/
+.login-wrap{
+	width:1190px;
+	.box-sizing-base(border-box);
+	margin:70px auto 233px auto;
+	height:336px;
+	&:after{
+		content:'';
+		clear:both;
+		display:block;
+		width:100%;
+	}
+}
+.login-image{
+	float:left;		
+	margin-left:20px;	
+}
+.login-form{
+	width:248px;
+	height:248px;
+	padding:44px;
+	border:1px solid @color-gray5;
+	padding:44px;
+	float:left;
+	font-size:12px;
+	color:@color-gray3;
+	>div{
+		b{
+			color:@color-gray2;
+			font-size:14px;
+			float:left;
+		}
+		span{
+			color:@color-gray2;
+			display:inline;
+			float:right;
+			a{
+				color:@color-orange1;
+			}
+		
+		 }
+	}
+	table{
+		tr{
+			td{
+				width:250px;
+				>b{
+					font-size:14px;
+					color:@color-gray2;	
+				}
+				label{
+					float:left;		
+				}
+				.input-text{
+					border:1px solid @color-gray4;
+					width:240px;
+					line-height:20px;
+					height:20px;
+					padding:6px 0 6px 10px;
+				}
+				button{
+					width:100%;	
+					height:40px;
+					line-height:40px;
+					display:block;
+					color:@color-white;
+					font-size:@font-size-base - 2;
+					background: @color-orange1;
+					vertical-align:middle;
+					.border-radius-base(4px);
+				}
+				label{
+					>input{
+						margin-right:8px;
+						vertical-align:middle;		
+					}		
+				}
+				>span{
+					display:inline;
+					float:right;
+					a{
+						color:@color-gray2;
+					}
+				}
+			}
+		}	
+	}
+}
+
+.login-tip{
+	height:24px;
+	line-height:24px;
+	font-size:@font-size-base - 2;
+	color:@color-red1;
+}
+.login-tip2{
+	height:12px;
+	line-height:12px;
+	font-size:@font-size-base - 2;
+	color:@color-red1;
+}

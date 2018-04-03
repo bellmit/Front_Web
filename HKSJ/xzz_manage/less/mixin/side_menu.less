@@ -1,0 +1,110 @@
+///组件--左侧导航组件
+///作者：易品
+
+
+///*--顶部--*/
+ul.expmenu{
+	width:210px;
+	padding-top:20px;
+	li{
+		.layout-float-base;
+		h2{
+			padding:0 12px;
+			height:42px;
+			line-height:42px;
+			background:@color-gray4;
+			border-bottom:1px solid @color-gray14;
+			color:@color-white;
+			cursor:pointer;
+			.label{
+				padding-left:5px;
+			}
+			.icon1,
+			.icon2,
+			.icon3,
+			.icon4,
+			.icon5,
+			.icon6,
+			.icon7,
+			.icon8,
+			.icon9,
+			.icon10,
+			.icon11,
+			.icon12{
+				width:20px;
+				height:20px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.icon1{
+				background:url(../images/video_icon.png) no-repeat 0 0;
+			}
+			.icon2{
+				background:url(../images/video_icon.png) no-repeat 0 -21px;
+			}
+			.icon3{
+				background:url(../images/video_icon.png) no-repeat 0 -43px;
+			}
+			.icon4{
+				background:url(../images/video_icon.png) no-repeat 0 -66px;
+			}
+			.icon5{
+				background:url(../images/video_icon.png) no-repeat 0 -88px;
+			}
+			.icon6{
+				background:url(../images/video_icon.png) no-repeat 0 -111px;
+			}
+			.icon7{
+				background:url(../images/video_icon.png) no-repeat 0 -134px;
+			}
+			.icon8{
+				background:url(../images/video_icon.png) no-repeat 0 -156px;
+			}
+			.icon9{
+				background:url(../images/video_icon.png) no-repeat 0 -180px;
+			}
+			.icon10{
+				background:url(../images/video_icon.png) no-repeat 0 -204px;
+			}
+			.icon11{
+				background:url(../images/video_icon.png) no-repeat 0 -226px;
+			}
+			.icon12{
+				background:url(../images/video_icon.png) no-repeat 0 -249px;
+			}
+			.arrow{
+				display:block;
+				width:16px;
+				height:16px;
+				margin-top:18px;
+				&.up{
+					background:url(../images/arrow_u.png) no-repeat;
+				}
+				&.down{
+					background:url(../images/arrow_d.png) no-repeat;
+				}
+			}
+		}
+		.menu{
+			display:none;
+			background:@color-blue4;
+		}
+		li{
+			float:none;
+			a{
+				height:32px;
+				line-height:32px;
+				padding-left:42px;
+				color:@color-white;
+				font-size:@font-size-base;
+				display:block;
+				&:hover{
+					background:@color-green1;
+				}
+			}
+			&.active a{
+				background:@color-blue3;
+			}
+		}
+	}
+}

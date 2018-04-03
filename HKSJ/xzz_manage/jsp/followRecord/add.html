@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <base href="../../">
+    <title>发表随记</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">    
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="This is my page">
+    <link href="css/public.css"  rel="stylesheet" type="text/css" />
+    <link id="cssFile" rel="stylesheet" href="css/schcct/skins/cyan.css">
+    <link rel="stylesheet" href="css/pilelot-ui.css"/>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/behind/followRecord/follow_record_add.js"></script>
+  </head>
+  
+  <body class="follow-wrap">
+  		<form id="followRecordForm" method="post" enctype="multipart/form-data">
+        <table class="mainTable">
+        <colgroup>
+          <col class="g-w-per5">
+          <col class="g-w-per35">
+        </colgroup>
+        <tr>
+          <td >随记内容：</td>
+        <td>
+        <input name="userId" type="hidden" value="${id }">
+        <textarea id="content" name="content"></textarea> <span style="color: red">*</span>
+        </td>
+        </tr>
+        <tr>
+          <td >导图：</td>
+          <td>
+            <ul id="thumbnail_wrap" class="thumbnail-wrap"></ul>
+            <div class="thumbnail-btn" data-number='9' id="thumbnail_btn"></div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center">
+          <input type="button" class="btn_an" value="保存" onclick="add()" id="baocunid">
+          <input type="button" class="btn_qx" value="取消" onclick="javascript:parent.$('#windowDiv').window('close');">
+          </td>
+        </tr>
+        </table>
+      </form>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta name="description" content="荣格电子商务,虚拟股东">
+<meta name="keywords" content="荣格电子商务,虚拟股东">
+<title>我的荣格--虚拟股东--股份明细</title>
+<link rel="stylesheet" type="text/css" href="../../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../../resource/plugins/gmu/css/calendar/calendar.css">
+<link rel="stylesheet" type="text/css" href="../../../resource/plugins/gmu/css/calendar/calendar.default.css">
+<link rel="stylesheet" type="text/css" href="../../../resource/css/common.css">
+<link rel="stylesheet" media="screen,screen and (min-width:641px),screen and (min-width:481px) and (max-width:640px),screen and (min-width:321px) and (max-width:480px),screen and (max-width:320px)" type="text/css" href="../../../resource/css/adapt.css">
+
+<script src="../../../resource/js/zepto.min.js"></script>
+</head>        
+<body class="rg-fill" lang="zh">
+	<header class="rg-sheaderwrap">
+    	<ul class="rg-sh-menubar" id="rg_menubar">
+        	<li data-menubar='menupre' class="rg-sh-mbicon rg-sh-mbl rg-sh-mbpre"><a href="../../product/product_remark.html" title=""></a></li>
+            <li data-menubar='' class="rg-sh-mbtxt">股份明细</li>
+            <li data-menubar='menutog' class="rg-sh-mbicon rg-sh-mbr rg-sh-mbtog"></li>
+        </ul>
+        <div class="rg-menubox" id="rg_menuwrap">
+            <section class="rg-menuwrap">
+        	<ul>
+                <li><a class="rg-menuhome" href="../../index.html" title=""><div></div><span>首页</span></a></li>
+                <li><a class="rg-menuproduct" href="../../product/product.html" title=""><div></div><span>产品细分</span></a></li>
+                <li><a class="rg-menushopping" href="../../shopping/shopping.html" title=""><div></div><span>购物车</span></a></li>
+                <li><a class="rg-menumanage" href="../manage.html" title=""><div></div><span>我的荣格</span></a></li>
+                    </ul>
+                            </section>
+        </div>
+        <div class="clearfix"></div>
+    </header>
+    <ul class="shd-datetab" id="shd_datetab">
+    		<li class="rg-br5 rg-b-gray8 shd-date-quicksel" data-date="1">最近1个月</li>
+    		<li class="rg-br5 rg-b-gray8" data-date="3">最近3个月</li>
+        <li class="rg-br5 rg-b-gray8" data-date="6">最近6个月</li>
+    </ul>
+    <div class="clearfix"></div>
+    <div class="shd-dateinput">
+    	<input type="hidden" id="dateAjaxURL" name="dateAjaxURL" value=""><!--URL-->
+      <input type="hidden" id="pageTotal" name="pageTotal" value="1"><!--总记录数-->
+      <input type="hidden" id="pageCurrent" name="pageCurrent" value="1"><!--当前第几页-->
+      <input type="hidden" id="pageSize" name="pageSize" value="12"><!--每页显示数量-->
+      <ul class="rg-b-gray4 rg-br5">
+        <li class="form-item1 form-input2">
+            <input type="text" name="StartDate" value="" class="rg-br3 form-shdtxt rg-b-gray4 shd-sdtxt" id="shd_datestart" readonly>
+            <div class="shd-txticon"><span></span></div>
+          </li>
+          <li class="form-item1 form-input2">&nbsp;&mdash;&nbsp;</li>
+          <li class="form-item1 form-input2">
+            <input type="text" name="EndDate" id="shd_dateend"  value="" class="rg-br3 form-shdtxt  rg-b-gray4 shd-edtxt" readonly >
+            <div class="shd-txticon"><span></span></div>
+          </li>
+          <li class="form-item1r form-input2">
+            <button type="button" id="shd_datesearch"  class="rg-br3 rg-b-red rg-c-white shd-sbtn">查询</button>
+          </li>
+      </ul>
+    </div>
+    <section class="shd-dpwrap" id="shd_dpwrap">
+        <div class="shd-dpbox">
+          <ul class="rg-br5 rg-b-white shd-dpitems">
+              <li class="shd-dpitem" id="shd_dpitemstart">
+              		<div class="shd-dp-dtitle">开始日期<span></span></div>
+              		<div id="shd_dpstartwrap"></div>
+              </li>
+              <li class="shd-dpitem" id="shd_dpitemend">
+              		<div class="shd-dp-dtitle">结束日期<span></span></div>
+              		<div id="shd_dpendwrap"></div>
+              </li>
+          </ul>
+        </div>
+    </section>
+    <div class="clearfix"></div>
+    <ul class="shd-listwrap" id="shd_listwrap">
+        <li>
+        	<a href="#" title="">
+            <p>消费时间：<span>2014-01-01 12:12:12</span></p>
+            <p>产品名称：<span>荣格大米</span></p>
+            <p>消费金额：<strong>￥999999.99</strong></p>
+            <p>股票数量：<em>99999</em></p>
+          </a>
+        </li>
+        <li>
+        	<a href="#" title="">
+            <p>消费时间：<span>2014-01-01 12:12:12</span></p>
+            <p>产品名称：<span>荣格大米</span></p>
+            <p>消费金额：<strong>￥999999.99</strong></p>
+            <p>股票数量：<em>99999</em></p>
+          </a>
+        </li>
+        <li>
+        	<a href="#" title="">
+            <p>消费时间：<span>2014-01-01 12:12:12</span></p>
+            <p>产品名称：<span>荣格大米</span></p>
+            <p>消费金额：<strong>￥999999.99</strong></p>
+            <p>股票数量：<em>99999</em></p>
+          </a>
+        </li>
+        <li>
+        	<a href="#" title="">
+            <p>消费时间：<span>2014-01-01 12:12:12</span></p>
+            <p>产品名称：<span>荣格大米</span></p>
+            <p>消费金额：<strong>￥999999.99</strong></p>
+            <p>股票数量：<em>99999</em></p>
+          </a>
+        </li>
+        <li>
+        	<a href="#" title="">
+            <p>消费时间：<span>2014-01-01 12:12:12</span></p>
+            <p>产品名称：<span>荣格大米</span></p>
+            <p>消费金额：<strong>￥999999.99</strong></p>
+            <p>股票数量：<em>99999</em></p>
+          </a>
+        </li>
+    </ul>
+    <section class="rg-nstxt loading-more">
+      <div class="rg-br3 rg-b-gray4 rg-c-gray10" id="shd_loadmore">点击加载更多评论(12)</div>
+      <div class="rg-br3 rg-b-gray4 rg-c-gray10" id="shd_loadmore_top">数据加载完毕返回顶部</div>
+    </section>
+    <div class="clearfix"></div>
+    <footer class="rg-footerwrap">
+    	<div class="rg-footer-side">
+        	<div class="rg-fs1">
+            	<a href="../../account/login.html" title="">登陆</a><span>&#124;</span><a href="../../account/register.html" title="">注册</a>
+            </div>
+            <div class="rg-fs2" id="goto_top">回到顶部</div>
+        </div>
+    	<div class="rg-footer-main">
+        	<p>全国咨询热线：0755-89668018</p>
+            <p>深圳荣格科技集团版权所有</p>
+        </div>
+    </footer>
+    <script src="../../../resource/js/common/footer.js"></script>
+    <script src="../../../resource/js/manage/shareholder/gmu_calendar_extend.js"></script>
+    <script src="../../../resource/plugins/gmu/gmu_core.js"></script>
+    <script src="../../../resource/js/manage/shareholder/gmu_calendar.js"></script>
+    <script src="../../../resource/js/manage/shareholder/shareholder_detail.js"></script>
+</body>
+</html>

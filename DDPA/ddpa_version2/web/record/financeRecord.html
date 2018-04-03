@@ -1,0 +1,846 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的理财--理财记录 - 个人借款 - 我要借贷 - 贷贷平安(ddpa.com) - 最值得信赖的P2P网贷平台</title>
+<meta name="description" content="我的理财(理财记录-回款) - 贷贷平安网 (www.ddpa.com)是最可信赖的互联网金融中P2P信贷平台，为投资理财用户和贷款用户两端提供公平、透明、安全、高效的互联网金融服务。">
+<meta name="keywords" content="我的理财,我的账户,账户管理,小微企业借款,p2p理财,p2p贷款,贷贷平安">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/res/image/favicon144.png">
+<link rel="shortcut icon" href="../../res/image/favicon32.png">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/common.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/jquery.ddpatab.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/jquery.blockUI.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/manage/manage_layout.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/Record/Record.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/js/common/jquery.ddpatab.js"></script>
+<script src="../../res/js/common/jquery.blockUI.js"></script>
+<script src="../../res/js/common/jquery.Pager.js"></script>
+<script src="../../res/js/common/DateFuns.js"></script>
+<script src="../../res/js/manage/manage_menu.js"></script>
+<script src="../../res/js/Record/record.js"></script>
+<script type="text/javascript">
+ var isBackRecord= false;
+ $(document).ready(function(e) {
+	$("#ddpatab").DDPATab();
+	$(".remitPage").Pager(handleRemit);
+	$(".settlePage").Pager(handleSettle);
+	$(".finPage").Pager(handleFining);
+	
+	$(".remitPage #firstpage").click();
+	$(".settlePage #firstpage").click();
+	$(".finPage #firstpage").click();
+	
+	if($("#remit .tablebox").size()==0){
+		$("#remit .nodata").show();
+	}
+	if($("#settle .tablebox").size()==0){
+		$("#settle .nodata").show();
+	}
+	if($("#fincing .tablebox").size()==0){
+		$("#fincing .nodata").show();
+	}
+	
+});
+
+function handleRemit(data){
+		var rows = data.modelList, l = rows.length, i, trs="";
+		if(!data || data.totalCount==0){
+			$("#remit .tablebox").hide();
+			$("#remit .nodata").show();
+		}else{
+			$("#remit .tablebox").show();
+			$("#remit .nodata").hide();
+		}
+		var seTypeArray = ["本金保障","本息保障"];
+		var t1 = 0, t2 =0, t3=0, t4 = 0, t5 = 0 ;
+		//遍历数据
+		for(i=0; i<l; i++){
+			
+			t1 += rows[i].investAmount;
+			t2 += rows[i].annualRate;
+			t3 += rows[i].totalRepayAmount;
+			t4 += rows[i].monthRepayAmount;
+			t5 += rows[i].loanPeriod;
+			
+			rows[i].securityType = rows[i].securityType==null ? "本金保障": seTypeArray[rows[i].securityType];
+			rows[i].nextRepayDate = DateFormat(new Date(rows[i].nextRepayDate));
+			rows[i].investAmount = formatCurrency(parseFloat(rows[i].investAmount).toFixed(2));
+			rows[i].totalRepayAmount = formatCurrency(parseFloat(rows[i].totalRepayAmount).toFixed(2));
+			rows[i].monthRepayAmount = formatCurrency(parseFloat(rows[i].monthRepayAmount).toFixed(2));
+			rows[i].annualRate = parseFloat(rows[i].annualRate).toFixed(2);
+						
+			trs += '<div class="tr row">'
+				+ '<div class="th th1 title"><a target="_blank" title="'+rows[i].productName+'" href="../../licai/' + rows[i].productId + '">' + rows[i].productName + '</a></div>'
+                + '<div class="td td2 loaner"><a target="_blank" title="' + rows[i].userName + '" target="_blank" href="../../licai/user/'+ rows[i].userId +'">' + rows[i].userName + '</a></div>' 
+                + '<div class="td td3 money" title="' + rows[i].investAmount + '">' + rows[i].investAmount + '</div>'
+                + '<div class="td td4">' + rows[i].annualRate + '%</div>'
+                + '<div class="td td5" title="' + rows[i].totalRepayAmount + '">' + rows[i].totalRepayAmount + '</div>'
+                + '<div class="td td6" title="'+ rows[i].monthRepayAmount +'">' + rows[i].monthRepayAmount + '</div>'
+                + '<div class="td td7">' + rows[i].remainingPeriod  + "/" + rows[i].loanPeriod + '</div>'
+                + '<div class="td td8">' + rows[i].nextRepayDate + '</div>'
+                + '<div class="td td9">' + rows[i].securityType+'</div>'
+                + '<div class="td td10 del last"><a href="/licai/'+rows[i].productId+'/xieyi?productId='+rows[i].productId +'" target="_blank" data-id="2" actiontype="delone">借款协议</a></div>'
+				+ '</div>';
+		}
+		return trs;
+	}
+
+//处理筹资中的投标数据
+function handleSettle(data){
+		
+		if(data.totalCount==0){
+			$("#settle .tablebox").hide();
+			$("#settle .nodata").show();
+		}else{
+			$("#settle .tablebox").show();
+			$("#settle .nodata").hide();
+		}
+		
+		var rows = data.modelList, l = rows.length, i, trs="";
+		var repayTArray = ["等额本息","等本等息","按月付息到期还本","一次付息到期还本","按日结息"];
+		//遍历数据
+		for(i=0; i<l; i++){
+			
+			rows[i].repayType = rows[i].repayType==null?0:rows[i].repayType;
+			rows[i].investAmount = formatCurrency(parseFloat(rows[i].investAmount).toFixed(2));
+			rows[i].annualRate = parseFloat(rows[i].annualRate).toFixed(2);
+			rows[i].investPlan = formatCurrency(parseFloat(rows[i].investPlan).toFixed(2));
+			
+			var level=rows[i].binLevel;
+			if(rows[i].binLevel==null||rows[i].binLevel==""){
+			   level='F3';
+			}
+			
+			trs += '<div class="tr">'
+                + '<div class="th th1 title"><a target="_blank" title="'+ rows[i].productName +'" href="../../licai/' + rows[i].productId + '">' + rows[i].productName + '</a></div>'
+                + '<div class="td td2 loaner"><a target="_blank" title="' + rows[i].userName + '" target="_blank" href="../../licai/user/'+ rows[i].userId +'">' + rows[i].userName + '</a></div>'
+                + '<div class="td td3 money" title="' + rows[i].investAmount + '">' + rows[i].investAmount + '</div>'
+                + '<div class="td td4">' + rows[i].annualRate + '%</div>'
+                + '<div class="td td5" title="' + repayTArray[rows[i].repayType] + '">' + repayTArray[rows[i].repayType] + '</div>'
+                + '<div class="td td6">' + rows[i].loanPeriod + '个月</div>'
+                + '<div class="td td7">' + level + '</div>'
+                + '<div class="td td8">' + rows[i].investPlan + '%</div>'
+                + '<div class="td td9 last">' + rows[i].surplusTime + '</div>'
+                + '</div>';
+		}
+		
+		return trs;
+	}
+
+
+function handleFining(data){
+		
+		if(data.totalCount==0){
+			$("#fincing .tablebox").hide();
+			$("#fincing .nodata").show();
+		}else{
+			$("#fincing .tablebox").show();
+			$("#fincing .nodata").hide();
+		}
+
+		var rows = data.modelList, l = rows.length, i, trs="";
+		var t1=0, t2=0, t3=0, t4=0;
+		//遍历数据
+		for(i=0; i<l; i++){
+			t1 += rows[i].investAmount;
+			t2 += rows[i].annualRate;
+			t3 += rows[i].recoverAmount;
+			t4 += rows[i].earningsAmount;
+			
+			//rows[i].closedTime = DateFormat(new Date(rows[i].closedTime ));
+			rows[i].investAmount = formatCurrency(parseFloat(rows[i].investAmount).toFixed(2));
+			rows[i].recoverAmount = formatCurrency(parseFloat(rows[i].recoverAmount).toFixed(2));
+			rows[i].earningsAmount = formatCurrency(parseFloat(rows[i].earningsAmount).toFixed(2));
+			rows[i].annualRate = parseFloat(rows[i].annualRate).toFixed(2);
+			
+			trs += '<div class="tr row">'
+                + '<div class="th th1 title"><a target="_blank" title="'+rows[i].productName+'" href="../../licai/' + rows[i].productId + '">' + rows[i].productName + '</a></div>'
+                + '<div class="td td2 loaner"><a target="_blank" title="' + rows[i].userName + '" target="_blank" href="../../licai/user/'+ rows[i].userId +'">' + rows[i].userName + '</a></div>' //借款人
+                + '<div class="td td3 money" title="'+rows[i].investAmount+'">' + rows[i].investAmount + '</div>'  //投资金额
+                + '<div class="td td4">' + rows[i].annualRate + '%</div>'  //年利率
+                + '<div class="td td5" title="'+rows[i].recoverAmount+'">' + rows[i].recoverAmount + '</div>'  //回收金额
+                + '<div class="td td6" title="'+rows[i].earningsAmount+'">' + rows[i].earningsAmount + '</div>'  //本标收益
+                + '<div class="td td7">' + rows[i].closedTime + '</div>'  //结清日期
+                + '<div class="td td8 last remark" title="' + rows[i].remark + '">' + rows[i].remark + '</div>'  //备注
+                + '</div>';
+		}
+		 
+		return trs;
+	}
+
+</script>
+</head>
+<body>
+	<div class="header_wrapcom">
+	<div class="header_sidewrap">
+		<div class="header_side">
+			<ul class="hs_part1">
+				<li class="hs_register"><a href="#" title="">客服热线：<span class="red">400-990-6088</span></a></li>
+				<li class="hs_forum"><a href="http://shang.qq.com/wpa/qunwpa?idkey=eafa687afc1099663278e39fa6532d584badb2d52980f8b0669112afc381bb1a" target="_blank" title="贷贷平安投资交流群">交流QQ群：109620517</a></li>
+			</ul>
+			<ul class="hs_part2">
+				<li class="hs_login"><a href="../index.html">首页</a></li>
+				<li class="hs_login" id="hs_login">
+						您好 ,<a href="../fund/user_account_detail.html" style="color:#00a0e9;" id="global_uid" title="">小易叔叔</a>
+						<div class="hs_louterwrap">
+								<div class="hs_linnerwrap" id="hs_louterwrap">
+									<ul class="hs_loginwrap">
+											<li><a href="../fund/fund_recharge.html"  title="">充值</a></li>
+											<li class="hs_lline"><a href="../fund/fund_withdraw.html"  title="">提现</a></li>
+											<li><a href="../fund/user_account_detail.html"  title="">我的账户</a></li>
+											<li><a href="../manage/wealth_report.html"  title="">我的理财</a></li>
+											<li class="hs_lline"><a href="../record/loan_report.html"  title="">我的借款</a></li>
+											<li><a href="../account/login.html"  title="">安全退出</a></li>
+									</ul>
+								</div>
+						</div>
+				</li>
+				<li  class="hs_message"><h6><a href="../msg/sitemsg.html" title="">
+				消息
+				    <span style="color:red" >(520条未读信息)</span>
+				</a></h6></li>
+				<li class="hs_login"><h6><a href="../account/login.html">登录</a></h6></li>
+				<li class="hs_register"><h6><a href="../account/register.html" title="">免费注册</a></h6></li>
+				<li class="hs_help"><h6><a href="../other/help.html" title="">帮助</a></h6></li>
+			</ul>
+		</div>
+	</div>
+	<div class="header_main">
+		<h1><a href="/"  class="logolinks" title="贷贷平安(www.ddpa.com)是值得您信赖的互联网投资理财借贷平台">贷贷平安(www.ddpa.com)是值得您信赖的互联网投资理财借贷平台</a></h1>
+		<ul class="hm_mainmenu" id="hm_mainmenu">
+			<li><h3><a class="" href="../fund/user_account_detail.html" title="">我要理财</a></h3></li>
+			<li><h3><a class="" href="../loan/loan_update.html" title="">我要借款</a></h3></li>
+			<li><h3><a class="" href="../other/sec.html" title="">安全保障</a></h3></li>
+			<li><h3><a class="" href="../other/about.html" title="">关于我们</a></h3></li>
+		</ul>
+	</div>
+	<div class="header_blines">
+			<div></div>
+	</div>
+</div>
+<script>
+    (function($){
+		$(function(){
+			/*移入显示隐藏子导航*/
+			var hs_louterwrap=$("#hs_louterwrap");
+			$("#hs_login").hover(function(){
+				hs_louterwrap.slideDown(200);
+			},function(){
+				hs_louterwrap.slideUp(100);
+			});
+			/*当前菜单高亮*/
+			var curHref = window.location.href, menu = $("#hm_mainmenu");
+			if(curHref.indexOf("/licai/") >= 0 && curHref.indexOf("/jiekuan/")<0){
+				$(menu.find("li").get(0)).find("a").addClass("hm_mmsel");
+			}else if(curHref.indexOf("/jiedai/") >= 0 || curHref.indexOf("/loan/") >= 0 || curHref.indexOf("/jiekuan/")>=0){
+				$(menu.find("li").get(1)).find("a").addClass("hm_mmsel");
+			}else if(curHref.indexOf("/baozhang/") >= 0){
+				$(menu.find("li").get(2)).find("a").addClass("hm_mmsel");
+			}else if(curHref.indexOf("/about/") >= 0){
+				$(menu.find("li").get(3)).find("a").addClass("hm_mmsel");
+			}
+			
+		});
+	})(jQuery);
+</script>
+	<div class="manage_poswrap"><a href="../index.html">首页</a><a href="../fund/user_account_detail.html">我的账户</a><span>我的理财</span><h1 class="manage_curpos">理财记录</h1></div>
+	<div class="container">
+    	<div class="topwrap"></div>
+		<div class="mainlayout">
+			<div class="mainwrap">
+				<div class="mainbox">
+					<div class="inner833">
+						<div class="record_h">
+							<div class="items">
+								<div class="m_item p_item r_b al_center" style="width:140px;">
+									<span class="label hastip">理财资产<span class="tipbox"><span class="arrow"></span><span class="tipc">正投入的满标且未还款完的所有标的投入本金之和</span></span></span>
+									<p class="value"><span style="color:#434343;">￥</span>262546.62</p>
+								</div>
+								<div class="ul_item r_b m_l_15px">
+									<ul>
+										<li><span class="label">待收本金</span><span class="value">￥70473.53</span></li>
+										<li><span class="label">待收收益</span><span class="value">￥92546.45</span></li>
+									</ul>
+								</div>
+								<div class="ul_item r_b al_center">
+									<ul>
+										<li><span class="label">正在投标数</span><span class="value hastip" alt="提示信息">3个<span class="tipbox" style="width: 190px;"><span class="arrow" style="background-position: 19px 0px;"></span><span class="tipc">回款中的投标数+筹资中的投标数</span></span></span></li>
+										<li><span class="label">累计投标数</span><span class="value">35个</span></li>
+									</ul>
+								</div>
+								<div class="p_item r_b al_center">
+									<span class="label hastip">累计总收益<span class="tipbox" style="width: 320px; left:-6em;"><span class="arrow" style="background-position: 134px 0px;"></span><span class="tipc">至今为止获得的所有收益，包括利息、提前返款违约金</span></span></span>
+									<p class="value">￥72567.42</p>
+								</div>
+								<div class="p_item al_center">
+									<span class="label hastip">加权年化收益率<span class="tipbox" style="width: 280px; left:-12em;"><span class="arrow" style="background-position: 230px 0px;"></span><span class="tipc">加权利率= ∑(投标本金*投标利率)/∑投标本金</span></span></span>
+									<p class="value">￥52%</p>
+								</div>
+							</div>
+						</div>
+						<div id="ddpatab">
+							<ul id="tabs" class="defaultTab">
+								<li><a href="javascript:;" name="#remit">回款中的投标</a></li>
+								<li><a href="javascript:;" name="#settle">筹资中的投标</a></li>
+								<li><a href="javascript:;" name="#fincing">已结清的投标</a></li>   
+							</ul>
+							<div id="tabcontent">
+								<!-- 回款中的投标 -->
+								<div id="remit" class="tabc">
+									<div class="tablebox">
+										<div class="table fin_table tabcdiv msgdiv">
+										<div class='thead'>
+											<div class="tr">
+												<div class='th th1'>借款标题</div>
+												<div class='th th2'>借款人</div>
+												<div class='th th3'>投资金额</div>
+												<div class='th th4'>年利率</div>
+												<div class='th th5'>待收本息</div>
+												<div class='th th6'>月收本息</div>
+												<div class='th th7'>待收/总期数</div>
+												<div class='th th8'>下个还款日</div>
+												<div class='th th9'>保障类型</div>
+												<div class='th th10 last'>借款协议</div>
+											</div>
+										</div>
+										<div class="tbody">
+											<div id="remitFtlBox">	
+											<div class="tr">
+												<div class='th title'><a href="#"></a></div>
+												<div class='td loaner'><a href="#"></a></div>
+												<div class='td money'></div>
+												<div class="td"></div>
+												<div class="td"></div>
+												<div class="td"></div>
+												<div class="td"></div>
+												<div class="td"></div>
+												<div class='td'></div>
+												<div class='td del'><a href="#" data-id="2" actiontype="delone">借款协议</a></div>
+											</div>
+											</div>
+											<div class="tr total">
+												<div class='th th1'>合计</div>
+												<div class='td td2 loaner'></div>
+												<div class='td td3 money' title="">37257.35</div>
+												<div class="td td4"></div>
+												<div class="td td5" title="">89256.72</div>
+												<div class="td td6" title="">98257.12</div>
+												<div class="td td7"></div>
+												<div class="td td8"></div>
+												<div class='td td9'></div>
+												<div class='td td10 last'></div>
+											</div>
+										</div>
+									</div>
+										<ul class="pageUl remitPage" data-url="queryRepayingPage" data-ftlbox="#remitFtlBox" pageType="0">
+										 
+										   <li>共<span id="totalrows"></span>条记录</li>
+											<li>当前第&nbsp;<span id="curpage" class="curpage"></span>/<span id="totalpages"></span>&nbsp;页</li>
+											<li id="firstpage" class="cur" actiontype="getPage" data-index="1" pagetype="1">[首页]</li>
+											<li id="prepage" actiontype="getPage" data-index="">上一页</li>
+											<li id="nextpage" actiontype="getPage" data-index="">下一页</li>
+											<li id="lastpage" actiontype="getPage" data-index="">尾页</li>
+										   
+										</ul>
+										
+										<a href="exportRepaying" id="excel">导出excel</a>
+									</div>
+									
+									<!-- 没有数据的时候显示信息 -->
+									<div class="nodata">
+										<p class="txt"><a href="../lend/product_list.html">很可惜耶，这么宝贵的时间却没有回款，<br/>还不赶紧投标坐享收益</a></p>
+									</div>
+								</div>
+								<!-- 筹资中的投标 -->
+								<div id="settle" class="tabc">
+									
+									<div class="tablebox">
+										<div class="table fin_table tabcdiv msgdiv">
+										<div class='thead'>
+											<div class="tr">
+												<div class='th th1'>借款标题</div>
+												<div class='th th2'>借款人</div>
+												<div class='th th3'>投资金额</div>
+												<div class='th th4'>年利率</div>
+												<div class='th th5'>还款方式</div>
+												<div class='th th6'>期数</div>
+												<div class='th th7'>信用等级</div>
+												<div class='th th8'>投标进度</div>
+												<div class='th th9 last'>剩余时间</div>
+											</div>
+										</div>
+										<div class="tbody">
+										<div id="settleFtlBox">
+											  <div class="tr">
+												<div class='th title'><a href="#"></a></div>
+												<div class='td loaner'></div>
+												<div class='td money'></div>
+												<div class="td"></div>
+												<div class="td"> </div>
+												<div class="td"></div>
+												<div class="td"></div>
+												<div class="td">%</div>
+												<div class='td'></div>
+											  </div> 
+										</div>
+									</div>
+										</div>
+										<ul class="pageUl settlePage" data-url="queryBiddingPage" data-ftlbox="#settleFtlBox" pageTYpe="0">
+										  
+											<li>共<span id="totalrows"></span>条记录</li>
+											<li>当前第&nbsp;<span id="curpage" class="curpage"></span>/<span id="totalpages"></span>&nbsp;页</li>
+											<li id="firstpage" class="cur" actiontype="getPage" data-index="1" pagetype="1">[首页]</li>
+											<li id="prepage" actiontype="getPage" data-index="">上一页</li>
+											<li id="nextpage" actiontype="getPage" data-index="">下一页</li>
+											<li id="lastpage" actiontype="getPage" data-index="">尾页</li>
+										   
+										</ul>
+										<a href="exportBidding" id="excel">导出excel</a>
+									</div>
+									
+									<!-- 没有数据的时候显示信息 -->
+									<div class="nodata">
+										<p class="txt"><a href="../lend/product_list.html">这么宝贵的时间却没去投标，<br/>还不赶紧投标坐享收益</a></p>
+									</div>
+								</div>
+								<!-- 已结清的投标 -->
+								<div id="fincing" class="tabc">
+								
+									<div class="tablebox">
+										<div class="table fin_table tabcdiv msgdiv">
+										<div class='thead'>
+											<div class="tr">
+												<div class='th th1'>借款标题</div>
+												<div class='th th2'>借款人</div>
+												<div class='th th3'>投资金额</div>
+												<div class='th th4'>年利率</div>
+												<div class='th th5'>回收金额</div>
+												<div class='th th6'>本标收益</div>
+												<div class='th th7'>结清日期</div>
+												<div class='th th8 last'>备注</div>
+											</div>
+										</div>
+										<div class="tbody">
+											<div id="fincingFtlBox">
+											  <div class="tr">
+                          <div class='th title'><a href="#"></a></div>
+                          <div class='td loaner'></div>
+                          <div class='td money'></div>
+                          <div class="td"></div>
+                          <div class="td"></div>
+                          <div class="td"></div>
+                          <div class="td"></div>
+                          <div class="td"></div>
+											  </div>      
+											</div>
+											<div class="tr total">
+												<div class='th th1'>合计</div>
+												<div class='td td2 loaner'></div>
+												<div class='td td3 money' title="">86264.34</div>
+												<div class="td td4"></div>
+												<div class="td td5" title="">27860.26</div>
+												<div class="td td6" title="">26205.45</div>
+												<div class="td td7"></div>
+												<div class="td td8 last"></div>
+											</div>
+										</div>
+									</div>
+										<ul class="pageUl finPage" data-url="queryRepayedPage" data-ftlbox="#fincingFtlBox" pageType="0">
+										  
+											<li>共<span id="totalrows"></span>条记录</li>
+											<li>当前第&nbsp;<span id="curpage" class="curpage"></span>/<span id="totalpages"></span>&nbsp;页</li>
+											<li id="firstpage" class="cur" actiontype="getPage" data-index="1" pagetype="1">[首页]</li>
+											<li id="prepage" actiontype="getPage" data-index="">上一页</li>
+											<li id="nextpage" actiontype="getPage" data-index="">下一页</li>
+											<li id="lastpage" actiontype="getPage" data-index="">尾页</li>
+											
+										</ul>
+										<a href="exportRepayed" id="excel">导出excel</a>
+									</div>
+									
+									<!-- 没有数据的时候显示信息 -->
+									<div class="nodata">
+										<p class="txt"><a href="../lend/product_list.html">太可惜耶，这么宝贵的时间被无情浪费掉，<br/>还不赶紧投标坐享收益</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="sidewrap">
+	<ul class="sidebox" id="sidebox">
+		<li class="mainmenu">
+			<p class="menutheme0" id="menutheme0">我的账户</p>
+			<ul class="submenu" style="display:block">
+				<li class=""><a href="../fund/user_account_detail.html" title="">账户总览</a></li>
+				<li class=""><a href="../fund/trade_list.html"  title="">交易记录</a></li>
+				<li class=""><a href="../manage/manage_personinfo.html" title="">个人信息</a></li>
+				<li class=""><a href="../bankcard/bankcard.html" title="">银行卡信息</a></li>
+				<li class=""><a href="../authinfo/authinfo.html" title="">认证中心</a></li>
+				<li class=""><a href="../security/security.html" title="">安全中心</a></li>
+				<li class=""><a href="../msg/sitemsg.html" title="">站内消息</a></li>
+				<li class=""><a href="../fund/recommend_friend.html" title="">邀请好友</a></li>
+				<li class=""><a href="../msg/msgsetting.html" title="">提醒设置</a></li>
+			</ul>
+		</li>
+		<li class="mainmenu">
+			<p class="menutheme1" id="menutheme1">我的理财</p>
+			<ul class="submenu">
+				<li class=""><a href="../manage/wealth_report.html" title="">理财报表</a></li>
+				<li class=""><a href="../record/financeRecord.html" title="">理财记录</a></li>
+				<li class=""><a href="../record/backRecord.html" title="">回款记录</a></li>
+			</ul>
+		</li>
+		<li class="mainmenu">
+			<p class="menutheme2" id="menutheme2">我的借款</p>
+			<ul class="submenu">
+				<li class=""><a href="../record/loan_report.html" title="">借款报表</a></li>
+				<li class=""><a href="../record/loanRecord.html" title="">借款记录</a></li>
+				<li class=""><a href="../record/returnRecord.html" title="">还款记录</a></li>
+			</ul>
+		</li>
+		<li class="mainmenu_format"></li>
+	</ul>
+	<div class="clear_fixs"></div>
+</div>
+			<div id="confirmDel" class="modal" style="display:none;">
+				<h3>确实删除信息？</h3>
+				<p>确定删除信息？</p>
+				<ul class="btns">
+					<li><a href="javascript:;" actiontype="confirmdel" class="confirmdel" onClick="$.unblockUI();">删除</a></li>
+					<li><a href="javascript:;" actiontype="cancledel" class="cancle" onClick="$.unblockUI();">取消</a></li>
+				</ul>
+				<button class="closebtn">关闭</button>
+			</div>
+			<div id="warn" class="modal" style="display:none;">
+				<h3>标题</h3>
+				<p>警告信息提示！</p>
+				<ul class="btns">
+					<li><a href="javascript:;" class="confirmdel" onClick="$.unblockUI();">确定</a></li>
+				</ul>
+				<button class="closebtn">关闭</button>
+			</div>
+		</div>
+		<div class="bottomwrap"></div>
+    </div>
+    <div class="clear_fixs"></div>
+    <div class="floatBtn">
+   <a href="http://wpa.qq.com/msgrd?v=3&uin=2751736989&site=qq&menu=yes" class="serverqq" target="_blank"></a>
+   <a href="javascript:;" class="code" title="贷贷平安微信公众号及微博帐号">
+       <span>关注贷贷平安</span>
+       <img src="../../res/image/common/codes.png" alt="关注贷贷平安微信公众号及微博帐号">
+   </a>
+   <a href="#uptotop" class="backtotop" title="">返回顶部</a>
+</div>
+   
+<div class="footer_wrap">
+	<div class="footer">
+		<ul class="foot_join">
+			<li><h5><a href="../../about/" title="">关于我们</a></h5></li>
+			<li><h5><a href="../../about/report/" title="">资讯动态</a></h5></li>
+			<li><h5><a href="../../about/contactus/" title="">联系我们</a></h5></li>
+			<li><h5><a href="../../about/partner/" title="">合作伙伴</a></h5></li>
+			<li><h5><a href="javascript:;" title="" onclick="toSug()">意见反馈</a></h5></li>
+			<li><h5><a href="../../about/friend/" title="">友情链接</a></h5></li>
+			<li><h5><a class="fj_last" href="../../sitemap/" target="_blank" title="">网站地图</a></h5></li>
+		</ul>
+		<div class="foot_theme">
+			<h6>
+			<span>安全：银行风控专家把关</span>
+			<span>专业：线下5年小额贷款经验</span>
+			<span>真实：所有借款均真实有效</span>
+			</h5>
+		</div>
+		<p class="foot_phone">服务热线：400-990-6088<span>&nbsp;（周一至周五&nbsp;9:00--17:30）</span></p>
+		<p class="foot_copyright">Copyright&copy;2013-2014&nbsp;版权所有：<a href="http://www.ddpa.com" target="_blank"  title="深圳市贷贷平安网络信息有限公司">深圳市贷贷平安网络信息有限公司</a>&nbsp;&nbsp;备案号：<a href="http://www.miitbeian.gov.cn/ " target="_blank"  title="粤ICP备13074789号" rel="noffow">粤ICP备13074789号</a></p>
+	</div>
+	<div class="footerlogos">
+    	<a href="https://ss.knet.cn/verifyseal.dll?sn=e1402265101004686869o1000000&ct=df&a=1&pa=931969" target="_blank" class="knet" rel="noffow" title="symantec认证,可信网站身份验证,工商网监,认证联盟">可信网站认证</a>
+    	<a key ="539e5d72efbfb003fdf73616" target="_blank" rel="noffow" logo_size="124x47"  logo_type="realname"  href="http://www.anquan.org/authenticate/cert/?site=www.ddpa.com&at=realname" class="anquan" title="贷贷平安-安全联盟实名认证,电脑管家认证,工商注册认证,商标注册证,ICP备案认证" ></a>
+      	<a href="https://sealinfo.verisign.com/splash?form_file=fdf/splash.fdf&dn=WWW.DDPA.COM&lang=zh_cn" class="smt" target="_blank" rel="noffow"  title="symantec认证,可信网站身份验证,工商网监,认证联盟">SSL安全加密网站</a>
+        <a href="https://cert.ebs.gov.cn/256f8063-21e4-4390-9ff9-4d9da48d01b7" class="szgov" target="_blank" rel="noffow"  title="symantec认证,可信网站身份验证,工商网监,认证联盟">深圳电子商务服务监管网站</a>
+    	<a href="http://mingpian.360.cn/qp?query=ddpa.com&key=58d356a6135ea5de3849f9d6211ba91e" target="_blank" rel="noffow" title="symantec认证,可信网站身份验证,工商网监,认证联盟"  class="qihu">360安全网站认证</a>
+    </div>
+</div>
+<div id="sugform" class="modalwin" style="width:683px;display:none;">
+	<h3>意见反馈</h3>
+	<div class="winbox">
+		<form action="" method="post" name="sugform">
+			<p style="font-size:12px; color:#636363; width:615px; margin-bottom:30px;">贷贷平安高度重视用户体验，您对贷贷平安的批评和建议是我们前进的动力，同时也能更好的方便平台的所有用户。欢迎您提出宝贵意见，一旦采纳我们会在最短的时间内优化，谢谢。</p>
+			<p class="label">您对网站的评价：</p>
+			<textarea name="sug"></textarea>
+			<p class="ftip">仅限300字，还可以输入15字</p>
+			<p class="btn"><button type="button" style="margin-top:15px;" onclick="submitSug(this)">提交</button></p>
+		</form>
+	</div>
+	<a href="#" class="winclose" onclick="$.unblockUI();">X</a>
+</div>
+<script type="text/javascript">
+   	$(".backtotop").css("visibility","hidden");
+	
+	$(window).scroll(function(){
+		if ($(window).scrollTop()<100){
+			$(".backtotop").css("visibility","hidden");
+		}else{
+			$(".backtotop").css("visibility","visible");
+		}
+	});
+	
+	$(".backtotop").click(function(){
+		$('body,html').animate({scrollTop:0},1000);
+		return false;
+	});
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9bb9e9182e209aba0d4908303e0370d5";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+	var pluginUrl = 
+	 '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+	_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+	  _gaq.push(['_setAccount', 'UA-48725772-1']);
+	_gaq.push(['_setDomainName', 'ddpa.com']);
+	  _gaq.push(['_addOrganic', 'm.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'wap.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'baidu.mobi', 'word']);
+	  _gaq.push(['_addOrganic', 'news.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'opendata.baidu', 'wd']);
+	  _gaq.push(['_addOrganic', 'post.baidu', 'kw']);
+	  _gaq.push(['_addOrganic', 'mp3.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'mp3.baidu', 'song']);
+	  _gaq.push(['_addOrganic', 'box.zhangmen.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'image.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'top.baidu', 'w']);
+	  _gaq.push(['_addOrganic', 'baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'baidu', 'kw']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q1']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q2']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q3']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q4']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q5']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q6']);
+	  _gaq.push(['_addOrganic', 'news.google', 'q']);
+	  _gaq.push(['_addOrganic', 'image.soso', 'w']);
+	  _gaq.push(['_addOrganic', 'wenwen.soso', 'sp']);
+	  _gaq.push(['_addOrganic', 'wenwen.soso', 'w']);
+	  _gaq.push(['_addOrganic', 'wap.soso', 'key']);
+	  _gaq.push(['_addOrganic', 'soso', 'w']);
+	  _gaq.push(['_addOrganic', 'bing', 'q']);
+	  _gaq.push(['_addOrganic', '3721', 'name']);
+	  _gaq.push(['_addOrganic', '114', 'kw']);
+	  _gaq.push(['_addOrganic', 'youdao', 'q']);
+	  _gaq.push(['_addOrganic', 'vnet', 'kw']);
+	  _gaq.push(['_addOrganic', 'so.360', 'q']);
+	  _gaq.push(['_addOrganic', '360sou', 'q']);
+	  _gaq.push(['_addOrganic', '360so', 'q']);
+	  _gaq.push(['_addOrganic', '360', 'q']);
+	  _gaq.push(['_addOrganic', 'so', 'q']);
+	  _gaq.push(['_addOrganic', 'news.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'mp3.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'pic.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'blogsearch.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'wap.sogou', 'keyword']);
+	  _gaq.push(['_addOrganic', 'm.sogou', 'keyword']);
+	  _gaq.push(['_addOrganic', 'sogou', 'query']);
+	  _gaq.push(['_trackPageview']);
+	  _gaq.push(['_trackPageLoadTime']);
+
+		/*---用户类型追踪---*/
+		/*代码行1：是否登录*/
+		_gaq.push(['_setCustomVar', 1, 'LoginType', 'Login', 2]);
+		/*代码行4：用户手机号*/ 
+		_gaq.push(['_setCustomVar', 4, 'Uid', 'mobilePhone', 2]);
+		/*代码行2：第三方用户和非第三方用户*/
+		/*代码行3：用户类型(理财、薪易贷、商易贷、抵押贷、其他快配用户)*/
+			_gaq.push(['_setCustomVar', 2, 'MemberType', 'KPUser', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Borrow', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Lend', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Person', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Company', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Mortgage', 2]);
+			_gaq.push(['_setCustomVar', 3, 'KPUserType', 'Others', 2]);
+			_gaq.push(['_setCustomVar', 2, 'RegisterType', 'NormalUser', 2]);
+		/*代码行5：成功完成过投标的历史记录*/
+			_gaq.push(['_setCustomVar', 5, 'BuyHistory', 'OrderWithoutBuy', 2]);
+			_gaq.push(['_setCustomVar', 5, 'BuyHistory', 'SucceedBuyed', 2]);
+			_gaq.push(['_setCustomVar', 5, 'BuyHistory', 'WithoutOrder', 2]);
+		/*代码行6：成功完成过借款的历史记录*/
+			_gaq.push(['_setCustomVar', 6, 'BorrowHistory', 'OrderWithoutBorrow', 2]);
+			_gaq.push(['_setCustomVar', 6, 'BorrowHistory', 'SucceedBorrowed', 2]);
+			_gaq.push(['_setCustomVar', 6, 'BorrowHistory', 'WithoutOrderBorrow', 2]);
+		/*代码行7：充值记录*/
+			_gaq.push(['_setCustomVar', 7, 'RechargeHistory', 'OrderWithoutRecharge', 2]);
+			_gaq.push(['_setCustomVar', 7, 'RechargeHistory', 'SucceedRecharged', 2]);
+			_gaq.push(['_setCustomVar', 7, 'RechargeHistory', 'WithoutOrderRecharge', 2]);
+		  _gaq.push(['_setCustomVar', 1, 'LoginType', 'UnLogin', 2]);
+
+
+	var cga_url=window.location;
+	var cga_pn=cga_url.pathname;
+	var cga_s=cga_url.search.slice(1);
+	/*---电子商务跟踪--投标、充值---*/	
+	if(/(\/licai\/)(\D*)$/.test(cga_pn)){
+		/**_gaq.push(['_addTrans','{当前标的ID}','{投标金额}','{可用金额}','{利息}','{空值}']);**/
+				_gaq.push(['_addTrans','${(product.productId)!"0"}','${(product.productName)!""}','<#if (product.loanType)?? && (product.loanType == 0 || product.loanType == 1)>信用标<#elseif (product.loanType)?? && (product.loanType == 2 || product.loanType == 3)>抵押标<#else>担保标</#if>','<#if (product.annualRate)??>${(product.annualRate)?string("##0.##")}<#else>0.00</#if>','']);
+		_gaq.push(['_trackTrans']);
+	}else if(/(\/licai\/)(\d+)$/.test(cga_pn)){
+		/**_gaq.push(['_addItem', '{当前标的ID}','{借款标题}','{借款人}','{借款人注册地}','{借款人注册日期}','{标的类型}','{信用登级}','{借款金额}','{年利率}','{借款期限}','{还款方式}', '{筹标进度}','{投标次数}','{剩余筹款金额}','{剩余时间}',]);**/
+			_gaq.push(['_addItem', '${(product.productId)!""}','${(product.productName)!""}','${(user.userName)!""}','<#if (product.loanType)?? && product.loanType == 4>${(corporation.householdAddress.province)!""}${(corporation.householdAddress.city)!""}<#else>${(person.householdAddress.province)!""}${(person.householdAddress.city)!""}</#if>','<#if (user.createTime)??>${user.createTime?string("yyyy-MM-dd")}</#if>','<#if (product.loanType)?? && (product.loanType == 0 || product.loanType == 1)>信用贷<#elseif (product.loanType)?? && (product.loanType == 2 || product.loanType == 3)>抵押贷<#else>担保贷</#if>','${(product.binLevel)!"F3"}','${(product.investAmount)!"0"}','${(product.annualRate)!"0"}','${(product.loanPeriod)!"0"}','等额本息', '${(tradeProgress/100)!""}','${(size)!"0"}','${(product.investAmount - totalTradeAmount)!""}','${(remainRaiseTimes["days"])!"0"}天${(remainRaiseTimes["hours"])!"0"}小时${(remainRaiseTimes["minutes"])!"0"}分钟${(remainRaiseTimes["seconds"])!"0"}秒']);
+			_gaq.push(['_trackTrans']);
+	}
+	/*---电子商务跟踪--充值---*/	
+	if(/(\/licai\/)(\D*)$/.test(cga_pn)){
+		/**_gaq.push(['_addTrans', '{当前充值订单编号}', '{充值金额}', '{可用金额}', '{付款方式}', '{空值}']);**/
+			_gaq.push(['_addTrans', '', '', '${balanceAmount!""}', '等额本息', '']);
+			_gaq.push(['_trackTrans']);
+	}else if(/(\/fund\/trade\/rechargeInit)/.test(cga_pn)){
+		/**_gaq.push(['_addItem', '{当前充值订单编号}', '{付款方式}', '{操作类型-充值}', '{充值金额}', '{可用金额}']);**/
+			_gaq.push(['_addItem', '', '', '充值',$("#tradeAmount").val(), '<#if userAccountVo.balanceAmount??><#assign balanceAmount = userAccountVo.balanceAmount/><#else><#assign balanceAmount = 0.00/></#if><#if userAccountVo.freezeAmount??><#assign freezeAmount = userAccountVo.freezeAmount/><#else><#assign freezeAmount = 0.00/>${(balanceAmount-freezeAmount)?string("###,##0.00")}']);
+			_gaq.push(['_trackTrans']);
+	}else if(/(\/sys\/payment\/thirdPaySend)/.test(cga_pn)){
+		/**_gaq.push(['_addItem', '{当前充值订单编号}', '{付款方式}', '{操作类型-充值}', '{充值金额}', '{可用金额}']);**/
+				_gaq.push(['_addItem', '${(v_oid!""}', '${pmode_id!""}', '充值', '${v_amount!""}', '']);
+		_gaq.push(['_trackTrans']);
+	}
+	
+	  $(document).ready(function(){
+		var ga = document.createElement('script'); 
+		ga.type = 'text/javascript'; 
+		ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	 })
+</script>
+<script type="text/javascript">
+function toSug(){
+	$.ajax({
+		url:"/jiedai/checkedDetail",
+		type:"post",
+		data:{},
+		success: function(data){
+			if(data){
+				if(data.login=="N"){
+					var url = location.href;
+					location.href = "/account/user/login?src="+location.pathname+"#tosug";
+				}else if(data.login == "Y"){
+					var left = getLeft("#sugform");
+					$.blockUI({ 
+						message:  $("#sugform"),
+						css:{
+							top:"20%",
+							left:left,
+							padding:"0px",
+							width:'683px',
+							border:'1px solid rgb(67, 67, 67)',
+							borderRadius:'8px',
+							boxShadow:"0px 0px 3px #434343",
+							cursor:'auto'
+							},
+						overlayCSS: {
+							cursor:'auto'
+							} 
+					});
+				}				
+			}else{
+				var url = location.href;
+				location.href = "/account/user/login?src="+location.href;
+			}
+		}
+	})
+}
+
+function submitSug(e){
+	var $target = $(e), f = $target.parents("form"), sug = f.find("textarea"), v = sug.val();
+		
+	if(sug.val()=="" || sug.val().length >300){
+		sug.addClass("error");
+		return false;
+	}else{
+		sug.removeClass("error");
+		$target.attr("disabled",true);
+		setTimeout(function(e){
+			$target.removeAttr("disabled");
+		},5000);
+		v = stripscript(v);
+		$.ajax({
+			url:"../../fund/feedback/addFeedBack",
+			type:"post",
+			data:{content:v},
+			success:function(data){
+				f.siblings(".result").replaceWith("");
+				if(data.success == true){
+					sug.val("");
+					f.find(".ftip").text("仅限300字，还可以输入300个字");
+					f.after("<div class='result ok' style='margin-left:0px;margin-bottom:15px;'><p><span class='ok'></span><span class='txt'>" + data.info + "&nbsp;<span id='timer'>3</span>秒后自动刷新...</span></p>");
+					var timer = setInterval(function(){ 
+							var t = $("#timer");
+							if((parseInt($("#timer").text())-1) < 0){
+								clearInterval(timer);
+								f.siblings(".result").replaceWith("");
+								$.unblockUI();
+							}
+						t.text(parseInt($("#timer").text())-1);},1000);
+				}else{
+					f.find("button").removeAttr("disabled");
+					f.after("<div class='result ok'><p><span class='ok'></span><span class='txt'>" + data.info + "</p>");
+				}
+			}
+		})
+	}
+}
+
+$("textarea[name='sug']").keyup(function(e){
+	var $target = $(e.target), ftip = $target.siblings(".ftip"),  v = $target.val(), l = v.length, n = 300-l;
+	ftip.text("仅限300字，还可以输入"+n+"个字");
+	if(n>0 && n<300){
+		$target.removeClass("error");
+		ftip.removeClass("error");
+	}else{
+		$target.addClass("error");
+		ftip.addClass("error");
+	}
+})
+
+//计算水平居中的左边距
+function getLeft(id){
+	var l = $(id).width();
+	var total_l = $("body").width();
+	
+	l = (total_l - l)*0.5;
+	left = Math.round((l/total_l)*100);
+	left += "%";
+	return left;
+}
+
+//防止xss和sql注入:JS特殊字符过滤正则
+function stripscript(s) 
+{ 
+	var pattern = new RegExp("[%--`~#$^&*()=|{}\\[\\]<>/~@#&*——|{}【】‘']")        //格式 RegExp("[在中间定义特殊过滤字符]")
+	var rs = ""; 
+	for (var i = 0; i < s.length; i++) { 
+	 rs = rs+s.substr(i, 1).replace(pattern, ''); 
+	}
+	return rs;
+}
+</script>
+<script src="/../../res/js/common/jquery.blockUI.js"></script>
+</body>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$("#ddpatab").DDPATab({});
+    
+});
+</script>
+</html>

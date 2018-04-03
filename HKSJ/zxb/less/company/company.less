@@ -1,0 +1,185 @@
+
+//侧边栏
+.company-infoside{
+	h3{
+		width:100%;
+		margin:0 0 20px 0;
+		line-height:24px;
+		font-size:@font-size-base;
+		color:@color-gray2;
+		.text-ww;
+		font-weight:bold;
+	}
+	ul{
+		width:100%;
+		&:after{
+			content:'';
+			clear:both;
+			display:block;
+			width:100%;
+		}
+		li{
+			.layout-float-base;
+			border-bottom:1px dashed @color-gray5;
+			padding:10px 0 20px 0;
+			span{
+				display:inline-block;
+				overflow:hidden;
+				vertical-align:middle;
+				margin:0 5px;
+			}
+			p{
+				display:inline-block;
+				font-size:@font-size-base - 2;
+				color:@color-gray2;
+				width:200px;
+				vertical-align:middle;
+				i{
+					color:@color-gray3;
+					display:block;
+				}
+			}
+		}
+	}
+	div{
+		width:90%;
+		height:40px;
+		margin:20px auto 0 auto;
+		background:@color-orange1;
+		text-align:center;
+		line-height:40px;
+		color:@color-white;
+		font-size:@font-size-base;
+		cursor:pointer;
+		.user-select-base;
+		&:hover{
+			background:darken(@color-orange1,5%);
+		}
+	}
+	.company-bzicon{
+		width:29px;
+		height:31px;
+		background:url(../images/icons.png) -380px -82px no-repeat;
+	}
+	.company-fwicon{
+		width:28px;
+		height:32px;
+		background:url(../images/icons.png) -410px -82px no-repeat;
+	}
+	.company-jlicon{
+		width:32px;
+		height:23px;
+		background:url(../images/icons.png) -439px -82px no-repeat;
+	}
+	.company-gwicon{
+		width:23px;
+		height:28px;
+		background:url(../images/icons.png) -472px -82px no-repeat;
+	}
+}
+
+
+.company-topside{
+	h3{
+		width:100%;
+		height:40px;
+		line-height:40px;
+		font-size:@font-size-base + 2;
+		color:@color-gray1;
+		.text-of;
+		font-weight:bold;
+		span{
+			font-size:@font-size-base;
+			color:@color-gray2;
+			padding:0 3px;
+			display:inline-block;
+			vertical-align:middle;
+			font-weight:normal;
+		}
+	}
+	a{
+		line-height:20px;
+		width:100%;
+		float:left;
+		margin:10px 0 0 0;
+		.text-ww;
+		color:@color-gray1;
+		font-size:@font-size-base - 2;
+		span{
+			display:inline-block;
+			width:21px;
+			height:17px;
+			vertical-align:middle;
+			overflow:hidden;
+			margin:-2px 5px 0 05px;
+			background:url(../images/icons.png) -496px -82px no-repeat;
+		}
+		&:link{
+				color:@color-gray1;
+		}
+		&:visited{
+				color:@color-gray2;
+		}
+		&:hover{
+				color:@color-orange1;
+		}
+		&:active{
+				color:@color-gray1;
+		}
+	}
+}
+
+
+.company-articleside{
+	a{
+		line-height:20px;
+		width:100%;
+		float:left;
+		margin:10px 0 0 0;
+		.text-ww;
+		color:@color-gray1;
+		font-size:@font-size-base - 2;
+		&:link{
+				color:@color-gray1;
+		}
+		&:visited{
+				color:@color-gray2;
+		}
+		&:hover{
+				color:@color-orange1;
+		}
+		&:active{
+				color:@color-gray1;
+		}
+	}
+	a:first-child{
+		font-size:@font-size-base + 4;
+		color:@color-gray1;
+	}
+	&+.company-articleside,
+	&+.company-articleside+.company-articleside{
+		margin:0 !important;
+		border-top:0 !important;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

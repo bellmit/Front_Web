@@ -1,0 +1,180 @@
+﻿@charset "utf-8";
+/* CSS Document */
+/*全局样式*/
+body{margin:0;padding:0;background:url(../images/body_bg.jpg) repeat-x;_behavior:url("css/csshover.htc");width:100%;position:relative;}
+body *{margin:0;padding:0;list-style:none;font-size:12px;font-family:"宋体", "宋体-PUA", "仿宋_GB2312", serif, sans-serif, Vrinda;text-decoration:none;color:#000;border:none;}
+body *:focus{outline:none;}
+.container{width:1003px;margin:0 auto;position:relative;left:0;top:0;background:url(../images/container_bg.png) repeat-y;z-index:1;}
+/*头部模块样式*/
+.header{width:1003px;height:200px;margin:0 auto;position:relative;top:0;left:0;background:url(../images/header_bg.png) no-repeat center center;z-index:100;}
+.header h4{width:600px;height:143px;text-indent:-9999px;}
+.menu{width:1000px;height:39px;margin:0 auto;}
+.menu ul{width:985px;height:32px;overflow:hidden;margin:7px 0 0 10px;}
+.menu ul li{width:120px;height:32px;float:left;margin:0 1px;text-align:center;position:relative;z-index:1;}
+.menu ul li a:hover{background:url(../images/btn_bg.png) no-repeat center bottom;color:#fff;}
+.menuselect{width:120px;height:32px;display:block;font-size:14px;line-height:2.2em;position:relative;z-index:200;color:#fff;background:url(../images/btn_bg.png) no-repeat center bottom;}
+.menudefault{width:120px;height:32px;display:block;font-size:14px;color:#037cc1;line-height:2.2em;position:relative;z-index:200;}
+/*主体模块样式*/
+.content{width:1003px;height:1200px;*+height:1180px;position:relative;left:0;top:0;}
+.sidebox-left,.mainbox,.sidebox-right{float:left;height:auto;position:relative;display:inline;margin:5px auto 15px auto;}
+.sidebox-left{width:220px;margin-left:20px;}
+.mainbox{width:470px;}
+.sidebox-right{width:280px;}
+.nav-links{float:left;width:950px;height:120px;border-top:1px dashed #ff8a01;margin-left:25px;display:inline;}
+/*主体详细样式*/
+/*左边栏*/
+/*按钮链接*/
+.navbtn{width:210px;height:auto;float:left;margin-bottom:10px;}
+.navbtnimg{margin:0;}
+.links-btn{height:auto;float:left;}
+.btnone,.btntwo,.btnthree,.btnfour,.btnfive{width:207px;height:53px;float:left;margin:10px auto;}
+.btnfive{margin-bottom:0;}
+.btnone{background:url(../images/drugbtnone.png) no-repeat center center;}
+.btntwo{background:url(../images/drugbtntwo.png) no-repeat center center;}
+.btnthree{background:url(../images/drugbtnthree.png) no-repeat center center;}
+.btnfour{background:url(../images/drugbtnfour.png) no-repeat center center;}
+.btnfive{background:url(../images/drugbtnfive.png) no-repeat center center;}
+.btnonechi,.btntwochi,.btnthreechi,.btnfourchi,.btnfivechi{width:207px;display:block;text-indent:40px;font-size:14px;overflow:hidden;margin-top:14px;}
+.btnoneeng,.btntwoeng,.btnthreeeng,.btnfoureng,.btnfiveeng{text-transform:capitalize;width:207px;display:block;text-indent:40px;overflow:hidden;margin-top:2px;color:#555;}
+.btnonechi:hover,.btntwochi:hover,.btnthreechi:hover,.btnfourchi:hover,.btnfivechi:hover{color:red;}
+.btnoneeng:hover,.btntwoeng:hover,.btnthreeeng:hover,.btnfoureng:hover,.btnfiveeng:hover{text-decoration:underline;}
+/*法律法规*//*饮食健康*/
+.lawrule,.foodhealth{width:210px;height:auto;float:left;margin:10px auto;}
+.lawruleimg,.foodhealthimg{width:207px;height:58px;margin:5px auto;overflow:hidden;}
+.lawrulecontent,.foodhealthcontent{height:auto;float:left;background:#fff url(../images/login_bg.png) repeat-x center top;border:1px solid #b6d0ed;width:205px;}
+.lawruletitle,.foodhealthtitle{width:190px;height:40px;margin:0 auto;background:url(../images/opline.png) repeat-x center 35px;}
+.lawruletitle img,.foodhealthtitle img{float:left;overflow:hidden;width:7px;height:7px;margin:16px 0 0 5px;}
+.lawruletitle p,.foodhealthtitle p{width:100px;float:left;margin:12px 0 0 5px;display:block;font-size:14px;height:16px;overflow:hidden;font-weight:normal;}
+.lawruletitle a,.foodhealthtitle a{float:right;margin:10px 2px 0 0;width:50px;height:20px;background:url(../images/opmore.png) no-repeat;line-height:1.8em;text-decoration:none;color:#000;text-indent:15px;}
+.lawruletitle a:hover,.foodhealthtitle a:hover{color:red;}
+.lawrulecontent ul,.foodhealthcontent ul{width:205px;height:auto;}
+.lawrulecontent ul li,.foodhealthcontent ul li{width:180px;height:18px;margin:5px 10px;float:left;overflow:hidden;}
+.lawrulecontent ul li img,.foodhealthcontent ul li img{width:9px;height:9px;float:left;margin:2px 5px;}
+.lawrulecontent ul li a,.foodhealthcontent ul li a{width:170px;height:16px;overflow:hidden;color:#666;text-decoration:underline;}
+.lawrulecontent ul li a:hover,.foodhealthcontent ul li a:hover{color:#016b83;text-decoration:none;}
+/*中部主内容区*/
+/*新闻*/
+.nav-newsinfos{float:left;width:460px;height:420px;background:#fff url(../images/drug_opbg.png) repeat-x center top;border:1px solid #b6d0ed;position:relative;}
+/*新闻标题*/
+#nav-tabtitle{width:180px;height:30px;float:left;background:url(../images/nititleline.png) no-repeat center center;margin:5px 0 5px 10px;}
+#nav-tabtitle li{float:left;width:80px;margin:5px;height:20px}
+#nav-tabtitle li img{float:left;width:7px;height:7px;overflow:hidden;margin:6px;border:none;}
+#nav-tabtitle li a{float:left;width:60px;height:20px;line-height:1.5em;font-size:14px;text-decoration:none;color:#000;cursor:pointer;}
+#nav-tabtitle li a:hover{color:#016b83;text-decoration:underline;}
+/*新闻更多*/
+.newsmore,.infosmore{position:absolute;left:395px;top:10px;width:50px;height:30px;background:url(../images/opmore.png) no-repeat;overflow:hidden;}
+.newsmore a,.infosmore a{float:left;width:50px;height:20px;line-height:1.8em;text-decoration:none;color:#000;text-align:center;padding-left:5px;}
+.newsmore a:hover,.infosmore a:hover{color:red;}
+/*新闻列表*/
+.nav-news{width:445px;height:auto;float:left;}
+#content_2{display:none;}
+.nav-news li{width:440px;height:16px;float:left;margin:5px 0 5px 10px;border-bottom:1px dotted #999;}
+.nav-news li img{float:left;width:5px;height:8px;overflow:hidden;margin:3px 5px 0 5px;}
+.nav-news li a{width:420px;height:16px;text-decoration:none;line-height:1.2em;color:#555;display:block;overflow:hidden;position:relative;}
+.nav-news li a:hover{color:#f00;}
+.nav-news li span{height:16px;width:70px;color:#777;text-align:center;overflow:hidden;cursor:pointer;position:absolute;left:350px;top:0;}
+.nav-news li  a:hover span{color:#00F;}
+/*图片幻灯片*/
+.nav-slide{width:440px;height:auto;position:absolute;top:220px;left:11px;margin:5px auto;}
+.slidetitle{width:440px;height:20px;text-indent:20px;font-size:16px;line-height:1.2em;margin:5px auto;color:#F00;}
+#slideshow{width:440px;height:145px;overflow:hidden;border:1px solid #888;padding:3px;}
+/*政务公开*//*抽送检结果公示*//*合理安全用药*/
+.nav-openad,.nav-drugresult,.nav-drugsafe{width:460px;height:auto;float:left;background:#fff url(../images/drug_opbg.png) repeat-x center top;border:1px solid #b6d0ed;margin:5px auto;position:relative;*padding-bottom:10px;}
+.openadtitle,.drugresulttitle,.drugsafetitle{float:left;width:460px;margin:5px auto;height:20px;display:block;}
+.openadtitle img,.drugresulttitle img,.drugsafetitle img{float:left;margin:6px 6px 6px 20px;width:7px;height:7px;overflow:hidden;}
+.openadtitle p,.drugresulttitle p,.drugsafetitle p{font-size:14px;float:left;display:block;height:20px;width:200px;line-height:1.5em;}
+.openadtitle a,.drugresulttitle a,.drugsafetitle a{width:50px;height:20px;float:right;display:block;text-indent:15px;margin-right:15px;background:url(../images/opmore.png) no-repeat center center;line-height:1.8em;text-decoration:none;color:#000;}
+.openadtitle a:hover,.drugresulttitle a:hover,.drugsafetitle a:hover{color:red;}
+.nav-openad ul,.nav-drugresult ul,.nav-drugsafe ul{width:450px;height:auto;float:left;margin:0 auto 10px auto;}
+.nav-openad ul li{width:440px;height:16px;float:left;margin:5px 0 5px 10px;border-bottom:1px dotted #999;}
+.nav-drugresult ul li,.nav-drugsafe ul li{width:440px;height:16px;float:left;margin:5px 0 5px 10px;}
+.nav-openad ul li img,.nav-drugresult ul li img,.nav-drugsafe ul li img{float:left;width:2px;height:2px;overflow:hidden;margin:5px;}
+.nav-openad ul li a{width:420px;height:16px;line-height:1.3em;color:#555;position:relative;overflow:hidden;display:block;}
+.nav-drugresult ul li a,.nav-drugsafe ul li a{width:420px;height:16px;line-height:1.3em;color:#555;position:relative;overflow:hidden;}
+.nav-openad ul li a:hover{color:#016b83;}
+.nav-drugresult ul li a:hover,.nav-drugsafe ul li a:hover{color:#f00;text-decoration:underline;}
+.nav-openad ul li span,.nav-drugresult ul li span,.nav-drugsafe ul li span{height:16px;width:70px;color:#666;text-align:center;line-height:1.2em;overflow:hidden;cursor:pointer;;position:absolute;left:350px;top:0;}
+.nav-openad ul li a:hover span,.nav-drugresult ul li a:hover span,.nav-drugsafe ul li a:hover span{color:#00F;}
+.drtitleimg{width:459px;height:59px;overflow:hidden;float:left;margin-left:2px;}
+/*右边栏*/
+/*登录*/
+.nav_login{float:left;width:272px;height:180px;background:#fff url(../images/login_bg.png) repeat-x center top;border:1px solid #b6d0ed;}
+.login_tab{width:270px;height:20px;margin:0 auto;}
+.login_tab li{width:100px;height:19px;float:left;cursor:pointer;line-height:1.6em;text-align:center;}
+.login_tabsel{background:url(../images/login_tabbg.png) repeat-x center center;color:red;}
+.login_show,.loginsa,.loginsb{width:270px;height:160px;overflow:hidden;margin:0 auto;position:relative;}
+.loginsb{display:none;}
+.nav_loginleft{_width:30%;_text-align:right;}
+.nav_loginright{_width:70%;}
+.loginsa tr td:first-child,.loginsb tr td:first-child{width:30%;text-align:right;}
+.loginsa tr td:first-child+td,.loginsb tr td:first-child+td{width:70%;}
+.loginsa tr,.loginsb tr{width:270px;}
+.untr,.pwtr{height:35px;}
+.submittr,.validtr{height:35px;}
+.loginsa tr td label,.loginsb tr td label{cursor:pointer;margin-right:10px;}
+.unimg,.pwimg{float:left;width:24px;height:24px;border:none;}
+.nav_username,.nav_password{float:left;width:120px;height:24px;border:none;background:url(../images/login_textl.png) repeat-x center center;line-height:1.8em;}
+.nav_username:focus,.nav_password:focus{outline:none;}
+.loginimg{float:left;width:3px;height:24px;border:none;overflow:hidden;}
+.unvalid,.pwvalid,.dcvalid,.admindcvalid{position:absolute;left:30%;color:red;height:14px;width:150px;overflow:hidden;line-height:1.5em;}
+.unvalid{top:32px;}
+.pwvalid{top:72px;}
+.dcvalid,.admindcvalid{top:112px;}
+.validimgl,.validimgr{float:left;width:3px;height:22px;border:none;overflow:hidden;margin-top:3px;}
+.datacode{float:left;width:50px;height:22px;border:none;background:url(../images/cpt_comtextm.jpg) repeat-x center center;overflow:hidden;line-height:1.5em;font-size:14px;margin-top:3px;}
+.dcvalidimg{float:left;width:60px;height:20px;overflow:hidden;border:1px solid #999;cursor:pointer;margin:3px 0 0 5px;}
+.datacode:focus{outline:none;}
+.login_linksb:hover,.login_admin:hover{color:#099;}
+.nav_submit{float:left;background:url(../images/nav_submit.png) no-repeat;width:63px;height:25px;border:none;text-align:left;padding:2px 0 0 7px;*+padding:4px 0 0 5px;cursor:pointer;}
+.nav_adminsubmit{float:left;background:url(../images/nav_adminsubmit.png) no-repeat;width:63px;height:25px;border:none;text-align:left;padding:2px 0 0 7px;*+padding:4px 0 0 5px;cursor:pointer;}
+.nav_submit:hover,.nav_adminsubmit:hover{color:red;}
+.nav_linksa:hover,.nav_linksb:hover{color:red;font-weight:bold;}
+.nav_login .submitimg{float:left;margin:2px 20px;}
+.nav_zc{float:left;color:#999;text-decoration:none;margin-top:5px;display:block;text-align:center;}
+.nav_zc:hover{color:#000;}
+/*登出*/
+.login_out{width:243px;height:129px;border:none;overflow:hidden;margin:30px auto 0 auto;background:url(../images/login_out.png) no-repeat center center;}
+.loadmin{width:60%;}
+.loadmin img{float:left;width:15px;height:15px;border:none;overflow:hidden;margin:2px 0 0 40px;}
+.loadmin a{float:left;width:100px;height:20px;display:block;background:url(../images/lo_adminline.png) no-repeat center bottom;overflow:hidden;line-height:1.5em;text-align:center;}
+.loexit{width:40%;}
+.loexit img{float:left;width:17px;height:17px;border:none;overflow:hidden;margin:2px 0 0 10px;}
+.loexit a{float:left;background:url(../images/lo_exitline.png) no-repeat center bottom;width:30px;height:20px;display:block;overflow:hidden;line-height:1.8em;text-align:center;}
+.loadmin a:hover,.loexit a:hover{color:#099;}
+/*药品缺陷批号记录*//*药品不良反应*//*药品质量事故*/
+.lighthouseimg{width:268px;float:left;margin:20px 3px 0 3px;overflow:hidden;}
+.drugoperation{float:left;width:270px;height:auto;margin:3px auto;background:#fff url(../images/drug_opbg.png) repeat-x center top;border:1px solid #b6d0ed;*padding-bottom:20px;}
+.druglog,.drugrea,.drugacc{float:left;width:270px;height:auto;margin:10px auto;display:inline;}
+.druglogtitle,.drugreatitle,.drugacctitle{width:250px;height:40px;margin:0 auto;background:url(../images/opline.png) repeat-x center 35px;}
+.druglogtitle img,.drugreatitle img,.drugacctitle img{float:left;overflow:hidden;width:7px;height:7px;margin:16px 0 0 5px;}
+.druglogtitle p,.drugreatitle p,.drugacctitle p{width:160px;float:left;margin:12px 0 0 5px;display:block;font-size:14px;height:16px;overflow:hidden;font-weight:normal;}
+.druglogtitle a,.drugreatitle a,.drugacctitle a{float:right;margin:10px 2px 0 0;width:50px;height:20px;background:url(../images/opmore.png) no-repeat;line-height:1.8em;text-decoration:none;color:#000;text-indent:15px;}
+.druglogtitle a:hover,.drugreatitle a:hover,.drugacctitle a:hover{color:red;}
+.druglogshow,.drugreashow,.drugaccshow{float:left;width:260px;height:auto;margin:3px 0 10px 3px;}
+.druglogshow li,.drugreashow li,.drugaccshow li{width:250px;float:left;height:16px;margin:5px 0 5px 10px;}
+.druglogshow li img,.drugreashow li img,.drugaccshow li img{float:left;margin:4px 4px 0 5px;width:5px;height:5px;overflow:hidden;}
+.druglogshow li a,.drugreashow li a,.drugaccshow li a{width:230px;height:16px;display:block;line-height:1.2em;overflow:hidden;color:#555;position:relative;}
+.druglogshow li span,.drugreashow li span,.drugaccshow li span{float:right;width:70px;height:14px;text-align:center;line-height:1.4em;overflow:hidden;color:#999;cursor:pointer;position:absolute;left:155px;top:1px;}
+.druglogshow li a:hover,.drugreashow li a:hover,.drugaccshow li a:hover{color:#016b83;text-decoration:underline;}
+.druglogshow li a:hover span,.drugreashow li a:hover span,.drugaccshow li a:hover span{color:#00F;}
+/*友情链接*/
+.linkssidebox{float:left;width:100px;height:120px;font-size:16px;text-align:right;line-height:6em;}
+.linksmainbox{float:right;width:820px;height:100px;margin:10px 10px 10px 10px;_margin:10px 0 10px 10px;background:url(../images/links_bg.png) repeat-x center 30px;}
+.linksmainbox ul{width:820px;float:left;height:30px;color:#000;}
+.linksmainbox ul li{float:left;height:20px;width:100px;margin:5px 0;text-align:center;line-height:1.5em;display:block;cursor:pointer;}
+.linksmainbox ul li:hover{color:#016b83;}
+.linksmainbox ul li img{float:right;border:none;width:1px;height:19px;overflow:hidden;*+margin-top:-20px;}
+.links_show{float:left;width:800px;margin:5px 10px;height:auto;}
+.links_show ul{float:left;width:800px;height:auto;overflow:hidden;}
+.links_show ul li{float:left;width:100px;height:20px;margin:2px 5px;}
+.links_show ul li a{width:100px;height:20px;text-align:center;color:#999;text-decoration:none;line-height:1.6em;display:block;overflow:hidden;}
+.links_show ul li a:hover{color:red;}
+.links_show .linkshid{display:none;}
+/*底部模块*/
+.container:after{clear:both;visibility:hidden;line-height:0;content:"";height:0;}
+.footer{height:113px;background:url(../images/footer_bg.png) repeat-x center center;position:relative;z-index:100;margin-top:-2px;min-width:1003px;_width:expression((document.documentElement.clientWidth||document.body.clientWidth)<1003?"1003px":"auto");overflow:hidden;border:none;}
+.footer ul{margin:0 auto;width:500px;height:50px;padding-top:40px;}
+.footer ul li{float:left;width:100px;height:20px;}
+.footer ul li a{float:left;width:90px;text-align:center;height:20px;display:block;line-height:1.6em;color:#fff;font-size:14px;text-decoration:none;}
+.footer ul li a:hover{color:#9F0;}
+.footer ul li span{text-align:center;line-height:1.6em;color:#fff;}

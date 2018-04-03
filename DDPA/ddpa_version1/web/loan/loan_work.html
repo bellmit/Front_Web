@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>贷贷平安,贷贷平安借款人信息--工作信息</title>
+<meta name="description" content="贷贷平安借款人信息,贷贷平安借款人信息--工作信息,工作信息,贷贷平安借款">
+<meta name="keywords" content="贷贷平安借款人信息,贷贷平安借款人信息--工作信息,工作信息,贷贷平安借款">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/common.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/loan/loan_layout.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/loan/loan_work.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/plugins/common/jquery.form.js"></script>
+<script src="../../res/plugins/common/jquery.validate.js"></script>
+<script src="../../res/js/loan/citydata.js"></script>
+<script src="../../res/js/loan/citypanel.js"></script>
+<script src="../../res/js/loan/loan_work.js"></script>
+</head>
+<body>
+	<div class="header_wrap">
+    	<div class="header">
+       		<div class="head_logo"></div>
+            <ul class="head_submenu">
+            	<li class="head_submenu1"><a href="#" title=""></a></li>
+                <li class="head_submenu2"><a href="#" title=""></a></li>
+                <li class="head_submenu3"><a href="#" title=""></a></li>
+                <li class="head_submenu4"><a href="#" title=""></a></li>
+                <li class="head_submenu5"><a href="#" title=""></a></li>
+            </ul>
+            <ul class="head_login">
+            	<li class="head_login1"><a href="#" title="">用户登录</a></li>
+            	<li class="head_login2"><a href="#" title="">快速注册</a></li>
+            </ul>
+            <ul class="head_mainmenu">
+            	<li><a href="#" title="">我要借贷</a></li>
+                <li><a href="#" title="">我要理财</a></li>
+                <li><a href="#" title="">新手引导</a></li>
+                <li><a href="#" title="">本金保障</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="loan_banner">
+    	<img src="../../res/image/loan/loan_banner.jpg" alt="loan apply banner">
+        <div class="loan_bannershadow"><div></div></div>
+    </div>
+	<div class="loan_poswrap"><span>我要借款</span><span>工薪贷</span><span>借款人信息</span><span class="loan_curpos">工作信息</span></div>
+	<div class="loan_procedurewrap2">
+        <a href="#" class="procedure1" title="">1:借款申请</a>
+        <a href="#" class="procedure2" title="">2:借款人信息</a>
+        <a href="#" class="procedure3" title="">3:审&nbsp;&nbsp;核</a>
+        <a href="#" class="procedure4" title="">4:筹&nbsp;&nbsp;款</a>
+        <a href="#" class="procedure5" title="">5:放&nbsp;&nbsp;款</a>
+    </div>
+    <div class="container">
+    	<div class="loan_stepwrap2">
+            <ul>
+                <li><a href="#" title="" class="">个人信息</a></li>
+                <li><a href="#" title="" class="curstep">工作信息</a></li>
+                <li><a href="#" title="" class="">资产信息</a></li>
+                <li><a href="#" title="" class="">资料信息</a></li>
+            </ul>
+        </div>
+        <form method="post" action="#" id="loan_workaction">
+    	<table class="loan_workcontent">
+        	<colgroup>
+            	<col class="loan_workcg1"/>
+                <col class="loan_workcg2"/>      
+            </colgroup>
+            <tr><td style="height:30px;" colspan="2"></td></tr>
+            <tr class="loan_text">
+            	<td><label for="comanyname">单位全称</label></td>
+                <td><input type="text" name="CompanyName" id="comanyname"/><span class="loan_tips" id="comanyname_tips"></span></td>
+            </tr>
+            <tr class="loan_text">
+            	<td><label for="department">部门</label></td>
+                <td><input type="text" name="Department" id="department"/><span class="loan_tips" id="department_tips"></span></td>
+            </tr>
+            <tr class="loan_text">
+            	<td><label for="position">职位</label></td>
+                <td><input type="text" name="Position" id="position"/><span class="loan_tips" id="position_tips"></span></td>
+            </tr>
+            <tr class="loan_select">
+            	<td><label for="monthlyincome">月收入</label></td>
+                <td>
+                <select name="MonthlyIncome" id="monthlyincome">
+                	<option value="1" selected="selected">2000-3000</option>
+                    <option value="2" >3000-4000</option>
+                    <option value="3" >4000-6000</option>
+                    <option value="4" >6000-8000</option>
+                    <option value="5" >8000-10000</option>
+                    <option value="6" >10000-15000</option>
+                    <option value="7" >15000-20000</option>
+                    <option value="8" >20000-50000</option>
+                    <option value="9" >更多</option>
+                </select>
+                <span class="loan_tips" id="monthlyincome_tips"></span>
+                </td>
+            </tr>
+            <tr class="loan_text">
+            	<td><label for="workemail">工作邮箱</label></td>
+                <td><input type="text" name="WorkEmail" id="workemail"/><span class="loan_tips" id="workemail_tips"></span></td>
+            </tr>
+            <tr class="loan_default">
+            	<td><label>工作城市</label></td>
+                <td>
+                <div class="cityshow">
+                    <input id="place_pro" readonly name="WorkPro" placeholder="请选择" type="text" value=""/><input  readonly="readonly" name="WorkCity" id="place_city" type="text" value="" placeholder="请选择"/>
+                </div>
+            	<div class="cityselect_wrap">
+                    <div id="citymenu" class="citymenu">
+                    	<p class="protheme">所在省：</p>
+                    	<ul id="cityprovince" class="cityprovince"></ul>
+                        <p class="citytheme">所在市：</p>
+                        <ul id="citycity" class="citycity"></ul>
+                    </div>
+                </div>
+                <div class="loan_citytipswrap">
+                    <span class="loan_citytips" id="place_citytips"></span>
+                </div>
+                </td>
+            </tr>
+            <tr class="loan_text">
+            	<td><label for="companyaddress">公司地址</label></td>
+                <td><input type="text" name="CompanyAddress" id="companyaddress"/><span class="loan_tips" id="companyaddress_tips"></span></td>
+            </tr>
+            <tr class="loan_select">
+            	<td><label>公司类别</label></td>
+                <td>
+                <select name="CompanyType">
+                	<option value="1" selected="selected">私营企业</option>
+                    <option value="2" >个体经营者</option>
+                    <option value="3" >国营企业</option>
+                    <option value="4" >外资企业</option>
+                    <option value="5" >合资企业</option>
+                    <option value="6" >政府机关</option>
+                    <option value="7" >事业单位</option>
+                    <option value="8" >其他</option>
+                </select>
+                </td>
+            </tr>
+            <tr class="loan_select">
+            	<td><label>公司行业</label></td>
+                <td>
+                <select name="CompanyTrade">
+                	<option value="1" selected="selected">2000</option>
+                    <option value="2" >计算机/互联网/软件</option>
+                    <option value="3" >通信/电子</option>
+                    <option value="4" >金融/法律/会计/保险</option>
+                    <option value="5" >政府机关</option>
+                    <option value="6" >公共事业</option>
+                    <option value="7" >教育/培训</option>
+                    <option value="8" >媒体/广告</option>
+                    <option value="9" >零售/批发</option>
+                    <option value="10" >餐饮/酒店/旅馆</option>
+                    <option value="11" >交通运输</option>
+                    <option value="12" >房地产业</option>
+                    <option value="13" >能源业</option>
+                    <option value="14" >医疗/制药/卫生/保健</option>
+                    <option value="15" >建筑工程</option>
+                    <option value="16" >娱乐服务业</option>
+                    <option value="17" >体育/艺术</option>
+                    <option value="18" >农业</option>
+                    <option value="19" >公益组织</option>
+                    <option value="20" >其他</option>
+                </select>
+                </td>
+            </tr>
+            <tr class="loan_select">
+            	<td><label>公司规模</label></td>
+                <td>
+                <select name="CompanyScale">
+                	<option value="1" selected="selected">10人以下</option>
+                    <option value="2" >10-50人</option>
+                    <option value="3" >50-100人</option>
+                    <option value="4" >100-500人</option>
+                    <option value="5" >500-2000人</option>
+                    <option value="6" >2000人以上</option>
+                </select>
+                </td>
+            </tr>
+            <tr class="loan_select">
+            	<td><label>在现公司工作年限</label></td>
+                <td>
+                <select name="CompanyAge">
+                	<option value="1" selected="selected">1年以下</option>
+                    <option value="2" >1-3年</option>
+                    <option value="3" >3-5年</option>
+                    <option value="4" >5-10年</option>
+                    <option value="5" >10年以上</option>
+                </select>
+                </td>
+            </tr>
+            
+            <tr class="loan_phone">
+            	<td><label>公司固话</label></td>
+                <td><input type="text" name="Phone_Area" class="phonearea" /><span>--</span><input type="text" name="Phone" class="phone" /></td>
+            </tr>
+            <tr>
+            	<td>&nbsp;</td>
+                <td><input type="button" class="pre_submit"  value="上一步" /><input type="submit" class="next_submit"  value="下一步" /></td>
+            </tr>
+        </table>
+        </form>
+    	<div class="loan_layoutb"></div>
+    </div>
+    <div class="footer_wrap">
+    	<div class="footer">
+        	<ul class="foot_join">
+            	<li><a href="#" title="">关于我们</a></li>
+                <li><a href="#" title="">媒体关注</a></li>
+                <li><a href="#" title="">联系我们</a></li>
+                <li><a href="#" title="">加入我们</a></li>
+                <li><a href="#" title="">合作伙伴</a></li>
+                <li class="joinlast"><a href="#" title="">意见反馈</a></li>
+            </ul>
+        	<div class="foot_theme"><p>安全：银行风控专家把关</p><p>专业：线下5年小额贷款经验</p><p>真实：所有借款均真实有效</p></div>
+            <p class="foot_phone">服务热线：400-990-6088&nbsp;（周一至周日&nbsp;9:00--21:00）</p>
+            <p class="foot_copyright">Copyright&copy;2013-2014&nbsp;版权所有：深圳市贷贷平安网络信息有限公司</p>
+            <ul class="foot_webrecord">
+            	<li>粤ICP备09157619号</li>
+                <li><a href="#" title="">国际联网备案</a></li>
+                <li><a href="#" title="">深圳网警备案</a></li>
+                <li><a href="#" title="">中国互联网协会</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

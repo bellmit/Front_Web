@@ -1,0 +1,171 @@
+///模块--首页
+///作者：易品
+
+
+
+///*--快捷入口--*/
+.mini-portal{
+	width:1188px;
+	height:160px;
+	border-left:1px solid @color-gray5;
+	border-right:1px solid @color-gray5;
+	border-bottom:1px solid @color-gray5;
+	margin:0 auto;
+	li{
+			.layout-relative-base;
+			float:left;
+			height:100%;
+			overflow:hidden;
+			>a{
+					.box-sizing-base;
+					width:100%;
+					height:100%;
+					padding:e('30px 0;*+height:100px');
+					display:block;
+					img{
+						width:100px;
+						height:100px;
+						display:block;
+						float:left;
+						margin:0 0 0 40px;;
+					}
+					p,span{
+						display:inline-block;
+						width:150px;
+						.text-ww;
+						padding:2px 0;
+						float:left;
+					}
+					p{
+						color:@color-gray2;
+						font-size:@font-size-base + 6;
+						line-height:24px;
+						margin:20px 0 0 0;
+					}
+					span{
+						color:@color-gray3;
+						font-size:@font-size-base;
+						line-height:20px;
+					}
+				}
+			&:hover{
+				
+				.mini-portalbtn{
+					top:0;
+					.transition-base(all 0.5s ease-out .02s);
+				}
+			}
+	}
+	li:first-child{
+		width:296px;
+		border-right:1px solid @color-gray5;
+	}
+	li:first-child+li{
+		width:296px;
+		border-right:1px solid @color-gray5;
+	}
+	li:first-child+li+li{
+		width:296px;
+		border-right:1px solid @color-gray5;
+	}
+	li:first-child+li+li+li{
+		width:297px;
+	}
+}
+
+.mini-portalbtn{
+	.layout-absolutel-base(0,172px);
+	background:@color-white;
+	width:100%;
+	height:100%;
+	>div{
+		float:left;
+		width:33%;
+		height:50%;
+		display:block;
+		a{
+			.box-sizing-base;
+			.layout-relative-base;
+			width:44px;
+			height:44px;
+			margin:12px auto 0 auto;
+			display:block;
+			border:1px solid @color-gray5;
+			.border-radius-base(3px);
+			text-align:center;
+			span{
+				display:inline-block;
+				overflow:hidden;
+				vertical-align:middle;
+			}
+			em{
+				.layout-absolutelb-base(-22px,-20px,20);
+				font-size:@font-size-small;
+				color:@color-gray3;
+				text-align:center;
+				height:20px;
+				width:80px;
+				line-height:20px;
+				overflow:hidden;
+				white-space:nowrap;
+				text-overflow:ellipsis;
+			}
+			&:hover{
+				border:1px solid @color-orange1;
+				em{
+					//color:@color-orange1;
+				}
+			}
+		}
+	}
+}
+
+.portal-tlicon{
+	span{
+		margin-top:5px;
+		width:29px;
+		height:33px;
+		background:url(../images/icons.png) -499px 0 no-repeat;
+	}
+}
+.portal-dbicon{
+	span{
+		margin-top:10px;
+		width:35px;
+		height:23px;
+		background:url(../images/icons.png) -632px 0 no-repeat;
+	}
+}
+.portal-bzicon{
+	span{
+		margin-top:8px;
+		width:34px;
+		height:28px;
+		background:url(../images/icons.png) -598px 0 no-repeat;
+	}
+}
+.portal-qzicon{
+	span{
+		margin-top:11px;
+		width:36px;
+		height:22px;
+		background:url(../images/icons.png) -562px 0 no-repeat;
+	}
+}
+.portal-clicon{
+	span{
+		margin-top:5px;
+		width:34px;
+		height:33px;
+		background:url(../images/icons.png) -528px 0 no-repeat;
+	}
+}
+.portal-dzicon{
+	span{
+		margin-top:10px;
+		width:35px;
+		height:23px;
+		background:url(../images/icons.png) -667px 0 no-repeat;
+	}
+}
+

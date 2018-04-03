@@ -1,0 +1,28 @@
+/* 代码整理：懒人图库　 ＊珍惜他人劳动，转载请自觉注明出处 */
+body {text-align:left;font:normal 12px/1.6em simsun, Verdana, Lucida, Arial, Helvetica, sans-serif;color:#353535;}
+a {text-decoration:none;color:#353535;}
+a:hover {color:#CD0102;}
+img {border:0;}
+
+
+.flashNews {position:relative;width:304px;margin-bottom:12px;overflow:hidden;border:1px solid #B6CAE3;text-align:left}
+.firstNews {position:relative;float:right;width:434px;margin-bottom:12px;overflow:hidden;border:1px solid #B6CAE3;}
+.flashNews, .firstNews {height:270px;}
+.flashNews .bg {position:absolute;left:0;bottom:0;width:304px;height:73px;background:#000000;filter:alpha(opacity=39);-moz-opacity:0.39;opacity:0.39;}
+.flashNews h3 {position:absolute;left:10px;top:200px;width:284px;height:35px;line-height:35px;z-index:2;}
+.flashNews h3 a {font-size:20px;font-family:"黑体";font-weight:normal;color:#FFFFFF;}
+.flashNews h3 a:hover {color:#F20000;}
+.flashNews p {position:absolute;left:10px;top:230px;width:284px;height:20px;line-height:20px;;z-index:2;}
+.flashNews p a {color:#FFFFFF;}
+.flashNews p a:hover {color:#F20000;}
+.flashNews ul {position:absolute;right:0;bottom:0;padding-left:47px;_padding-left:46px;background:url(../../../yanchu_wl/Embassy/css/flashPage_bg.png) 0 0 no-repeat;z-index:2;_background:none;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='flashPage_bg.png',sizingMethod='crop')}
+.flashNews ul li {float:left;width:15px;height:18px;line-height:18px;text-align:center;margin-left:1px;background:#000000;}
+.flashNews ul li a {display:block;width:15px;height:18px;font-size:10px;font-family:Tahoma;font-weight:bold;color:#FFFFFF;}
+.flashNews ul li a:hover, .flashNews ul li a.sel {color:#F20000;}
+.firstNews h3 {width:432px;height:27px;line-height:27px;text-indent:14px;font-size:12px;border:1px solid #FFFFFF;background:#F2F6FB;}
+.firstNews p {position:absolute;top:5px;right:5px;}
+.firstNews p a {font-size:12px;}
+.firstNews h4 {width:410px;height:25px;margin:0 auto;overflow:hidden;padding-top:12px;line-height:25px;font-weight:normal;font-size:18px;font-family:"黑体";}
+.firstNews ul {width:410px;height:auto;overflow:hidden;_zoom:1;margin:0 0 0 12px;}
+.firstNews ul li {position:relative;width:410px;height:22px;line-height:22px;overflow:hidden;text-indent:10px;font-size:14px;background:url(../../../yanchu_wl/Embassy/img/pic.gif) -298px -141px no-repeat;}
+

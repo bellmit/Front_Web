@@ -1,0 +1,86 @@
+///随记图片浏览
+///作者：易品
+
+
+.marquee-fill{
+	height:100%;
+	width:100%;
+	background:@color-base;
+}
+
+//随记图片详情容器
+.mind-marquee-wrap{
+	.layout-relative-base;
+	.layout-base;
+	background:@color-base;
+	height:100%;
+}
+
+
+//随记图片详情遮罩
+.mind-marquee-mask{
+		.layout-relative-base;
+		.layout-base;
+		height:100%;
+		overflow:hidden;
+		.user-select-base;
+		>ul{
+			.layout-absolutel-base;
+			height:100%;
+			min-width:100%;
+			white-space:nowrap;
+			li{
+				.layout-float-base(100vw);
+				height:100%;
+				text-align:center;
+				overflow:hidden;
+				img{
+					max-width:100%;
+					max-height:100%;
+					display:inline-block;
+					vertical-align:middle;
+				}
+			}
+		}
+}
+
+//随记图片数量
+.marquee-nubmer{
+	.layout-absoluter-base;
+	width:60px;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	color:@color-gray11;
+	font-size:@font-size-base;
+	background:rgba(0,0,0,.5);
+}
+
+//随记图片详情描述
+.mind-marquee-remark{
+	.layout-base;
+	.layout-absolutelb-base;
+	height:60px;
+	padding:0 5px;
+	font-size:@font-size-base;
+	line-height:@font-size-base + 6;
+	color:@color-gray11;
+	.text-ww;
+	overflow:scroll;
+	background:rgba(0,0,0,.5);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

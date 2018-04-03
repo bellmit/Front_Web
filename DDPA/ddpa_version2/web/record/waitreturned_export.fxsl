@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+	<table width="70%" border="1" cellspacing="0" cellpadding="0"　style="border-collapse:collapse">  
+		<tr><td colspan="7" align="center">待收回款</td></tr>
+		<tr>
+		   <td class='th'>借款标题</td>
+           <td class='th'>借款人</td>
+           <td class='th'>本金</td>
+           <td class='th'>收益</td>
+           <td class='th'>合计</td>
+           <td class='th'>回款日期</td>
+           <td class='th'>备注</td>
+		</tr>
+		<#if waitReturnedList??>
+		<#list waitReturnedList as waitReturned>
+		<tr>
+			<td><#if waitReturned.productName??>${waitReturned.productName!''}</#if></td>
+			<td><#if waitReturned.userName??>${waitReturned.userName!''}</#if></td>
+			<td><#if waitReturned.principalAmount??>${waitReturned.principalAmount?string("###,##0.00")}</#if></td>
+			<td><#if waitReturned.incomeAmount??>${waitReturned.incomeAmount?string("###,##0.00")}</#if></td>
+			
+			<td><#if waitReturned.totalAmount??>${waitReturned.totalAmount?string("###,##0.00")}</#if></td>
+			<td><#if waitReturned.repayDate??>${waitReturned.repayDate!''}</#if></td>
+			<td><#if waitReturned.remark??>${waitReturned.remark!''}</#if></td>
+			
+		</tr>
+		</#list> 
+		</#if>
+		<#if returnedMoneyVo?exists>
+		<tr>
+			<td></td>
+			<td>合 计</td>
+			<td><#if returnedMoneyVo.principalAmount?exists>${returnedMoneyVo.principalAmount!''}</#if></td>
+			<td><#if returnedMoneyVo.incomeAmount?exists>${returnedMoneyVo.incomeAmount!''}</#if></td>
+			<td><#if returnedMoneyVo.totalAmount?exists>${returnedMoneyVo.totalAmount!''}</#if></td>
+			<td></td>
+			<td></td>		
+		</tr>
+		</#if>
+	</table> 
+</body>
+</html>

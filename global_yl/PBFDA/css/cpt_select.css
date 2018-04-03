@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+/*全局样式*/
+body{margin:0;padding:0;background:url(../images/body_bg.jpg) repeat-x;_behavior:url("css/csshover.htc");width:100%;position:relative;}
+body *{margin:0;padding:0;list-style:none;font-size:12px;font-family:"宋体", "宋体-PUA", "仿宋_GB2312", serif, sans-serif, Vrinda;text-decoration:none;color:#000;}
+
+
+.cptforms{width:900px;height:auto;margin:200px auto;}
+
+
+.cptforms table{width:300px;height:auto;margin:100px auto;position:relative;}
+.cpttypetr label{position:absolute;left:90px;top:5px;}
+.cpttype{position:absolute;left:160px;top:0;width:175px;height:22px;display:none;}
+.mncpttype{width:175px;height:22px;position:absolute;}
+.cpttypeshow{width:175px;height:22px;overflow:hidden;cursor:pointer;position:absolute;}
+.cpttypecontent{width:150px;height:22px;text-indent:2px;line-height:1.8em;position:absolute;left:0;top:0;overflow:hidden;background:url(../images/cpt_selecttext.png) no-repeat center center;display:block;z-index:100;}
+.cpttypebtn{width:25px;height:22px;overflow:hidden;background:url(../images/cpt_selectbtn.png) no-repeat center center;position:absolute;left:150px;top:0;}
+.cpttypeimgdef{width:5px;height:10px;border:none;position:absolute;top:5px;left:9px;}
+.cpttypeimgsel{width:10px;height:5px;border:none;position:absolute;top:8px;left:8px;display:none;}
+.cpttypeul{position:absolute;left:0;top:22px;width:149px;height:auto;border-left:1px solid #acabab;border-right:1px solid #acabab;border-bottom:1px solid #acabab;display:none;background:#fff;}
+.cpttypeul li{width:149px;height:16px;margin:0 auto;cursor:pointer;line-height:1.3em;overflow:hidden;}
+
+
+
+
+
+
+
+
+

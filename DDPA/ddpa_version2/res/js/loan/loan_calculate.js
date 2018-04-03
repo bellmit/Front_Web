@@ -1,0 +1,1 @@
+var loanDo = {loanAmount:0,annualRate=9,loanPeriod=3,trustLevel:}

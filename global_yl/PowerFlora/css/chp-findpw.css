@@ -1,0 +1,44 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff url(../images/body_bg.png) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:none;}
+body *:focus{outline:none;}
+/*header*/
+.header{width:100%;height:100px;background:#eee;border-bottom:1px solid #999;}
+.banner{width:1000px;height:100px;margin:0 auto;background:transparent url(../images/logo_bg.png) no-repeat 100px 10px;}
+.banner h1,.banner h2{width:1000px;height:auto;color:#021373;}
+.banner h1{font-size:40px;text-indent:200px;padding:10px 0 5px 0;font-family:"黑体",serif;}
+.banner h2{font-size:20px;text-indent:400px;font-family:"楷体_GB2312",serif;}
+/*container*/
+.container{width:1002px;height:auto;margin:0 auto;}
+.container:after{clear:both;visibility:hidden;height:0;line-height:0;content:"";}
+.content{width:960px;height:auto;margin:0 auto;background:#fff;border-left:1px solid #999;border-right:1px solid #999;}
+/*content-layout*/
+.mainbox1{width:800px;height:auto;margin:0 auto;background:url(../images/findpw_step1.png) no-repeat center 40px;padding:120px 0 80px 0;}
+.mainbox2{width:800px;height:auto;margin:0 auto;background:url(../images/findpw_step2.png) no-repeat center 40px;padding:120px 0 80px 0;}
+/*table-layout*/
+.findpwbox{width:600px;height:auto;margin:0 auto;background:#F5F5F5;border:1px dashed #63A4CB;}
+.findpwbox tr td{padding:8px 0;}
+.pwbox1{width:25%;}
+.pwbox2{width:40%;}
+.pwbox3{width:35%;}
+/*label*/
+.findpwbox label{float:right;font-size:14px;padding:2px 5px;cursor:pointer;color:#333;}
+.findpwbox label:hover{color:#930;}
+.findpwbox label span{font-size:12px;color:red;float:left;padding:0 3px;}
+/*text*/
+.findpwbox input{width:230px;float:left;border:1px solid #0088CA;background:#fff;height:26px;line-height:1.8em;font-size:14px;color:#555;}
+.findpwbox input:focus{-webkit-box-shadow:0 0 3px #09F;-moz-box-shadow:0 0 3px #09F;-o-box-shadow:0 0 3px #09F;box-shadow:0 0 3px #09F;background:#FAFFEE;}
+/*button*/
+.fpwnext{float:right;color:#fff;cursor:pointer;font-size:14px;height:29px;padding:0 10px;background:#eee url(../images/namingbill/savebtn.png) repeat-x 0 0;border:1px solid #038ac8;}
+.fpwpre{float:left;color:#fff;cursor:pointer;font-size:14px;height:29px;padding:0 10px;background:#eee url(../images/namingbill/savebtn.png) repeat-x 0 0;border:1px solid #038ac8;}
+.fpwnext::-moz-focus-inner,.fpwpre::-moz-focus-inner{border-color:transparent!important;}  
+.fpwnext:hover,.fpwpre:hover{background:#eee url(../images/namingbill/savebtn.png) repeat-x 0 -29px;color:#FF0;}
+/*valid position*/
+#username_val,#email_val{display:block;width:200px;height:auto;color:red;font-size:14px;float:left;overflow:hidden;}
+
+
+/*footer*/
+.footer{width:100%;height:auto;background:#eee;border-top:1px solid #999;float:left;}
+.infos{width:1000px;height:auto;margin:0 auto;padding:10px 0;}
+.infos p{width:1000px;height:auto;font-size:14px;padding:2px 0;text-align:center;}

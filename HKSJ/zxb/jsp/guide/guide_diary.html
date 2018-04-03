@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="惠信--装小宝、装信贷--装修攻略日记">
+<meta name="keywords" content="惠信--装小宝、装信贷--装修攻略日记">
+<title>惠信--装小宝、装信贷--装修图库</title>
+<link rel="stylesheet" type="text/css" href="../../css/global.css">
+<link rel="stylesheet" type="text/css" href="../../css/guide.css">
+</head>
+<body>
+    <!--顶部区域-->
+    <div class="header-wrap">
+    
+        <!--顶部不同模块入口-->
+        <div class="header-portal">
+            <div>
+                <!--所在地-->
+                <div class="portal-position">
+                    <span></span>
+                    深圳
+                </div>
+                
+                <!--登录、注册-->
+                <div class="portal-login">
+                    <div>
+                        <a href="../account/login.html">登陆</a>
+                        <a href="../account/register.html">注册</a>
+                        <a href="../decorate/decorate.html">我要装修</a>
+                    </div>
+                    <p>欢迎来到装小宝!<span></span></p>
+                </div>
+            </div>
+        </div>
+        
+        <!--顶部logo及搜索-->
+        <div class="header-info">
+            <div>
+            		<!--logo-->
+            		<a href="/zxb/jsp" class="info-logo">logo</a>
+
+                
+                <!--搜索区域-->
+                <div class="info-search">
+                <form action="" method="post">
+                  <div><p id="searchshow"></p><span></span>
+                  		<input type="hidden" name="searchType" id="searchtype" value="">
+                      <ul id="searchselect">
+                        <li data-key="1">装修公司</li>
+                        <li data-key="2">效果图</li>
+                        <li data-key="3">小区</li>
+                        <li data-key="4">文章</li>
+                        <li data-key="5">问答</li>
+                        <li data-key="6">家居建材</li>
+                      </ul>
+                  </div>
+                  <input name="search" placeholder="挑选您心仪的装修公司"  id="searchKeyword" type="text">
+                  <button id="searchbtn" type="button">搜索</button>
+                </form>
+                </div>
+                
+                <!--服务热线-->
+                <div class="info-feature">
+                    <div>
+                    		<span></span>
+                        400-065-8888
+                    </div>
+                    <p>24小时服务热线</p>
+                </div>
+            </div>
+        </div>
+        
+        <!--头部导航-->
+        <div class="header-menu">
+            <div>
+                <ul class="menu-wrap" id="main_menuitem" >
+                  <li>
+                    <a href="../index.html" data-part="" >首页</a>
+                  </li>
+                  <li>
+                    <a href="../gallery/gallery.html" data-part="" >装修图库<span></span></a>
+                    <ul>
+                    		<li><a href="../gallerygallery_list.html" data-part="" >家居美图</a></li>
+                        <li><a href="../gallerygallery_set.html" data-part="" >家居图册</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="../case/case.html" data-part="" >装修案例</a>
+                  </li>
+                  <li>
+                    <a href="../decorate/decorate.html" data-part="" >我要装修</a>
+                  </li>
+                  <li>
+                    <a href="../company/company_decorate.html" data-part="" >装修公司<span></span></a>
+                    <ul>
+                    		<li><a href="../company/company_designer.html" data-part="" >设计师</a></li>    
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="guide.html" data-part="" >装修攻略<span></span></a>
+                    <ul>
+                    		<li><a href="guide_diary.html" data-part="" >装修攻略日记</a></li>
+                        <li><a href="guide_process.html" data-part="" >学装修</a></li>
+                    </ul>
+                  </li>
+              </ul>
+              <span id="mainmenu_apply" class="menu-apply"><span></span>免费申请设计</span>
+            </div>
+        </div>
+    </div>
+    
+
+    <!--装修攻略日记详情查看布局-->
+    <div class="layout-itemwrap">
+    
+    		<!--主模块-->
+    		<div class="layout-itemmain">
+        		
+            <!--装修攻略联合查询-->
+            <div class="set-querymainwrap">
+                <div class="queryresult">
+                    <span>装修攻略</span><p id="query_result"></p>
+                </div>
+                <dl class="queryitem1">
+                    <dt>风格</dt>
+                    <dd id="queryitem_style">
+                      <span data-value="style_01" >简约</span>
+                      <span data-value="style_02" >现代</span>
+                      <span data-value="style_03" >中式</span>
+                      <span data-value="style_04" >欧式</span>
+                      <span data-value="style_05" >美式</span>
+                      <span data-value="style_06" >田园</span>
+                      <span data-value="style_07" >新古典</span>
+                      <span data-value="style_08" >混搭</span>
+                      <span data-value="style_09" >地中海</span>
+                      <span data-value="style_10" >东南亚</span>
+                      <span data-value="style_11" >日式</span>
+                      <span data-value="style_12" >宜家</span>
+                      <span data-value="style_13" >北欧</span>
+                      <span data-value="style_14" >简欧</span>
+                      <em>清除</em>
+                      <div></div>
+                    </dd>
+                </dl>
+                <dl class="queryitem3">
+                    <dt>面积</dt>
+                    <dd id="queryitem_area">
+                      <span data-value="area_01" >60m<sup>2</sup>以下</span>
+                      <span data-value="area_02" >60m<sup>2</sup>-80m<sup>2</sup></span>
+                      <span data-value="area_03" >80m<sup>2</sup>-100m<sup>2</sup></span>
+                      <span data-value="area_04" >100m<sup>2</sup>-120m<sup>2</sup></span>
+                      <span data-value="area_05" >120m<sup>2</sup>-150m<sup>2</sup></span>
+                      <span data-value="area_06" >150m<sup>2</sup>以上</span>
+                      <em>清除</em>
+                    </dd>
+                </dl>
+            </div>
+        
+        		
+            <!--其他主模块-->
+            <div id="new_diarys">
+            
+            		<!--主区域头部-->
+                <div class="new_daohang">
+                    <div class="diary1"><a href="#" class="diarys1" onmousemove="diaryMove()">最新日记</a></div>
+                    <div class="diary2"><a href="#" class="">精选日记</a></div>
+                    <div class="diary3"></div>
+                </div>
+                
+                <!--主区域数据展现-->
+                <div id="new_div_diary">
+                    <div class="new_div_diary">
+                        <div style="width:117px; height:333px; float:left;">
+                            <a target="_blank" href="#" class="img_head"><img src="images/zfx.png" style="border-radius:200px; width:82px; height:82px;" />
+                            <span class="span_img">汪小涵</span>
+                            </a>
+                        </div>
+                        <div class="diary_items_boxs">
+                            <div class="diary_title">
+                                <a href="#" style="font-size:20px;" class="font_css1">每天一点惊喜
+                                    <em style="font-size:12px; color:#666; margin-left:15px;">31篇</em>
+                                    <span class="rq">&nbsp;&nbsp;人气</span>
+                                </a>
+                                <span class="title_img1" title="浏览数">
+                                    <span class="ico_eye1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>111
+                                </span>
+                                <span class="title_img1" title="收藏">
+                                    <span class="ico_eye2">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <a href="#"   class="font_css">22</a>
+                                </span>
+                                <span class="title_img1" title="评论数">
+                                  <span class="ico_eye3">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                  <a href="#" class="font_css">33</a>
+                                </span>
+                            </div>
+                            <div style="margin-top:10px;">
+                                <span class="span_css">123m</span>
+                                <span class="span_css">简约</span>
+                                <span class="span_css">准备装修</span>
+                            </div>
+                            <div style="overflow: hidden; height:45px; margin-top:9px;">
+                                <a target="_blank" rel="nofollow" href="#" class="diary_items_text">彭星星新租的房子，刚刚搞完卫生彭星星新租的房子，刚刚搞完卫生彭星星新租的房子，刚刚搞完卫生彭星星新租的房子，刚刚搞完卫生</a>
+                            </div>
+                            <div class="ul_img">
+                                <ul>
+                                    <li><a href="#"><img src="../../images/xx.png" style="width:136px; height:135px;"></a></li>
+                                    <li><a href="#"><img src="../../images/xx.png" style="width:136px; height:135px;"></a></li>
+                                    <li><a href="#"><img src="../../images/xx.png" style="width:136px; height:135px;"></a></li>
+                                    <li><a href="#"><img src="../../images/xx.png" style="width:136px; height:135px;"></a></li>
+                                    <li><a href="#"><img src="../../images/xx.png" style="width:136px; height:135px;"></a></li>
+                                </ul>
+                            </div>
+                            <span style=" font-size:12px; color:#666;">13分钟前被回复</span>
+                            <hr style="border:0;background-color:#EAEAEA;height:1px; width:866px;" />
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+            
+            
+        </div>
+        
+        
+        <!--侧边栏-->
+    		<div class="layout-itemside">
+        		<div style="border:1px solid #EAEAEA; height:80px; padding-left:62px;  background-color:#EFEFEF;">
+                   		<a href="#" style=" position:relative; top:35px; left:12px; padding-left:11px; color:#C30;"><div style="width:30px; height:44px; float:left" class="d_img"></div>写装修日记</a>
+                </div>
+        
+        
+        		<div class="guide-sidewrap">
+                <!--侧边栏表单-->
+                <div class="case-form">
+                  <form action="#" method="post" id="miniportal_form">
+                    <ul class="side-miniportal">
+                      <li class="miniportal-title"><h2>免费获取报价</h2></li>
+                      <li class="miniportal-text"><input type="text" id="customarea" name="customArea" placeholder="建筑面积"></li>
+                      <li class="miniportal-tip"></li>
+                      <li class="miniportal-select mini-select1"><input type="hidden" name="customProvince" id="customprovince_text" >
+                          <p>请选择省份</p><span></span>
+                          <ul id="customprovince2"></ul>
+                      </li>
+                      <li class="miniportal-select mini-select2"><input type="hidden" name="customCity" id="customcity_text" >
+                          <p>请选择城市</p><span></span>
+                          <ul id="customcity"></ul>
+                      </li>
+                      <li class="miniportal-tip"></li>
+                      <li class="miniportal-radio">
+                      		<label>装修档次</label>
+                          <div id="customlevel">
+                            <label><input type="radio" checked value="1" name="custlevel">简装</label>
+                            <label><input type="radio" value="2" name="custlevel">精装</label>
+                            <label><input type="radio" value="3" name="custlevel">豪装</label>
+                          </div>
+                      </li>
+                      <li class="miniportal-tip"></li>
+                      <li class="miniportal-submit">
+                        <button type="submit">获取报价</button>
+                      </li>
+                      <li class="miniportal-remark">
+                        服务热线：400-065-8888
+                      </li>
+                    </ul>
+                  </form> 
+                </div>
+            </div>
+            
+            
+            <!--其他侧边栏-->
+        		<div style="float:left;margin:20px 0 0 0;border:1px solid #ccc; height:1222px;"></div>
+        </div>
+    </div>
+    
+    
+    
+    <!--装修攻略日记查询分页-->
+    <div class="guide-page">
+        <div class="set-pagewrap">
+            <div class="easyui-pagination" id="query_pagewrap" data-options="links:10,layout:['first','links','last'],displayMsg:''"></div>
+        </div>
+    </div>
+    
+    
+	<script src="../../js/lib/require/require-2.1.11.min.js" data-main="../../js/guide/guide_diary.js"></script>
+</body>
+</html>

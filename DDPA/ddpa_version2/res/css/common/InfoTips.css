@@ -1,0 +1,47 @@
+/* CSS Document */
+/*layout*/
+.itips_box,.itips_boxauto{height:55px;background:#fafafa;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;overflow:hidden;}
+.ialert_box{height:auto;width:554px;background:#fafafa;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;overflow:hidden;border: 1px solid #434343;box-shadow: 0px 0px 8px #434343;}
+.itips_box{width:554px;}
+.itips_boxauto{width:auto;}
+.ialert_title{width:554px;height:30px;line-height:30px;font-size:14px;text-indent:20px;color:#fff;background:#938E83;}
+.itips_wrap,.itips_wrapauto{height:55px;border:0 none;table-layout:fixed;border-collapse:collapse;white-space:nowrap;font-family:"宋体";}
+.ialert_wrap{width:554px;height:auto;border:0 none;table-layout:fixed;border-collapse:collapse;white-space:nowrap;font-family:"宋体";}
+.itips_wrap{width:554px;}
+.itips_wrapauto{width:100%;}
+.itips_wrap td,.itips_wrapauto td{font-size:12px;height:55px;font-family:"宋体";}
+.ialert_wrap td{font-size:12px;font-family:"宋体";}
+.itips_iconsucc,.itips_iconerr,.itips_iconexplain{width:50px;}
+.ialert_iconsucc,.ialert_iconerr,.ialert_iconexplain{width:80px;height:40px;}
+.itips_infoshow{width:450px;}
+.itips_infoshowauto{min-width:250px;*+width:auto;}
+.ialert_infoshow{width:450px;height:40px;}
+.itips_close{width:54px;}
+/*details*/
+.itips_iconsucc div,.itips_iconerr div,.itips_iconexplain div,.ialert_iconsucc div,.ialert_iconerr div,.ialert_iconexplain div{width:20px;height:20px;overflow:hidden;float:right;margin-right:5px;*+margin-right:3px;}
+.itips_iconsucc div,.ialert_iconsucc div{background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat 0 0;}
+.itips_iconerr div,.ialert_iconerr div{background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat -20px 0;}
+.itips_iconexplain div,.ialert_iconexplain div{background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat -40px 0;}
+.itipok,.itipno,.itiptime,.itipdef,.ialertok,.ialertno,.ialertdef{float:left;height:20px;line-height:20px;text-align:center;font-size:12px;}
+.itipok,.ialertok{color:#7a9d30;padding:0 2px;}
+.itipno,.ialertno{color:#d8432b;padding:0 2px;}
+.itiptime{color:#d8432b;padding:0 2px 0 5px;}
+.itipdef,.ialertdef{color:#a0a0a0;}
+.itips_close div{width:30px;height:30px;background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat 0 -70px;margin:0 auto;cursor:pointer;}
+.ialert_handle{width:100px;margin: 0px auto;}
+.ialert_sure,.ialert_cance{float:left;padding:3px 10px;margin:5px 0 5px 5px;*+margin-left:5px 0 5px 3px;cursor:pointer;text-align:center;}
+.ialert_sure{
+	background: url(../../image/icons_lyz.fw.png) no-repeat;
+	background-position: -100px -534px;
+	width: 85px;
+	height: 27px;
+	line-height: 27px;
+	color: #FFF;
+	padding:0px;}
+.ialert_cance{color:#434343;}
+.codetip{
+	font-size: 12px;
+	color: #D73C23;
+	float: left;
+	line-height: 24px;
+}

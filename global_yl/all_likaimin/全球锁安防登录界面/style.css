@@ -1,0 +1,13 @@
+body{ background:#178144 url(images/bg_1.jpg) repeat-x left top; padding:0; margin:0 auto; font-size:12px;}
+div{ margin:0 auto;}
+input{ border:#00b2a8 01px solid;}
+.contant{ width:1003px; height:613px; background:url(images/bg_2.jpg) no-repeat; margin:0 auto;}
+.login{ width:322px; height:99px; border:#FFFFFF 0px solid; padding-top:369px; color:#FFFFFF;}
+.vin{ width:68px; height:24px; display:block; margin-top:8px;}
+.botm1{ width:68px; height:24px; background:url(images/bottom_01.jpg) no-repeat; border:0;}
+.botm2{ width:68px; height:24px; background:url(images/bottom_02.jpg) no-repeat; border:0;}
+
+.na ul{ margin:0; padding:0;}
+.na ul li{ list-style-type:none;}
+.na a, .na a:visited{ line-height:28px; color:#222; text-decoration:none; background:url(images/dian.jpg) no-repeat left 5px; padding-left:10px;}
+.na a:hover{ color:#c22a2a; text-decoration:underline;}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<title>大自播后台管理系统</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="小自传后台管理系统,小自传,后台管理">
+<meta http-equiv="description" content="小自传后台管理系统,小自传,后台管理">
+<link rel="stylesheet" href="css/public.css" />
+<link href="css/pilelot-ui.css"  rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+			/**
+			 * 显示系统时钟
+			 */
+			function showTime() {
+				var date = new Date();
+				var y=date.getFullYear();
+				var mon=date.getMonth()+1;
+				mon = mon < 10 ? '0' + mon : mon;
+				var day=date.getDate();
+				day = day < 10 ? '0' + day : day;
+				var h = date.getHours();
+				h = h < 10 ? '0' + h : h;
+				var m = date.getMinutes();
+				m = m < 10 ? '0' + m : m;
+				var s = date.getSeconds();
+				s = s < 10 ? '0' + s : s;
+				document.getElementById('rtime').innerHTML ="当前时间："+y+"-"+mon+"-"+day+" "+h + ":" + m + ":" + s;
+			}
+	
+			window.onload = function() {
+				showTime();
+				setInterval(function(){
+					showTime();
+				}, 1000);
+			}
+			
+			
+		</script>
+
+</head>
+
+<body>
+	<div class="main_login">
+		<div class="rt_ct">
+			<h3>欢迎登录</h3>
+		   <span class="divieder_line"></span>
+		   <span class="txt_come"><i>小自传管理员</i> 欢迎进入网站管理中心</span>
+		   <span class="txt_time" id="rtime"></span>
+		</div>
+			<span class="lt_img"></span>
+	</div>
+	
+	 	
+</body>
+</html>

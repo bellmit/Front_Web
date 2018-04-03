@@ -1,0 +1,7 @@
+.bbs_logo{width:330px;height:100px;margin:20px auto;background:#fff url(../../image/bbs/bbs_indexlogo.png) no-repeat 0 0;overflow:hidden;}
+.bbs_wrap{width:422px;height:389px;overflow:hidden;margin:50px auto 0 auto;position:relative;left:0;top:0;background:#fff url(../../image/bbs/bbs_indexbg.png) no-repeat center top;}
+.bbs_wrap a{width:250px;height:52px;background:transparent url(../../image/bbs/bbs_indexbtn.png) no-repeat 0 0;display:block;overflow:hidden;position:absolute;left:86px;bottom:-1px;}
+.bbs_wrap a:hover{background:transparent url(../../image/bbs/bbs_indexbtn.png) no-repeat 0 -52px;}
+.bbs_webverify{width:0;height:90px;margin:0 auto;line-height:none;position:relative;left:0;top:0;}
+.bbs_webverify_kx{width:auto;height:auto;position:absolute;left:-63px;top:20px;}
+.bbs_webverify_kx img{display:block;width:127px;height:47px;}

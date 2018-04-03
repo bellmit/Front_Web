@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户注册(免费) - 贷贷平安(ddpa.com) – 值得您信赖的投资理财网贷平台</title>
+<meta name="description" content="用户注册(免费) - 贷贷平安网 (www.ddpa.com)是值得您信赖的互联网金融中网络信贷平台，为投资理财用户和贷款用户两端提供公平、透明、安全、高效的互联网金融服务。">
+<meta name="keywords" content="用户注册,p2p理财,p2p贷款,网贷平台,贷贷平安">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/res/image/favicon144.png">
+<link rel="shortcut icon" href="../../res/image/favicon32.png">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/common.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/register/register.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/InfoTips.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/plugins/common/jquery.form.js"></script>
+<script src="../../res/plugins/common/jquery.validate.js"></script>
+<script src="../../res/plugins/common/jquery.blockUI.min.js"></script>
+<script src="../../res/plugins/common/jquery.placeholder.1.3.min.js"></script>
+<script src="../../res/js/common/InfoTips.js"></script>
+<script src="../../res/js/register/register.js"></script>
+</head>
+<body>
+	<div class="header_wrap">
+    	<div class="header">
+    		<a class="account_logo" href="/" title="">
+       			<div class="head_logo"><div></div></div>
+            	<div class="head_ltheme">免费注册</div>
+            </a>
+        </div>
+    </div>
+    <div class="container_wrap">
+    	<div class="container">
+        	<form action="register" method="post" id="reg_action" autocomplete="off" >
+        	<table class="mainbox">
+            	<colgroup>
+                	<col class="reg_cg1"/>
+                    <col class="reg_cg2"/>
+                    <col class="reg_cg3"/>
+                </colgroup>
+                <tr>
+                	<td colspan="3" style="height:30px;">&nbsp;</td>
+                </tr>
+                <tr class="reg_default">             
+                	<td><label for="reg_username">用户名</label></td>
+                    <td colspan="2">
+                    <input type="text" name="userName" maxlength="30"  id="reg_username"/>
+                    <div class="reg_unexplainwrap">
+                        <div class="reg_unexplainout" id="reg_unexplain">
+                                <div class="reg_unexplaininner">
+                                    <div class="reg_unexplainl"></div><div class="reg_unexplainc">4-16位中文、英文、数字、"_",不包含空格。注册后不可修改</div><div class="reg_unexplainr"></div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="reg_tipsuccwrap">
+                    	<div class="reg_tipsuccout" id="reg_usernamesucc">
+                    		<div class="reg_tipsuccinner"></div>
+                    	</div>
+                    </div>
+                    </td>
+                </tr>
+                <tr>
+                	<td></td>
+                	<td colspan="2"><p class="reg_tips" id="reg_usernametips"></p></td>
+                </tr>
+                <tr class="reg_default">
+                	<td><label for="reg_password">密码</label></td>
+                    <td colspan="2">
+                    <input type="password" name="password" maxlength="22" id="reg_password"/>
+                    <div class="reg_pwdexplainwrap">
+                        <div class="reg_pwdexplainout" id="reg_pwdexplain">
+                            <div class="reg_pwdexplaininner">
+                                <div class="reg_pwdexplainl"></div><div class="reg_pwdexplainc">6-20字母、数字、符号,不包含空格符</div><div class="reg_pwdexplainr"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reg_tipsuccwrap">
+                    	<div class="reg_tipsuccout" id="reg_passwordsucc">
+                    		<div class="reg_tipsuccinner"></div>
+                    	</div>
+                    </div>
+                    </td>
+                </tr>
+                <tr>
+                	<td></td>
+                	<td colspan="2">
+                	<div class="reg_pwdstrongwrap" id="reg_pwdstrongwrap">
+                		<div class="reg_pwdstrongouter">
+	                		<div class="reg_pwdstronginner">
+		                    	<label>密码强度</label><div id="reg_pwdstrong" class=""></div>
+		                    </div>
+                		</div>
+                	</div>
+                    <p class="reg_tips" id="reg_passwordtips"></p>
+                    </td>
+                </tr>
+                <tr class="reg_default">
+                	<td><label for="reg_validpwd">密码确认</label></td>
+                    <td colspan="2">
+                    <input type="password" maxlength="20" name="ValidPassWord" id="reg_validpwd" placeholder="请重复输入一遍密码"/>
+                    <div class="reg_tipsuccwrap" style="margin-left:6px;">
+                    	<div class="reg_tipsuccout" id="reg_validpwdsucc">
+                    		<div class="reg_tipsuccinner"></div>
+                    	</div>
+                    </div>
+                    </td>
+                </tr>
+                <tr>
+                	<td></td>
+                	<td colspan="2"><p class="reg_tips" id="reg_validpwdtips"></p></td>
+                </tr>
+                <tr>
+                	<td colspan="3">
+                    	<table id="reg_register">
+                            <colgroup>
+                                <col class="reg_cg1"/>
+                                <col class="reg_cg2"/>
+                                <col class="reg_cg3"/>
+                            </colgroup>
+                            <tr class="reg_default">
+                                <td><label for="reg_phoneno">手机号码</label></td>
+                                <td colspan="2">
+                                <input type="text" name="mobilePhone" maxlength="13" id="reg_phoneno" placeholder="请输入常用手机号码"/>
+                                <div class="reg_tipsuccwrap" style="margin-left:6px;">
+			                    	<div class="reg_tipsuccout" id="reg_phonenosucc">
+			                    		<div class="reg_tipsuccinner"></div>
+			                    	</div>
+			                    </div>
+                                <p class="reg_toemail" id="reg_toemail">我想用邮箱注册</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2"><p class="reg_tips" id="reg_phonenotips"></p></td>
+                            </tr>
+                            <tr class="reg_validcode">
+                                <td><label for="reg_validcode">验证码</label></td>
+                                <td colspan="2">
+                                <input type="text" name="validcode" maxlength="6" id="reg_validcode"/>
+                                <div class="reg_tipsuccwrap" style="margin-left:6px;">
+                                  <div class="reg_tipsuccout" id="reg_validcodesucc">
+                                    <div class="reg_tipsuccinner"></div>
+                                  </div>
+                                </div>
+                                <button type="button" class="reg_getcode" id="reg_getcode">获取验证码</button>
+                                <p class="reg_regetcode" id="reg_regetcode"><span>60</span>秒后重新获取</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2"><p class="reg_tips" id="reg_validcodetips"></p></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="reg_default">
+                	<td><label for="Recommended">推荐人</label></td>
+                    <td colspan="2">
+                    <input type="text" maxlength="30" placeholder="请输入推荐人用户名" name="recommendUserName" id="recommendUserName" value="" placeholder=""/>
+                    <div class="reg_tipsuccwrap" style="margin-left:6px;">
+                    	<div class="reg_tipsuccout" id="Recommendedsucc">
+                    		<div class="reg_tipsuccinner"></div>
+                    	</div>
+                    </div>
+                    <p class="reg_ru">没有推荐人可不填</p>
+                    </td>
+                </tr>
+                <tr>
+                	<td></td>
+                	<td colspan="2"><p class="reg_tips" id="reg_rusernametips"></p></td>
+                </tr>
+                <tr class="reg_agree">
+                	<td></td>
+                	<td colspan="2"><div class="reg_agreecb"><div class="" id="reg_agreecb"></div></div><label>我已阅读并同意<span><a href="../other/agreement.html" style="color:#F2462A;" target="_blank">《服务协议》</a></span></label></td>
+                </tr>
+                <tr>
+                	<td></td>
+                	<td colspan="2"><input type="submit" id="reg_submit" disabled="disabled" class="reg_submit" value="确认注册"/></td>
+                </tr>
+                <!--<tr>
+                	<td colspan="3"><p class="othertheme">您也可以使用合作伙伴账号直接登录：</p><ul class="otherways"><li class="otherqq">QQ登录</li><li class="otherwb">微博登录</li><li class="otherbd">百度登录</li><li class="otherzfb">支付宝登录</li></ul></td>
+                </tr>
+-->            </table>
+            </form>
+            <div class="sidebox">
+            	<div class="reg_alreadyuser"><p>已有账号？&nbsp;<a href="login.html" title="">立即登录&gt;&gt;</a></p></div>
+            	<ul class="reg_userphoto" id="reg_userphoto">
+                	<li><img src="../../res/image/register/register1.png" alt="借款人/理财人图片"/></li>
+                	<li><img src="../../res/image/register/register2.jpg" alt="借款人/理财人图片"/></li>
+                </ul>
+            	<p class=""></p>
+            </div>
+        </div>
+    </div>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9bb9e9182e209aba0d4908303e0370d5";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+	var pluginUrl = 
+	 '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+	_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+	  _gaq.push(['_setAccount', 'UA-48725772-1']);
+	_gaq.push(['_setDomainName', 'ddpa.com']);
+	  _gaq.push(['_addOrganic', 'm.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'wap.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'baidu.mobi', 'word']);
+	  _gaq.push(['_addOrganic', 'news.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'opendata.baidu', 'wd']);
+	  _gaq.push(['_addOrganic', 'post.baidu', 'kw']);
+	  _gaq.push(['_addOrganic', 'mp3.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'mp3.baidu', 'song']);
+	  _gaq.push(['_addOrganic', 'box.zhangmen.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'image.baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'top.baidu', 'w']);
+	  _gaq.push(['_addOrganic', 'baidu', 'word']);
+	  _gaq.push(['_addOrganic', 'baidu', 'kw']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q1']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q2']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q3']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q4']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q5']);
+	  _gaq.push(['_addOrganic', 'baidu', 'q6']);
+	  _gaq.push(['_addOrganic', 'news.google', 'q']);
+	  _gaq.push(['_addOrganic', 'image.soso', 'w']);
+	  _gaq.push(['_addOrganic', 'wenwen.soso', 'sp']);
+	  _gaq.push(['_addOrganic', 'wenwen.soso', 'w']);
+	  _gaq.push(['_addOrganic', 'wap.soso', 'key']);
+	  _gaq.push(['_addOrganic', 'soso', 'w']);
+	  _gaq.push(['_addOrganic', 'bing', 'q']);
+	  _gaq.push(['_addOrganic', '3721', 'name']);
+	  _gaq.push(['_addOrganic', '114', 'kw']);
+	  _gaq.push(['_addOrganic', 'youdao', 'q']);
+	  _gaq.push(['_addOrganic', 'vnet', 'kw']);
+	  _gaq.push(['_addOrganic', 'so.360', 'q']);
+	  _gaq.push(['_addOrganic', '360sou', 'q']);
+	  _gaq.push(['_addOrganic', '360so', 'q']);
+	  _gaq.push(['_addOrganic', '360', 'q']);
+	  _gaq.push(['_addOrganic', 'so', 'q']);
+	  _gaq.push(['_addOrganic', 'news.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'mp3.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'pic.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'blogsearch.sogou', 'query']);
+	  _gaq.push(['_addOrganic', 'wap.sogou', 'keyword']);
+	  _gaq.push(['_addOrganic', 'm.sogou', 'keyword']);
+	  _gaq.push(['_addOrganic', 'sogou', 'query']);
+	  _gaq.push(['_trackPageview']);
+	  _gaq.push(['_trackPageLoadTime']);
+
+		/*---用户类型追踪---*/
+		/*代码行1：是否登录*/
+		_gaq.push(['_setCustomVar', 1, 'LoginType', 'Login', 2]);
+		_gaq.push(['_setCustomVar', 1, 'LoginType', 'UnLogin', 2]);
+	  $(document).ready(function(){
+		var ga = document.createElement('script'); 
+		ga.type = 'text/javascript'; 
+		ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	 })
+</script>
+</body>
+</html>

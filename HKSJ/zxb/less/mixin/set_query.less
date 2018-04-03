@@ -1,0 +1,326 @@
+///组件--联合查询组件
+///作者：易品
+
+
+
+///*--数据联合查询--*/
+.set-querywrap,
+.set-querymainwrap{
+	.layout-relative-base;
+	width:1190px;
+	border:1px solid @color-gray5;
+	background:@color-white;
+	.user-select-base;
+	&:after{
+		content:'';
+		clear:both;
+		width:100%;
+		display:block;
+	}
+	
+	//查询组合
+	.queryresult{
+		.layout-float-base;
+		height:44px;
+		line-height:44px;
+		font-size:@font-size-small;
+		color:@color-gray2;
+		text-align:left;
+		text-indent:20px;
+		white-space:nowrap;
+		.user-select-base;
+		span{
+			display:inline-block;
+			padding:0 5px;
+			font-weight:bold;
+			text-indent:0;
+			&:first-child{
+				*text-indent:10px;
+			}
+		}
+		p{
+			display:inline-block;
+			padding:0 5px;
+			color:@color-red1;
+			font-size:@font-size-small;
+			text-indent:0;
+			&:before{
+				content:'共\00a0';
+				color:@color-green1;
+			}
+			&:after{
+				content:'\00a0条数据';
+				color:@color-green1;
+			}
+			&:empty{
+				&:before{
+					content:'共\00a0';
+					color:@color-gray3;
+				}
+				&:after{
+					content:'0\00a0条数据';
+					color:@color-gray3;
+				}
+			}
+		}
+	}
+	.queryitem1,
+	.queryitem2,
+	.queryitem3{
+			.layout-float-base;
+			display:table;
+			border-top:1px solid @color-gray5;
+			dt{
+				display:table-cell;
+				width:80px;
+				*float:left;
+				*min-height:44px;
+				*line-height:44px;
+				background:@color-gray7;
+				border-right:1px solid @color-gray5;
+				text-align:center;
+				font-size:@font-size-base - 2;
+				color:@color-gray3;
+				vertical-align:middle;
+			}
+			dd{
+				.layout-relative-base;
+				padding:0 50px 0 0;
+				height:44px;
+				overflow:hidden;
+				&.queryitem-sel{
+						em{
+							display:inline-block;
+						}
+				}
+				&.queryitem-show{
+					height:auto !important;
+					div:after{
+						content:'\2227';
+					}
+				}
+				div{
+					.layout-absoluter-base(20px,13px,50);
+					border:1px solid @color-gray5;
+					background:@color-gray7;
+					width:14px;
+					height:14px;
+					cursor:pointer;
+					.user-select-base;
+					&:after{
+						content:'\2228';
+						font-size:@font-size-small;
+						text-align:center;
+						display:block;
+						width:14px;
+						height:14px;
+						line-height:14px;
+						color:@color-gray2;
+					}
+					&:hover{
+						border:1px solid @color-orange1;
+						&:after{
+							color:@color-orange1;
+						}
+					}
+				}
+				em{
+						float:left;
+						display:none;
+						height:20px;
+						line-height:20px;
+						font-size:@font-size-small;
+						border:1px solid @color-gray5;
+						color:@color-gray3;
+						padding:0 10px;
+						.border-radius-base(3px);
+						.text-of;
+						text-align:center;
+						margin:12px 0 0 10px;
+						cursor:pointer;
+						&:hover{
+							color:@color-orange1;
+						}
+				}
+			}
+	}
+	.queryitem1,
+	.queryitem3{
+			dd{
+				span{
+					float:left;
+					display:inline-block;
+					height:34px;
+					line-height:34px;
+					font-size:@font-size-small;
+					color:@color-gray2;
+					padding:0 0 0 10px;
+					.text-of;
+					margin:5px 5px;
+					cursor:pointer;
+					&.queryitem-active{
+						font-weight:bold;
+						color:@color-orange1;
+					}
+					&:hover{
+						color:@color-orange1;
+					}
+				}
+			}
+	}
+	.queryitem1{
+			dd{
+				span{
+					width:60px;
+				}
+			}
+	}
+	.queryitem3{
+			dd{
+				span{
+					width:100px;
+					sup,
+					sub{
+						font-size:@font-size-base - 6;
+						padding:0 5px 0 3px;
+					}
+				}
+			}
+	}
+	.queryitem2{
+		height:44px;
+		dd{
+			span{
+				float:left;
+				display:inline-block;
+				height:14px;
+				width:14px;
+				margin:15px 0 0 15px;
+				border:1px solid @color-gray4;
+				cursor:pointer;
+				.opacity-base(40);
+				&.queryitem-active{
+					.opacity-base(100);
+				}
+				&:hover{
+					.opacity-base(100);
+				}
+			}
+		}
+	}
+	
+	//更多
+	.queryitem-more{
+			.layout-absolutelb-base(45%,-24px,50);
+			border-left:1px solid @color-gray5;
+			border-bottom:1px solid @color-gray5;
+			border-right:1px solid @color-gray5;
+			.border-radius-base(0 0 3px 3px);
+			background:@color-white;
+			width:80px;
+			height:24px;
+			color:@color-gray3;
+			cursor:pointer;
+			text-align:center;
+			.user-select-base;
+			line-height:24px;
+			font-size:@font-size-base - 2;
+			&:after{
+				content:'\2228';
+				font-size:@font-size-small;
+				text-align:center;
+				display:inline-block;
+				vertical-align:middle;
+				color:@color-gray2;
+				padding:0 0 0 8px;
+			}
+			&:hover{
+				color:@color-orange1;
+				&:after{
+					color:@color-orange1;
+				}
+			}
+			&.queryitem-moreactive{
+				&:after{
+					content:'\2227';
+				}
+			}
+		}
+}
+
+.set-querywrap{
+	margin:15px auto;
+	width:1190px;
+	.queryitem1,
+	.queryitem2,
+	.queryitem3{
+			*width:1188px;
+			dd{
+				.layout-float-base(1100px);
+				*width:1050px;
+			}
+	}
+}
+
+.set-querymainwrap{
+	width:890px;
+	margin:0 auto;
+	.queryitem1,
+	.queryitem2,
+	.queryitem3{
+			*width:888px;
+			dd{
+				.layout-float-base(800px);
+				*width:750px;
+			}
+	}
+}
+
+///*--数据联合查询排序--*/
+.set-orderbywrap,
+.set-orderbymainwrap{
+	border:1px solid @color-gray5;
+	.user-select-base;
+	&:after{
+		content:'';
+		clear:both;
+		width:100%;
+		display:block;
+	}
+	div{
+		.layout-float-base;
+		height:44px;
+		background:@color-gray7;
+		span{
+		height:100%;
+		float:left;
+		width:80px;
+		border-right:1px solid @color-gray5;
+		display:inline-block;
+		text-align:center;
+		.text-of;
+		color:@color-gray3;
+		font-size:@font-size-small;
+		line-height:44px;
+		cursor:pointer;
+		.user-select-base;
+		&:hover{
+			color:@color-orange1;
+		}
+		&.itemorderby-active{
+				color:@color-orange1;
+				font-weight:bold;
+		}
+	}
+	}
+}
+
+.set-orderbywrap{
+	width:1190px;
+	margin:15px auto;
+}
+
+.set-orderbymainwrap{
+	width:890px;
+	margin:25px auto 15px auto;
+}

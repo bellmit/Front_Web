@@ -1,0 +1,5 @@
+body {	font-family: Arial, Helvetica, sans-serif; background:#003548 url(images/bg.jpg) no-repeat center top; font-size:12px;}
+input{ background:#ECF9FF;}
+.login{ color:#FFFFFF; margin:0 auto; margin-top:290px;}
+.bottom1{ width:73px; height:25px; background:url(images/lg_03.png) no-repeat; border:0;}
+.bottom2{ width:73px; height:25px; background:url(images/lg_05.png) no-repeat; border:0;}

@@ -1,0 +1,102 @@
+///组件--登录组件
+///作者：易品
+
+.company-login-wrap{
+	.layout-fixedl-base;
+	display:table;
+	width:100%;
+	height:100%;
+	background:transparent url(../images/company_login.jpg) no-repeat 0 0 / cover;
+}
+
+.company-login-box{
+	width:100%;
+	height:100%;
+	display:table-cell;
+	vertical-align:middle;
+	>div{
+		width:960px;
+		height:350px;
+		margin:0 auto;
+		background:url(../images/company_logo.png) no-repeat left center;
+	}
+	form{
+		width:100%;
+		height:100%;
+	}
+	ul{
+		.layout-float-base(500px,border-box,right);
+		height:100%;
+		padding:0 0 0 70px;
+		border-left:1px solid @color-gray7;
+		h3{
+			font-size:@font-size-base + 46;
+			height:90px;
+			line-height:@font-size-base + 46;
+			color:@color-gray5;
+			white-space:nowrap;
+			.user-select-base;
+		}
+		label{
+			width:100%;
+			display:block;
+			height:44px;
+			line-height:44px;
+			font-size:@font-size-base + 16;
+			text-align:left;
+			color:@color-gray6;
+		}
+		input{
+			.layout-float-base(300px,border-box,right);
+			padding:12px 10px;
+			line-height:20px;
+			display:inline-block;
+			vertical-align:middle;
+		}
+		button{
+			float:right;
+			margin:0 180px 0 0;
+			width:120px;
+			height:48px;
+			background:@color-yellow3;
+			display:inline-block;
+			.border-radius-base(5px);
+			text-align:center;
+			line-height:48px;
+			font-size:@font-size-base + 10;
+			color:@color-white;
+			.user-select-base;
+			&:hover{
+				background:darken(@color-yellow3,10%);
+			}
+		}
+		li{
+			.layout-float-base;
+			margin:30px 0 0 0;
+			&:first-child{
+				margin:0;
+			}
+		}
+		.login-tips{
+			color:@color-red2;
+			font-size:@font-size-base;
+			height:20px;
+			line-height:20px;
+			text-align:left;
+			text-indent:130px;
+			white-space:nowrap;
+			.user-select-base;
+			margin:10px 0 0 0;
+		}
+	}
+}
+
+
+
+@media (max-width: 1000px){
+	.company-login-wrap{
+		position:static !important;
+		width:1000px;
+		height:800px;
+	}
+}

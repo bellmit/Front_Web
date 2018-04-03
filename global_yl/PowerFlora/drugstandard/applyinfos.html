@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>国家药典委员会--申请资料</title>
+<meta name="description" content="药品标准业务管理系统,药品标准业务受理中心,国家药典委员会,业务办理,企业中心,信息公示" />
+<meta name="keywords" content="药品标准业务管理系统,药品标准业务受理中心,国家药典委员会,业务办理,企业中心,信息公示" />
+<link rel="stylesheet" type="text/css" href="../css/drugstandard/drugstandard.css"/>
+<script type="text/javascript" src="../js/jquery/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+    <div class="header">
+    	<div class="banner">
+            <h1>国家药典委员会</h1>
+            <h2>药品标准业务受理中心</h2>
+        </div>
+    </div>
+    <div class="container">
+    	<div class="content">
+        	<div class="sidebox">
+            	<div class="nav-title">
+                    <h3>资料填写</h3>
+                    <h4>标准修订申请</h4>
+                </div>
+                <div class="nav-remark">
+                	<h5></h5>
+                    <p></p>
+                </div>
+            </div>
+            <div class="mainbox">
+            	<div class="dsposition3">
+                	<h3>申请资料</h3>
+                </div>
+                <form action="#" method="post" id="applyinfos">
+                <div class="dscontent">
+                	<table cellpadding="0" cellspacing="0" class="dsstep3" id="dsstep3">
+                    <colgroup>
+                    	<col class="ds_aig1"/>
+                        <col class="ds_aig2"/>
+                        <col class="ds_aig3"/>
+                    </colgroup>
+                    	<tr>
+                        	<td><label class="main_name">1、原标准:</label></td>
+                            <td>
+                            	<div class="attachupload">
+                                    <c:if test="${!empty fNamesOne}">
+                                        <p class="filealready">已上传文件:</p>
+                                        <table cellpadding="0" cellspacing="0" class="filealready_box">
+                                            <c:forEach items="${fNamesOne}" var="fname">
+                                                <tr>
+                                                    <td>
+                                                        <p>${fname.docName }</p>
+                                                        <a href="<%=request.getContextPath() %>/bsn/req/deleteDoc.action?regTypeId=${editBsnReq.regTypeId }&addBSeqId=<%=addBSeqId %>&editBSeqId=<%=editBSeqId %>&seqNo=${fname.seqNo }&fileId=${fname.fileId }&docId=${fname.docId }">删除</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:if>
+                                    <div class="fieldset flash" id="fsUploadProgress1" style="margin-bottom: 10px;float:left;width:100%;"></div>
+                                    <div id="spanButtonPlaceholder1"></div>
+                                    <button id="btnCancel1" class="upcancel_btn">取消所有上传</button>
+                                    <input type="submit" id="btnUpload1" value="上传" class="upsave_btn" />
+                                    <div class="form_item">
+                                        <noscript>
+                                            <div
+                                                style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px;">
+                                                We're sorry. SWFUpload could not load. You must have
+                                                JavaScript enabled to enjoy SWFUpload.
+                                            </div>
+                                        </noscript>
+                                        <div id="divLoadingContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is loading. Please wait a moment...
+                                        </div>
+                                        <div id="divLongLoading1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is taking a long time to load or the load has
+                                            failed. Please make sure that the Flash Plugin is enabled
+                                            and that a working version of the Adobe Flash Player is
+                                            installed.
+                                        </div>
+                                        <div id="divAlternateContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            We're sorry. SWFUpload could not load. You may need to
+                                            install or upgrade Flash Player. Visit the
+                                            <a
+                                                href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Adobe
+                                                website</a> to get the Flash Player.
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                        	<td><label class="main_name">2、修订后的标准:</label></td>
+                            <td>
+                            	<div class="attachupload">
+                                    <c:if test="${!empty fNamesOne}">
+                                        <p class="filealready">已上传文件:</p>
+                                        <table cellpadding="0" cellspacing="0" class="filealready_box">
+                                            <c:forEach items="${fNamesOne}" var="fname">
+                                                <tr>
+                                                    <td>
+                                                        <p>${fname.docName }</p>
+                                                        <a href="<%=request.getContextPath() %>/bsn/req/deleteDoc.action?regTypeId=${editBsnReq.regTypeId }&addBSeqId=<%=addBSeqId %>&editBSeqId=<%=editBSeqId %>&seqNo=${fname.seqNo }&fileId=${fname.fileId }&docId=${fname.docId }">删除</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:if>
+                                    <div class="fieldset flash" id="fsUploadProgress2" style="margin-bottom: 10px;float:left;width:100%;"></div>
+                                    <div id="spanButtonPlaceholder2"></div>
+                                    <button id="btnCancel2" class="upcancel_btn">取消所有上传</button>
+                                    <input type="submit" id="btnUpload2" value="上传" class="upsave_btn" />
+                                    <div class="form_item">
+                                        <noscript>
+                                            <div
+                                                style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px;">
+                                                We're sorry. SWFUpload could not load. You must have
+                                                JavaScript enabled to enjoy SWFUpload.
+                                            </div>
+                                        </noscript>
+                                        <div id="divLoadingContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is loading. Please wait a moment...
+                                        </div>
+                                        <div id="divLongLoading1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is taking a long time to load or the load has
+                                            failed. Please make sure that the Flash Plugin is enabled
+                                            and that a working version of the Adobe Flash Player is
+                                            installed.
+                                        </div>
+                                        <div id="divAlternateContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            We're sorry. SWFUpload could not load. You may need to
+                                            install or upgrade Flash Player. Visit the
+                                            <a
+                                                href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Adobe
+                                                website</a> to get the Flash Player.
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                        	<td><label class="main_name">3、标准草案:</label></td>
+                            <td>
+                            	<div class="attachupload">
+                                    <c:if test="${!empty fNamesOne}">
+                                        <p class="filealready">已上传文件:</p>
+                                        <table cellpadding="0" cellspacing="0" class="filealready_box">
+                                            <c:forEach items="${fNamesOne}" var="fname">
+                                                <tr>
+                                                    <td>
+                                                        <p>${fname.docName }</p>
+                                                        <a href="<%=request.getContextPath() %>/bsn/req/deleteDoc.action?regTypeId=${editBsnReq.regTypeId }&addBSeqId=<%=addBSeqId %>&editBSeqId=<%=editBSeqId %>&seqNo=${fname.seqNo }&fileId=${fname.fileId }&docId=${fname.docId }">删除</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:if>
+                                    <div class="fieldset flash" id="fsUploadProgress3" style="margin-bottom: 10px;float:left;width:100%;"></div>
+                                    <div id="spanButtonPlaceholder3"></div>
+                                    <button id="btnCancel3" class="upcancel_btn">取消所有上传</button>
+                                    <input type="submit" id="btnUpload3" value="上传" class="upsave_btn" />
+                                    <div class="form_item">
+                                        <noscript>
+                                            <div
+                                                style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px;">
+                                                We're sorry. SWFUpload could not load. You must have
+                                                JavaScript enabled to enjoy SWFUpload.
+                                            </div>
+                                        </noscript>
+                                        <div id="divLoadingContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is loading. Please wait a moment...
+                                        </div>
+                                        <div id="divLongLoading1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is taking a long time to load or the load has
+                                            failed. Please make sure that the Flash Plugin is enabled
+                                            and that a working version of the Adobe Flash Player is
+                                            installed.
+                                        </div>
+                                        <div id="divAlternateContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            We're sorry. SWFUpload could not load. You may need to
+                                            install or upgrade Flash Player. Visit the
+                                            <a
+                                                href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Adobe
+                                                website</a> to get the Flash Player.
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                        	<td><label class="main_name">4、支持文件:</label></td>
+                            <td>
+                            	<div class="attachupload">
+                                    <c:if test="${!empty fNamesOne}">
+                                        <p class="filealready">已上传文件:</p>
+                                        <table cellpadding="0" cellspacing="0" class="filealready_box">
+                                            <c:forEach items="${fNamesOne}" var="fname">
+                                                <tr>
+                                                    <td>
+                                                        <p>${fname.docName }</p>
+                                                        <a href="<%=request.getContextPath() %>/bsn/req/deleteDoc.action?regTypeId=${editBsnReq.regTypeId }&addBSeqId=<%=addBSeqId %>&editBSeqId=<%=editBSeqId %>&seqNo=${fname.seqNo }&fileId=${fname.fileId }&docId=${fname.docId }">删除</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:if>
+                                    <div class="fieldset flash" id="fsUploadProgress4" style="margin-bottom: 10px;float:left;width:100%;"></div>
+                                    <div id="spanButtonPlaceholder4"></div>
+                                    <button id="btnCancel4" class="upcancel_btn">取消所有上传</button>
+                                    <input type="submit" id="btnUpload4" value="上传" class="upsave_btn" />
+                                    <div class="form_item">
+                                        <noscript>
+                                            <div
+                                                style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px;">
+                                                We're sorry. SWFUpload could not load. You must have
+                                                JavaScript enabled to enjoy SWFUpload.
+                                            </div>
+                                        </noscript>
+                                        <div id="divLoadingContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is loading. Please wait a moment...
+                                        </div>
+                                        <div id="divLongLoading1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            SWFUpload is taking a long time to load or the load has
+                                            failed. Please make sure that the Flash Plugin is enabled
+                                            and that a working version of the Adobe Flash Player is
+                                            installed.
+                                        </div>
+                                        <div id="divAlternateContent1" class="content"
+                                            style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
+                                            We're sorry. SWFUpload could not load. You may need to
+                                            install or upgrade Flash Player. Visit the
+                                            <a
+                                                href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Adobe
+                                                website</a> to get the Flash Player.
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="trline">
+                            <td><button type="submit" class="prebtn2" id="prebtn2">上一步</button></td>
+                            <td><button type="submit" class="savebtn2" id="savebtn2">保存并进入下一步</button></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+    	<div class="infos">
+        	<p>本站由国家药典委员会主办 版权所有 未经许可禁止转载或建立镜像</p>
+            <p>Copyright © 2012-2015 SFDA All Rights Reserved</p>
+            <p>备案序号:京ICP备05064905号</p>
+            <p>国家药典委员会信息小组建设和维护</p>
+        </div>
+    </div>
+<script type="text/javascript" src="../js/drugstandard/applyinfos.js"></script>
+</body>
+</html>
