@@ -1,0 +1,74 @@
+///搜索框
+.search-wrap{
+	.layout-float-base;
+	padding:5px auto;
+	margin:5px 0 10px 0;
+	div{
+		.layout-relative-base(0,0,5);
+		.layout-base;
+		padding:0 100px 0 0;
+		&:before{
+			.layout-absolutel-base(5px,15px,20);
+			content:'\e645';
+			font-family:'ux_eight';
+			color:@color-gray4;
+			font-size:@font-size-base + 6;
+		}
+		input[type='search']{
+			padding:15px 0 15px 26px;
+			.border-radius-base(3px);
+			float:left;
+			width:100%;
+		}
+		span{
+			.layout-absoluter-base(0,0,0);
+			width:0;
+			height:0;
+			.border-radius-base(50%);
+			display:none;
+			cursor:pointer;
+			background:@color-white;
+			text-align:center;
+			line-height:28px;
+			overflow:hidden;
+			&:before{
+				content:'';
+				font-family:'ux_seven';
+				color:@color-blue1;
+				font-size:@font-size-base + 10;
+			}
+		}
+		span.search-clear{
+			right:105px;
+			top:10px;
+			z-index:50;
+			width:30px;
+			display:block;
+			height:30px;
+			&:before{
+				content:'\e625';
+			}
+		}
+		button{
+			.layout-absoluter-base(0,1px,80);
+			height:46px;
+			width:90px;
+			.border-radius-base(3px);
+			color:@color-white;
+			line-height:46px;
+			text-align:center;
+			display:inline-block;
+			font-size:@font-size-base;
+			background:@color-red1;
+		}
+	}
+	div.search-have{
+		&:before{
+			left:0;
+			content:'';
+		}
+		input[type='search']{
+			padding:15px 0 15px 5px;
+		}
+	}
+}

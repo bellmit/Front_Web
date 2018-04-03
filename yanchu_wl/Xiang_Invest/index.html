@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--<meta http-equiv="X-UA-Compatible" content="IE=6" />-->
+<link  type="text/css" rel="stylesheet"  href="css/global.css" />
+<link  type="text/css" rel="stylesheet"  href="css/menu.css" />
+<link rel="stylesheet" type="text/css" href="css/StyleSheet.css" />
+<link rel="shortcut icon" href="../img/favicon.ico"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/global.js"></script>
+<script type="text/javascript" src="js/swfobject.js"></script>
+<title>湘控投资首页</title>
+</head>
+<body>
+<form method="post" action="##">
+	<div class="container">
+    	<div class="header">
+        			  <img src="img/banner.jpg"/>
+  			          <div class="menu">
+                        <ul>
+                        	<li><a href="#">首页</a></li>
+                            <li><a href="groupinf.html">集团简介</a></li>
+                            <li><a href="investdomain.html">投资版图</a></li>
+                            <li id="opts"><a href="frameson.html">业务架构子公司介绍</a></li>
+                            <li id="emails"><a href="email.html">企业邮箱</a></li>
+                            <li ><a href="contact.html">联系我们</a></li>
+                            <li><a href="search.html">站内搜索</a></li>          
+                        </ul>
+                      <div id="dtimes">
+                        <script>
+                          var ar= new Array("日","一","二","三","四","五","六");
+                          var dt=new Date();
+                          var y=dt.getFullYear();
+                          var m=dt.getMonth()+1;
+                          var r=dt.getDate();
+                          var d=ar[dt.getDay()];
+                          document.getElementById("dtimes").innerHTML=y+"年"+m+"月"+r+"日"+"&nbsp;&nbsp;"+"星期"+d;				
+                        </script>
+                      </div>
+   		  </div>
+        </div>
+    	<div class="content">
+        	<div class="sideboxl">
+            	<div class="sideboxl-top">
+                	<h3>国资要闻</h3>
+                    <ul>
+                    	<li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html" tar >三户省属监管企业上榜中国企业500强</a></li>
+                        <li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html">中联重科上半年营业收入241.48亿元...</a></li>
+                        <li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html">华菱钢铁上半年营业收入379亿元...</a></li>
+                        <li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html">轻盐集团召开改制上市动员大会...</a></li>
+                        <li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html">湘煤集团黑金时代股份公司召开上...</a></li>
+                        <li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html">兴湘投资控股集团公司成建制接收...</a></li>
+                        <li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html">关于组建中国电力建设集团有限公...</a></li>
+                        <li><img src="img/index-icon.png" alt="国资要闻"/><a href="Show/nationshow.html">湖南神斧九鼎投资管理有限公司挂牌...</a></li>
+                    </ul>
+                    <span id="sblt" onclick="window.location.assign('more/nationlist.html');">more&nbsp;&#8250;&#8250;&#8250;</span>
+                 </div>
+                <div class="sideboxl-center">
+                	<h3>行业信息</h3>
+                    <ul>
+                    	<li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">成都单个创投企业每年可获最高300...</a></li>
+                        <li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">华远牵手香格里拉酒店强势进驻...</a></li>
+                        <li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">2011年1至8月电子信息产业经济...</a></li>
+                        <li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">宝钛股份实现钛产品比上年同期...</a></li>
+                        <li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">“十二五”期间新材料产业预计总...</a></li>
+                        <li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">新建核电项目审批或明年初重启...</a></li>
+                        <li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">高投资低盈利高负债 我国火电企...</a></li>
+                        <li><img src="img/index-icon.png" alt="行业信息"/><a href="Show/tradesshow.html">湖南省内首个“E商贸通”项目启动...</a></li>
+                    </ul>
+                    <span id="sblc" onclick="window.location.href='more/tradeslist.html';">more&nbsp;&#8250;&#8250;&#8250;</span>  
+                </div>
+            </div>
+            <div class="mainbox">
+            	<div class="mainbox-top">
+                	 <div class="flash">
+                            <div class="flash_c">
+                                <div id="swfContent">
+                                </div>
+								<script type="text/javascript">
+		var xmlData = "<list><item><img>img/main-imagea.jpg</img></item><item><img>img/main-imageb.jpg</img></item><item><img>img/main-imagec.jpg</img></item><item><img>img/main-imaged.jpg</img></item><item><img>img/main-imagee.jpg</img></item><item><img>img/main-imagef.jpg</img></item></list>";
+		var flashvars = {xmlData:xmlData};
+		var params = {menu:false,wmode:"opaque"};
+		var attributes = {};
+		swfobject.embedSWF("swf/lanren.swf", "swfContent", "430", "260", "9","expressInstall.swf", flashvars, params, attributes);
+                                </script>
+							</div>
+                     </div>
+                </div>
+                <div class="mainbox-center">
+                	<h3>集团要闻</h3>
+                	<ul>
+                    	<li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">湘投集团成功发行10亿元短期融资券及10亿元中期票据</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">湘投高创投所持湘云生物股权1811万元拍卖成功</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">长沙金源大酒店获能源局奖励26万元</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">深圳阳光酒店顺利完成大运会接待工作</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">湘投铜湾水电站安全设施通过竣工验收</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">筱溪水电站大坝安全监测系统设备更新改造暨坝基廊道排</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">水孔析出物成因研究技术咨询会召开</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">湘投高创投被证券时报评为2010年度最具成长性创业投资机构</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">湘投铜电公司档案室顺利通过省一级验收</a><span>2011-09-01</span></li>
+                        <li><img src="img/index-icon.png" alt="集团要闻"/><a href="Show/groupshow.html">清电公司档案管理工作被评为省优</a><span>2011-09-01</span></li>
+                    </ul>
+                    <span id="mbc" onclick="window.location.href='more/grouplist.html';">more&nbsp;&#8250;&#8250;&#8250;</span>
+                </div>      
+            </div>
+            <div class="sideboxr">
+            	<div class="sideboxr-top">
+                	<h3>经济视野</h3>
+                    <ul>
+                    	<li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">湖南省委任命王宏同志为省国资...</a></li>
+                        <li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">何报翔 李友志被任命为湖南省...</a></li>
+                        <li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">财政部：10月1日起实施节能汽...</a></li>
+                        <li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">重庆10月1日起开征存量房房产...</a></li>
+                        <li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">2011湖南100强企业名单发布</a></li>
+                        <li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">两湘企登陆创业板 湖南上市企...</a></li>
+                        <li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">长株潭两型改革进入第二阶段...</a></li>
+                        <li><img src="img/index-icon.png" alt="经济视野"/><a href="Show/economyshow.html">湖南省“十二五”水利建设基金...</a></li>
+                    </ul>
+                    <span id="sbrt" onclick="window.location.href='more/economylist.html';">more&nbsp;&#8250;&#8250;&#8250;</span>  
+                </div>
+                <div class="sideboxr-center">
+                	<h3>管理创新</h3>
+                    <ul>
+                    	<li><img src="img/index-icon.png" alt="管理创新"/><a href="Show/adminshow.html">每个人都是管理者</a></li>
+                        <li><img src="img/index-icon.png" alt="管理创新"/><a href="Show/adminshow.html">哪些因素影响企业的可持续发展</a></li>
+                        <li><img src="img/index-icon.png" alt="管理创新"/><a href="Show/adminshow.html">双汇：迷离的资本路径图</a></li>
+                        <li><img src="img/index-icon.png" alt="管理创新"/><a href="Show/adminshow.html">如何打造高绩效团队</a></li>
+                        <li><img src="img/index-icon.png" alt="管理创新"/><a href="Show/adminshow.html">王老吉何以快速成为知名品牌</a></li>
+                    </ul>
+                    <span id="sbrc" onclick="window.location.href='more/adminlist.html';">more&nbsp;&#8250;&#8250;&#8250;</span>
+                </div>            
+       	  	</div>
+            <div class="bottombox">
+      					<div class="db">
+                        	<h3>数据库</h3>
+                            <div id="dbcontent">                                
+                                    <a><img src="img/2011年10月12日 股指期货1110K线图.jpg" alt="数据库"/>2011年10月12日 股指期货1110K线图</a>                            
+                                    <a><img  src="img/2011年10月11日夜 美股K线图.jpg" alt="数据库"/>2011年10月11日夜 美股K线图</a>
+   
+                                    <a><img src="img/2011年10月11日夜 国际金价K线图.jpg" alt="数据库"/>2011年10月11日夜 国际金价K线图</a>                                   
+                                    <a><img src="img/2011年10月12日 美元指数K线图.jpg" alt="数据库"/>2011年10月12日 美元指数K线图</a>
+                            </div>
+                            <span id="bbl" onclick="window.location.href='more/dblist.html';">more&nbsp;&#8250;&#8250;&#8250;</span>
+                        </div>
+        				<div class="law">
+                        	<h3>政策法规</h3>
+                            <ul>
+                            	<li><img  src="img/index-icon.png" alt="政策法规"/><a href="Show/lawshow.html">国务院关于修改《中华人民共和国个人所得税法实施条例》的决定</a></li>
+                                <li><img  src="img/index-icon.png" alt="政策法规"/><a href="Show/lawshow.html">国家能源局关于印发《风电开发建设管理暂行办法》的通知</a></li>
+                                <li><img  src="img/index-icon.png" alt="政策法规"/><a href="Show/lawshow.html">四部委发布清洁发展机制项目运行管理办法修订版</a></li>
+                                <li><img  src="img/index-icon.png" alt="政策法规"/><a href="Show/lawshow.html">两部门明确地方政府债券利息所得免征所得税</a></li>
+                                <li><img  src="img/index-icon.png" alt="政策法规"/><a href="Show/lawshow.html">湖南发布公告 界定“家庭唯一住房”有三种情形</a></li>
+                                <li><img  src="img/index-icon.png" alt="政策法规"/><a href="Show/lawshow.html">资源税改革加速推向全国</a></li>
+                            </ul>
+                            <span id="bbc" onclick="window.location.href='more/lawlist.html';">more&nbsp;&#8250;&#8250;&#8250;</span>                        
+                        </div>
+                        <div class="culture">
+                			<h3>企业文化</h3>
+                    		<img src="img/sideboxr-titleimage.png" id="cimg" alt="企业文化"/>
+                   			 <ul>
+                    			<li><img src="img/index-icon.png" alt="企业文化"/><a href="Show/cultureshow.html">禁烟一小步 文明一大步</a></li>
+                        		<li><img src="img/index-icon.png" alt="企业文化"/><a href="Show/cultureshow.html">文明源自细节 细节成就文明</a></li>
+                        		<li><img src="img/index-icon.png" alt="企业文化"/><a href="Show/cultureshow.html">2011“湘投杯”羽毛球赛掠影</a></li>
+                        		<li><img src="img/index-icon.png" alt="企业文化"/><a href="Show/cultureshow.html">筱电公司园艺工刘自洁同志先进事迹大煞风景爱的感觉卡就赶快jad看过</a></li>
+                    		</ul>
+                    		<span id="bbr" onclick="window.location.href='more/culturelist.html';">more&nbsp;&#8250;&#8250;&#8250;</span>
+      						<div id="col-culture">
+                    			<a><img src="img/sideboxr-contentimage.png" alt="企业文化"/></a>
+                            </div>
+              			</div>
+            </div>
+      	</div>
+        <div class="footer">
+        	<p>Since&nbsp;&nbsp;&nbsp;&nbsp;1992</p>
+   	  </div>
+    </div>
+</form>
+</body>
+</html>

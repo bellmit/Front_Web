@@ -1,0 +1,227 @@
+@import 'variable/base_variable.less';
+/*以上部分需删除，为公共部分*/
+/*--适配不同分辨率--*/
+///*--屏幕--*/
+@media screen{
+	//首页按钮排列
+	.index-list-wrap li{
+		>div,
+		>a{
+			&:before{
+				font-size:@font-size-base + 60;
+			}
+		}
+	}
+	
+}
+///*--640-720--*/
+@media screen and (min-width:641px) and (max-width:720px){
+	//首页按钮排列
+	.index-list-wrap li{
+		>div,
+		>a{
+			&:before{
+				font-size:@font-size-base + 50;
+			}
+		}
+	}
+	
+	
+}
+///*--540-640--*/
+@media screen and (min-width:541px) and (max-width:640px){
+	//首页按钮排列
+	.index-list-wrap li{
+		>div,
+		>a{
+			&:before{
+				font-size:@font-size-base + 40;
+			}
+		}
+	}
+	
+	
+
+}
+///*--480-540--*/
+@media screen and (min-width:481px) and (max-width:540px){
+	///*--顶部菜单--*/
+	.header-menuwrap{
+		.h-menu-txt{
+			font-size:@font-size-default + 2;
+		}
+		.h-menu-toggle{
+			>ul{
+				.layout-base(60%);
+			}
+		}
+	}
+	//首页按钮排列
+	.index-list-wrap li{
+		>div,
+		>a{
+			&:before{
+				font-size:@font-size-base + 30;
+			}
+		}
+	}
+	
+	
+	
+}
+///*--320-480--*/
+@media screen and (min-width:321px) and (max-width:480px){
+	///*--顶部菜单--*/
+	.header-menuwrap{
+		height:50px;
+		>ul{
+			background:none;
+		}
+		.h-menu-txt{
+			line-height:50px;
+			font-size:@font-size-default;
+		}
+		.h-menu-toggle{
+			&:after{
+				.layout-absoluter-base(8px,6px,120);
+				width:54px;
+				height:34px;
+				font-size:@font-size-base + 18;
+				line-height:34px;
+			}
+			>ul{
+				.layout-absoluter-base(8px,50px,80);
+				.layout-base(70%);
+			}
+		}
+	}
+	//首页按钮排列
+	.index-list-wrap li{
+		>div,
+		>a{
+			&:before{
+				padding:0 0 10px 0;
+				font-size:@font-size-base + 20;
+			}
+		}
+	}
+
+}
+///*--280-320--*/
+@media screen and (min-width:281px) and (max-width:320px){
+	///*--顶部菜单--*/
+	.header-menuwrap{
+		height:40px;
+		>ul{
+			background:none;
+		}
+		.h-menu-txt{
+			line-height:40px;
+			font-size:@font-size-base;
+		}
+		.h-menu-toggle{
+			&:after{
+				.layout-absoluter-base(5px,4px,120);
+				width:44px;
+				height:30px;
+				font-size:@font-size-base + 14;
+				line-height:30px;
+			}
+			>ul{
+				.layout-absoluter-base(5px,40px,80);
+				.layout-base(80%);
+				>li{
+					font-size:@font-size-base;
+					text-indent:15px;
+					&>ul{
+						padding:3px 10px;
+						li a{
+							padding:3px 0;
+							font-size:@font-size-small;
+						}
+					}
+					&:last-child{
+						padding:8px 15px;
+						>a{
+							padding:3px 0;
+						}
+					}
+				}
+				.menu-subitem:after{
+					font-size:@font-size-small;
+				}
+			}
+		}
+	}
+	//首页按钮排列
+	.index-list-wrap li{
+		>div,
+		>a{
+			&:before{
+				padding:0 0 10px 0;
+				font-size:@font-size-base + 15;
+			}
+			p{
+				.layout-absolutelb-base(0,5px,10);
+			}
+		}
+	}
+	
+}
+///*--微屏--*/
+@media screen and (max-width:280px){
+	///*--顶部菜单--*/
+	.header-menuwrap{
+		height:34px;
+		>ul{
+			background:none;
+		}
+		.h-menu-txt{
+			line-height:34px;
+			font-size:@font-size-small;
+		}
+		.h-menu-toggle{
+			&:after{
+				.layout-absoluter-base(5px,3px,120);
+				width:34px;
+				height:24px;
+				font-size:@font-size-base + 10;
+				line-height:24px;
+			}
+			>ul{
+				.layout-absoluter-base(5px,34px,80);
+				.layout-base(90%);
+				>li{
+					font-size:@font-size-base;
+					text-indent:10px;
+					&>ul{
+						padding:3px 10px;
+						li a{
+							padding:2px 0;
+							font-size:@font-size-small;
+						}
+					}
+					&:last-child{
+						padding:5px 10px;
+						>a{
+							padding:2px 0;
+						}
+					}
+				}
+				.menu-subitem:after{
+					font-size:@font-size-small;
+				}
+			}
+		}
+	}
+	//首页按钮排列
+	.index-list-wrap li{
+		>div,
+		>a{
+			&:before{
+				padding:0 0 20px 0;
+				font-size:@font-size-base + 10;
+			}
+		}
+	}
+}

@@ -1,0 +1,61 @@
+///*--公共样式全局模块--*/
+.g-fill{
+	background:@color-white url(../images/web_bg.png) repeat 0 0;
+	.layout-relative-base(0,0,1);
+}
+.container{
+	zoom: 1;
+	margin:0 auto 50px auto;
+	width:1000px;
+	padding: 0;
+	background:@color-white;
+	min-height:400px;
+}
+.content {
+	background-color:@color-white;
+	float: left;
+	width: 100%;
+	position: relative;
+	zoom: 1;
+}
+.main-wrap{
+	width: 100%;
+	float: left;
+}
+.main-box{
+	min-height: 800px;
+	margin: 0 0 0 150px;
+	padding-bottom: 60px;
+	background-color:@color-white;
+}
+.page-content,
+.main-content {
+	width: 850px;
+	min-height: 420px;
+	zoom: 1;
+	&:before,&:after{
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+.sidebar {
+	width: 110px;
+	float: left;
+	margin-left: -100%;
+	min-height: 800px;
+}
+.footer {
+	.layout-absolutelb-base(0,10px,10);
+	width: 150px;
+	text-align: center;
+	font-size:@font-size-small;
+	color:@color-gray3;
+}
+.copyright {
+	margin: 0;
+	a{
+		color:@color-gray3;
+	}
+}
+

@@ -1,0 +1,54 @@
+@charset "utf-8";
+/* CSS Document */
+body *{margin:0;padding:0;font-size:12px;list-style:none;}
+.container{width:960px;height:1020px;margin:0 auto;}
+/*头部*/
+.header{position:relative;left:0;top:0;height:120px;width:960px;background:#FFF;}
+.banner{width:960px;height:81px;overflow:hidden;}
+/*主内容区*/
+/*新闻政策*/
+.content{position:relative;left:0;top:0;width:960px;height:780px;overflow:hidden;}
+.mainflash{position:relative;left:0;top:0;height:150px;width:960px;margin:5px auto;z-index:-1000;}
+.topbox{position:relative;left:0;top:0;width:960px;height:196px;overflow:hidden;}
+.flashshow{float:left;height:195px;width:400px;background:#999999;}
+.newspolicy{float:right;height:195px;width:545px;background:url(../img/newspolicy.png) no-repeat;}
+.newspolicy span{position:absolute;left:440px;top:2px;font-size:14px;_width:100px;}
+#newsmore{position:absolute;left:894px;top:-5px;cursor:pointer;display:block;text-decoration:none;}
+#newsmore strong{font-size:20px;margin-left:4px;}
+#newsimages{clear:both;position:relative;top:40px;left:10px;border:3px solid #CCC;width:146px;height:133px;overflow:hidden;}
+.newspolicy table{width:520px;height:auto;position:absolute;top:35px;left:430px;}
+.newspolicy table tr{height:20px;}
+.newspolicy table a{display:block;height:16px;width:260px;text-decoration:none;color:#000;margin-left:8px;}
+.newspolicy table a:hover,#newsmore:hover,#aboutmore:hover,.aboutus ul li a:hover,.onlinetest ul li a:hover,.teststudy ul li a:hover,.validbooks ul li a:hover,.question ul li a:hover{color:#0099FF;}
+/*中部图片显示*/
+.centerbox{position:relative;top:0;left:0;height:81px;width:960px;margin:5px auto;}
+/*底部区*/
+/*在线考务*/
+.bottombox{position:relative;top:0;left:0;height:332px;width:960px;}
+.sidebox{float:left;height:330px;width:292px;margin-left:1px;}
+.onlinetest,.teststudy,.validbooks{float:left;height:101px;width:290px;margin:5px auto;background:url(../img/sidebox-background.png) no-repeat;}
+.onlinetest span,.teststudy span,.validbooks span{position:relative;left:30px;top:2px;}
+.onlinetest ul,.teststudy ul,.validbooks ul{height:70px;width:270px;position:relative;left:10px;top:10px;}
+.onlinetest ul li,.teststudy ul li,.validbooks ul li{height:24px;width:260px;}
+.onlinetest ul li a,.teststudy ul li a,.validbooks ul li a{text-decoration:none;height:23px;width:270px;color:#000;line-height:25px;display:block;}
+/*考证问答*/
+.mainbox{float:right;_position:relative;height:330px;_width:600px;width:660px;margin-right:1px;}
+.question{float:left;height:320px;width:320px;background:#FFF url(../img/mainboxr-background.png) no-repeat;margin:5px 0 0 5px;}
+.classz{float:right;height:320px;width:320px;background:#FFF url(../img/mainboxr-background.png) no-repeat;margin:5px 0 0 0;}
+.question span{position:relative;left:30px;top:2px;}
+.classz span{position:relative;left:30px;top:2px;}
+.question ul{position:relative;left:10px;top:15px;width:210px;height:220px;}
+.question ul li{height:20px;width:210px;}
+.question ul li a{text-decoration:none;color:#000;height:20px;width:210px;display:block;line-height:22px;}
+/*职业资格认证分类*/
+.classz ul{width:283px;height:240px;position:relative;left:4px;top:10px;overflow:hidden;}
+.classz ul li{width:283px;height:auto;overflow:hidden;}
+.classz ul li a{width:283px;height:auto;text-align:center;}
+.classz ul li a img{margin:0 auto;border:none;}
+/*底部区域*/
+.footer{width:960px;height:120px;background:#45C5FC;position:relative;left:0;top:0;}
+.footshow{height:100px;width:600px;position:relative;top:10%;left:35%;}
+.footshow p{margin:5px auto;width:600px;}
+.footshow p *{color:#000;text-decoration:none;text-align:center;}
+.footshow p a:hover{color:#FFF;color:}
+.footshow p a img{border:none;position:relative;top:8px;}

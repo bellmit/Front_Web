@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TCL车联网--注册</title>
+<meta name="description" content="TCL车联网,车联网注册" />
+<meta name="keywords" content="TCL车联网,车联网注册" />
+<link rel="stylesheet" type="text/css" href="css/register.css">
+<script src="js/lib/jquery-1.8.3.min.js"></script>
+<script src="js/lib/jquery.validate.js"></script>
+<script src="js/lib/jquery.form.js"></script>
+<script src="js/register.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+        	<div class="logo">logo</div>
+            <ul class="user_interface">
+                <li><a title="" href="login.html">登录</a></li>
+                <li class="register_none"><a title="" href="home.html">网站首页</a></li>
+            </ul>
+        </div>
+        <div class="content">
+        	<div class="register_theme">
+            	<h1>注册账户</h1>
+                <p>温馨提示：如果您已购买了TCL车机产品，无需重新注册，直接使用激活时发送短信中的用户名和密码登录</p>
+            </div>
+            <form action="#" method="post" id="register_chelian">
+            <table class="register_wrap">
+            	<colgroup>
+                	<col class="reg_cg1"/>
+                    <col class="reg_cg2"/>
+                    <col class="reg_cg3"/>
+                </colgroup>
+                <tr class="register_default">
+                    <td><label for="username">用&nbsp;户&nbsp;名：</label></td>
+                    <td><input type="text" name="username" id="username"/></td>
+                    <td><p>长度为6~16位字符</p></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="username_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="password">设置密码：</label></td>
+                    <td><input type="password" name="password" id="password"/></td>
+                    <td><p>长度为6~16位字符，可以为"数字/字母/中划线/下划线"组成</p></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="password_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="repassword">确认密码：</label></td>
+                    <td colspan="2"><input type="password" name="repassword" id="repassword"/></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="repassword_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="email">邮&nbsp;&nbsp;&nbsp;&nbsp;箱：</label></td>
+                    <td colspan="2"><input type="text" name="email" id="email"/></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="email_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="validcode">验&nbsp;证&nbsp;码：</label></td>
+                    <td><input type="text" name="validcode" id="validcode"/></td>
+                    <td><img alt="验证码" src="images/valid_img.png"/></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="validcode_tips"></span></td>
+                </tr>
+                <tr class="register_button">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><input type="submit" id="register" value="立即注册"/></td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <div class="footer">
+        	<p>Copyright&nbsp;&copy;&nbsp;2010&mdash;2013&nbsp;TCL&nbsp;ALL&nbsp;Rights&nbsp;Reserved</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+﻿/* CSS Document */
+.flash
+{
+	position:relative;
+	top:8px;
+	left:6px;
+    width: 430px;
+    height: 260px;
+    border: #CCC 3px solid;
+	background:#FFF;
+}
+.flash_c
+{
+    width: 430px;
+    height: 260px;
+	background:#FFF;
+}

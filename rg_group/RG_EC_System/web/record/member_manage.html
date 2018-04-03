@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--会员卡绑定">
+<meta name="keywords" content="电子商务系统--会员卡绑定">
+<title>电子商务系统--会员卡绑定</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar g-cleargap">
+    	<div class="headerwrap">
+      	<div>
+          <ul>
+            <li><p>(20150400239) 您好，欢迎使用本系统！</p><span>[<a href="#">退出</a>]</span></li>
+            <li><p>代理用户：</p><em>小易叔叔(<i>88abcd</i>)</em><span>[<a href="#">返回</a>]</span></li>
+          </ul>
+        </div>
+    	</div>
+      <div class="navbar-inner">
+        <div class="container">
+          <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav" id="mainmenu">
+              <li>
+                <a href="../index.html" data-part="index" >首页</a>
+              </li>
+              <li>
+                <a href="../info/info_manage.html" data-part="info" >信息中心</a>
+              </li>
+              <li>
+                <a href="../fund/account_manage.html" data-part="fund" >账户中心</a>
+              </li>
+              <li>
+                <a href="../shop/shop_manage.html" data-part="shop" >申请管理</a>
+              </li>
+              <li>
+                <a href="../goods/dealer_manage.html" data-part="goods" >报单管理</a>
+              </li>
+              <li>
+                <a href="member_manage.html" data-part="record" >资料维护</a>
+              </li>
+              <li class="divider-vertical" ></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="mainwrap">
+    	<div class="container-fluid">
+      	<div class="row-fluid">
+        		<div class="span24 pull-left">
+              <ul class="sidebox">
+                <li class="sidemenu sidemenu-mini">
+                	<h3>资料维护</h3>
+                  <div id="submenu">
+                    <a href="member_manage.html">会员卡绑定</a>
+                    <a href="dealerinfo_manage.html">经销商资料维护</a>
+                    <a href="dealerconnect_manage.html">经销商推荐网络</a>
+                    <a href="pwd_manage.html">密码修改</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        		<div class="span24 pull-right">
+            		<ul class="mainbox">
+                    <li class="main-grid">
+                    		<!--grid主题-->
+                    		<div class="grid-theme grid-themeedit">会员卡绑定</div>
+                        <!--grid表单-->
+                    		<div class="grid-form">
+                            <form action="#" id="miMemberForm" class="form-horizontal" method="post">
+                                  <input type="hidden" name="_form_uniq_id" value="">
+                                  <input type="hidden" name="strAction" value="">
+                                  <div class="control-group form-control-minigap">
+                                    <label class="control-label">经销商编号：</label>
+                                    <div class="controls">
+                                    	<span class="form-control-text">622626625466836</span>
+                                    </div>
+                                  </div>
+                                  <div class="control-group">
+                                    <label for="cardNo" class="control-label form-require-icon">卡号：</label>
+                                    <div class="controls">
+                                      <input  id="cardNo" type="text" class="span6" name="cardNo" placeholder="请输入卡号" maxlength="7">
+                                    </div>
+                                  </div>
+                                  <div class="control-group">
+                                    <div class="controls">
+                                      <button type="submit" class="span5 btn form-btnactive-icon">绑定</button>
+                                      <a href="dealer_manage.html" class="span5 btn form-btncance-icon">取消</a>
+                                    </div>
+                                  </div>
+                              </form>                      		
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="footerwrap">
+    
+    </div>
+    <script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/record/member_manage.js"></script>
+</body>
+</html>

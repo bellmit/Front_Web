@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="在线报单系统--会员管理">
+<meta name="keywords" content="在线报单系统--会员管理">
+<title>在线报单系统--会员管理</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/member.css">
+<link rel="stylesheet" media="screen,screen and (min-width:641px) and (max-width:720px),screen and (min-width:541px) and (max-width:640px),screen and (min-width:481px) and (max-width:540px),screen and (min-width:321px) and (max-width:480px),screen and (min-width:281px) and (max-width:320px),screen and (max-width:280px)" type="text/css" href="../../resource/css/adapt.css">
+<script src="../../resource/js/lib/zepto.min.js"></script>
+<script src="../../resource/js/widget/common.js"></script>
+<script src="../../resource/js/widget/form/serach.js"></script>
+<script src="../../resource/js/member/member_manage.js"></script>
+</head>
+<body lang="zh">
+
+		<!--顶部导航菜单-->
+		<header class="header-menuwrap">
+      <ul>
+        <li class="h-menu-txt">会员管理</li>
+        <li class="h-menu-toggle" id="menu_toggle">
+        		<ul id="menu_subitem">
+            	<li class="menu-subitem">业绩管理
+              		<ul>
+                  		<li><a href="../result/result_apply.html">业绩申报</a></li>
+                      <li><a href="#">其他菜单</a></li>
+                      <li><a href="#">其他菜单</a></li>
+                  </ul>
+              </li>
+              <li class="menu-subitem">会员管理
+              		<ul>
+                  		<li><a href="member_applybase.html">会员申请</a></li>
+                      <li><a href="#">其他菜单</a></li>
+                  </ul>
+              </li>
+              <li><a href="../help/manual.html">操作手册</a></li>
+              <li><a href="../account/pwdmodify.html">修改密码</a></li>
+              <li><a href="../account/login.html">安全退出</a></li>
+            </ul>
+        </li>
+      </ul>
+    </header>
+    
+    <!--会员信息-->
+    <section class="base-wrap member-info">
+    	<h1 id="member_btn">会员搜索</h1>
+        <section>
+        	<h3>微笑不用花一分钱，却永远价值连城（<span>深圳会员</span>）</h3>
+          <p>简介：<br /><i>通过正式手续加入某个会社或专业组织的人</i></p>
+          <p>特征：<br /><em>营业面积以著名品牌、大众品牌为主；销售体现量小、质优、高毛利</em></p>
+          <p>意义：<br /><span>专卖店是公司品牌、形象、文化的窗口，有利于公司品牌的进一步提升</span></p>
+          <p>电话：<br /><span>15804528294</span></p>
+          <p>地址：<br /><span>深圳福田区购物公园平安大厦88层88号</span></p>
+        </section>
+    </section>
+    
+    <!--查询搜索-->
+    <section class="base-wrap search-wrap">
+      	<div class="form-text" id="search_wrap">
+        	<input type="search" name="member_search" placeholder="请输入顾客编号" id="member_search">
+          <span id='search_clear'></span>
+          <button type="button" id="search_btn">查询</button>
+        </div>
+    </section>
+    
+    <!--会员管理列表-->
+    <section class="base-wrap datalist-wrap">
+    		<ul>
+        		<li>
+            		<h3>会员编号</h3>
+                <h3>会员姓名</h3>
+            </li>
+        </ul>
+        <ul id="member_list">
+        		<li>
+            		<h4>JET567DGH</h4>
+                <h4 class="g-c-blue1">爱的供养</h4>
+                <div>
+                	<p>介绍人卡号：<span>KJAG5646</span></p>
+                    <p>当前状态：<em>已审批</em></p>
+                    <p>审批时间：<i>2015-05-20</i></p>
+                    <a class="g-b-blue1" href="member_detail.html">查看</a>
+                </div>
+            </li>
+            <li>
+            		<h4>34712547</h4>
+                <h4 class="g-c-blue1">微笑不用花一分钱</h4>
+                <div>
+                	<p>介绍人卡号：<span>735FHTR</span></p>
+                    <p>当前状态：<i>钻石会员</i></p>
+                    <p>审批时间：<i>2015-04-27</i></p>
+                    <a class="g-b-blue1" href="member_detail.html">查看</a>
+                </div>
+            </li>
+            <li>
+            		<h4>GHJ456546</h4>
+                <h4 class="g-c-blue1">距离，产生的不是美</h4>
+                <div>
+                	<p>介绍人卡号：<span>KTY65FD</span></p>
+                    <p>当前状态：<i>已注册</i></p>
+                    <p>审批时间：<i>2015-03-13</i></p>
+                    <a class="g-b-blue1" href="member_detail.html">查看</a>
+                </div>
+            </li>
+            <li>
+            		<h4>456FGHFGH</h4>
+                <h4 class="g-c-blue1">原本就不属于你</h4>
+                <div>
+                	<p>介绍人卡号：<span>SDFG345</span></p>
+                    <p>当前状态：<i>已审批</i></p>
+                    <p>审批时间：<i>2015-06-03</i></p>
+                    <a class="g-b-blue1" href="member_detail.html">查看</a>
+                </div>
+            </li>
+            <li>
+            		<h4>5472547</h4>
+                <h4 class="g-c-blue1">事实容易解释，感觉却难以言喻</h4>
+                <div>
+                	<p>介绍人卡号：<span>64535FGH</span></p>
+                    <p>当前状态：<em>未审核</em></p>
+                    <p>审批时间：<i>2015-03-10</i></p>
+                    <a class="g-b-blue1" href="member_detail.html">查看</a>
+                </div>
+            </li>
+        </ul>
+    </section>
+    
+    <!--按钮区域-->
+    <ul class="base-wrap btn1-item-wrap">
+    		<li><a class="g-b-red2" href="member_applybase.html">添加会员</a></li>
+        <li><a class="g-b-gray6" href="../index.html">返回</a></li>
+    </ul>
+    
+</body>
+</html>

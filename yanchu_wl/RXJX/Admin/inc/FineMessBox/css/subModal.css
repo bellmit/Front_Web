@@ -1,0 +1,97 @@
+/**
+ * POPUP CONTAINER STYLES
+ */
+#popupMask {
+	position: absolute;
+	z-index: 200;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: .4;
+	filter: alpha(opacity=40);
+	/* this hack is so it works in IE
+	 * I find setting the color in the css gives me more flexibility 
+	 * than the PNG solution.
+	 */
+	background-color:transparent !important;
+	background-color: #333333;
+	/* this hack is for opera support
+	 * you can uncomment the background-image if you don't care about opera.
+	 * this gives you the flexibility to use any bg color that you want, instead of the png
+	 */	
+	background-image:none;
+	background-repeat: repeat;
+	display:none;
+}
+#popupContainer {
+	position: absolute;
+	z-index: 201;
+	top: 0px;
+	left: 0px;
+	display:none;
+	padding: 0px;
+}
+
+#popupFrame {
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 202;
+}
+#popupBoxAll
+{	
+	position: relative;
+	z-index: 203;	
+	PADDING-LEFT: 3px;	
+	background: url(../images/hd-sprite.gif) no-repeat 0px -41px;
+	MARGIN: 0px;
+}
+#popupTitleBar {
+
+	FONT: bold 12px "sans serif", tahoma, verdana, helvetica;	
+	OVERFLOW: hidden;	
+	COLOR: #fff;
+	WHITE-SPACE: nowrap;	
+	z-index: 204;	
+	PADDING-RIGHT: 3px;
+	background: url(../images/hd-sprite.gif) no-repeat right 0px;
+	
+}
+
+#popCloseBox {
+	float: right;
+	cursor: pointer;
+	cursor: hand;
+	z-index: 206;
+	RIGHT: 4px;	
+	background: url(../images/close.gif) no-repeat;	
+	WIDTH: 15px;	
+	POSITION: absolute;	
+	TOP: 4px;	
+	HEIGHT: 15px	
+	
+}
+#ShadowBox {	DISPLAY: none;	BACKGROUND: #777;	LEFT: 0px;	OVERFLOW: hidden;	ZOOM: 1;	POSITION: absolute;	TOP: 0px}
+#popBodyBox
+{
+	BORDER-RIGHT: #6593cf 1px solid;	
+	BORDER-LEFT: #6593cf 1px solid;	
+	BORDER-BOTTOM: #6593cf 1px solid;		
+	OVERFLOW: hidden;
+	background:#FFFFFF;
+} 
+#popupTitle
+{
+	PADDING-RIGHT: 5px;	
+	PADDING-LEFT: 5px;	
+	PADDING-BOTTOM: 5px;	
+	FONT: bold 12px "sans serif", tahoma, verdana, helvetica;	
+	OVERFLOW: hidden;	
+	COLOR: #fff;	
+	PADDING-TOP: 5px;	
+	WHITE-SPACE: nowrap;
+	BACKGROUND: url(../images/hd-sprite.gif) navy repeat-x 0px -82px;
+	
+}

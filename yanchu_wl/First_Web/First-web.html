@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="css/global.css" />
+<link type="text/css" rel="stylesheet" href="css/menu.css" />
+<link type="text/css" rel="stylesheet" href="css/calendar.css" />
+<script type="text/javascript" src="js/showdate.js"></script>
+<script type="text/javascript" src="js/global.js"></script>
+<script type="text/javascript" src="js/calendar.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/prototype1.6.js"></script>
+<title>小小程序员</title>
+</head>
+<body>
+	<div class="container">
+        <div class="header">
+        	<div id="menu">
+                <a href="#" id="first">Home</a>
+            	<a href="#" id="second">Javascript</a>
+            	<a href="#" id="third">Java</a>
+            	<a href="#" id="thefour">DB</a>
+            	<a href="#" id="thefive">CSS</a>
+            	<a href="#" id="last">Design</a>
+            </div>
+            <!--<div id="myselfbanner">
+            	<a href="#" ondblclick="changbanner();">励志照亮人生，编程改变命运<a/>
+            </div>
+            <div id="changes">
+            	<div id="changesclose" onclick="changecolse();"></div>
+            	<span id="changefont" onclick="changefont();">修改文字</span>
+                <span id="changecolor" onclick="changecolor();">修改颜色</span>
+                <span id="changexy" onclick="changexy();">修改位置</span>
+            </div>-->
+            <div class="searchs">
+            	<form name="search" action="#">
+                	<label for="search" class="slabel">Search:</label><input type="text" value="请输入搜索内容" name="search" id="search" onfocus="validssearchs(this);" onblur="validssearchsf(this)"/>
+                    <div id="dosearch" onclick="Searchs();"></div>
+                </form>
+            </div>
+      </div>
+        <div class="content">
+        	<div class="leftsidebox">
+            	<div class="cssimage">
+                	<img  src="images/css-image.png" alt="css-image"/>
+                </div>
+            	<div class="jsbox">
+                	<div id="jsnull"></div>
+                    <h5>Javascript</h5>
+                	<ul>
+                    	<li><img src="images/js-zs.png"/><a>javascript闭包的作用</a><span>2011-09-05</span></li>
+                        <li><img src="images/js-zs.png"/><a>怎样学习事件</a><span>2011-09-05</span></li>
+                        <li><img src="images/js-zs.png"/><a>js打造超炫多级导航</a><span>2011-09-04</span></li>
+                        <li><img src="images/js-zs.png"/><a>教你怎样用Ajax模仿搜索补全功能</a><span>2011-09-04</span></li>
+                        <li><img src="images/js-zs.png"/><a>js学习心得</a><span>2011-09-01</span></li>
+                        <li><img src="images/js-zs.png"/><a>js实现多级关联下拉框</a><span>2011-08-28</span></li>
+                    </ul>
+                    <div id="jsmore">
+                    	<a href="#">more</a>
+                    </div>
+                </div>
+                <div class="dbbox">
+                	<div id="dbnull"></div>
+                    <h5>DB</h5>
+                	<ul>
+                    	<li><img src="images/db-zs.png"/><a>Oracle10g安装图解</a><span>2011-09-05</span></li>
+                        <li><img src="images/db-zs.png"/><a>MySQL最新版本特性</a><span>2011-09-04</span></li>
+                        <li><img src="images/db-zs.png"/><a>数据库注入知识</a><span>2011-09-04</span></li>
+                        <li><img src="images/db-zs.png"/><a>零基础学习SQL-Server2008</a><span>2011-09-02</span></li>
+                        <li><img src="images/db-zs.png"/><a>经典SQL优化例子</a><span>2011-08-28</span></li>
+                        <li><img src="images/db-zs.png"/><a>Oracle常用命令练习</a><span>2011-08-22</span></li>
+                    </ul>
+                    <div id="dbmore">
+                    	<a href="#">more</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mainbox">
+            	<div class="javabox">
+                	<div id="javanull"></div>
+                    <h5>Java</h5>
+                	<ul>
+                    	<li><img src="images/java-zs.png"/><a>Servlet详解</a><span>2011-09-05</span></li>
+                        <li><img src="images/java-zs.png"/><a>详谈开发工具JBuilder</a><span>2011-09-04</span></li>
+                        <li><img src="images/java-zs.png"/><a>JAVA多态与类型转化分析</a><span>2011-09-04</span></li>
+                        <li><img src="images/java-zs.png"/><a>java多线程生产者与消费者问题</a><span>2011-09-02</span></li>
+                        <li><img src="images/java-zs.png"/><a>程序员应该怎样学习新知识</a><span>2011-08-28</span></li>
+                        <li><img src="images/java-zs.png"/><a>怎样才是一名优秀的程序员</a><span>2011-08-22</span></li>
+                        <li><img src="images/java-zs.png"/><a>理想的程序员必须知道的15件事</a><span>2011-08-02</span></li>
+                        <li><img src="images/java-zs.png"/><a>XML转化为java List</a><span>2011-07-28</span></li>
+                        <li><img src="images/java-zs.png"/><a>Socket编程原理解剖</a><span>2011-07-15</span></li>
+                    </ul>
+                    <div id="javamore">
+                    	<a href="#">more</a>
+                    </div>
+                </div>
+                <div class="cssbox">
+                	<div id="cssnull"></div>
+                    <h5>CSS</h5>
+                	<ul>
+                    	<li><img src="images/css-zs.png"/><a>纯CSS打造可折叠树形菜单</a><span>2011-09-05</span></li>
+                        <li><img src="images/css-zs.png"/><a>谈谈前端开发中的一些用户体验细节</a><span>2011-09-04</span></li>
+                        <li><img src="images/css-zs.png"/><a>网页设计中一些比较突出的细节问题的解决</a><span>2011-09-04</span></li>
+                        <li><img src="images/css-zs.png"/><a>网页制作技巧：网页设计事半功倍的构图技巧</a><span>2011-09-02</span></li>
+                        <li><img src="images/css-zs.png"/><a>10个最容易犯错的HTML标签错误</a><span>2011-08-28</span></li>
+                        <li><img src="images/css-zs.png"/><a>前端开发一些常用技巧总结</a><span>2011-08-22</span></li>
+                        <li><img src="images/css-zs.png"/><a>编写简洁符合语义HTML代码的5原则</a><span>2011-07-12</span></li>
+                        <li><img src="images/css-zs.png"/><a>cssHack总结</a><span>2011-07-10</span></li>
+                        <li><img src="images/css-zs.png"/><a>CSS代码布局八条最常见的错误</a><span>2011-06-25</span></li>
+                    </ul>
+                    <div id="cssmore">
+                    	<a href="#">more</a>
+                    </div>
+                </div>
+            </div>
+            <div class="rightsidebox">
+            	<div class="Otherbox">
+                	<div id="infos">
+                    	<h6>个人档案</h6><span>修改</span>
+                        <p>昵称：小小程序员</p>
+                        <p>邮箱：xxcxy@sina.com</p>
+                        <p>电话：45674625748</p>
+                        <p>QQ：357258552</p>
+                    </div>
+                    <!--<div class="calendar_content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>日</th>
+                                    <th>一</th>
+                                    <th>二</th>
+                                    <th>三</th>
+                                    <th>四</th>
+                                    <th>五</th>
+                                    <th>六</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td  id="first" class="last_month">28</td>
+                                    <td class="last_month">29</td>
+                                    <td class="last_month">30</td>
+                                    <td class="current">1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td  id="last" >4</td>   
+                                </tr>
+                                <tr>
+                                    <td  id="first" >5</td>
+                                    <td>6</td>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>9</td>
+                                    <td>10</td>
+                                    <td  id="last" >11</td>
+                                </tr>
+                                <tr>
+                                    <td  id="first" >12</td>
+                                    <td>13</td>
+                                    <td>14</td>
+                                    <td>15</td>
+                                    <td>16</td>
+                                    <td>17</td>
+                                    <td  id="last" >18</td>
+                                </tr>
+                                <tr>
+                                    <td  id="first" >19</td>
+                                    <td>20</td>
+                                    <td>21</td>
+                                    <td>22</td>
+                                    <td>23</td>
+                                    <td>24</td>
+                                    <td  id="last" >25</td>
+                                </tr>
+                                <tr>
+                                    <td  id="first" >26</td>
+                                    <td>27</td>
+                                    <td>28</td>
+                                    <td>29</td>
+                                    <td>30</td>
+                                    <td>31</td>
+                                    <td  id="last"  class="next_month">1</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">2011</td>
+                                    <td colspan="1">07</td>
+                                    <td colspan="1">31</td>
+                                    <td colspan="3">calendar</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+    				</div>-->
+                </div>
+            	<div class="designbox">
+                	<div id="designnull"></div>
+                    <h5>Design</h5>
+                	<ul>
+                    	<li><img src="images/design-zs.png"/><a>Photoshop抠图技巧</a><span>2011-09-05</span></li>
+                        <li><img src="images/design-zs.png"/><a>开始学习AI技术的困惑之处</a><span>2011-09-04</span></li>
+                        <li><img src="images/design-zs.png"/><a>flash中元素的重要性</a><span>2011-09-03</span></li>
+                        <li><img src="images/design-zs.png"/><a>PS中快速蒙版的妙用</a><span>2011-09-02</span></li>
+                        <li><img src="images/design-zs.png"/><a>PS中动画制作教程</a><span>2011-08-28</span></li>
+                        <li><img src="images/design-zs.png"/><a>FireWork编辑gif图片视频</a><span>2011-08-25</span></li>
+                    </ul>
+                    <div id="designmore">
+                    	<a href="#">more</a>
+                    </div>
+                </div>
+                <div class="designimages">
+                	<img src="images/design-image.png" alt="design-images"/>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+        </div>
+    </div>
+</body>
+</html>

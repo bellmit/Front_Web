@@ -1,0 +1,54 @@
+@import 'variable/base_variable.less';
+body{
+	background:@color-cyan1;
+}
+///*login logo*/
+.login-logo{
+	.layout-base;
+	padding-top:100px;
+	height:250px;
+	text-align:center;
+	img{
+		max-width:182px;
+		max-height:40px;
+		display:block;
+		margin:0 auto;
+		overflow:hidden;
+	}
+	h1{
+		margin:0;
+		font-size:@font-size-base + 18;
+		text-align:center;
+		height:50px;
+		line-height:60px;
+		color:@color-blue1;
+		.text-unselect;
+		letter-spacing:5px;
+	}
+}
+/*login wrap*/
+.login-form,
+.pwd-form{
+	.layout-float-base;
+	margin-bottom:50px;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	>ul{
+		width:100%;
+		&:after{
+			content:'';
+			clear:both;
+			display:block;
+		}
+	}
+}
+.pwd-form{
+	margin:50px auto auto auto;
+}
+
+///*表单组件*/
+@import 'mixin/form.less';
+///*登录表单*/
+@import 'mixin/accountform.less';

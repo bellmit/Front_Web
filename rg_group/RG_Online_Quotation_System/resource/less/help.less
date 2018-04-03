@@ -1,0 +1,33 @@
+@import 'variable/base_variable.less';
+body{
+	background:@color-cyan1;
+}
+///操作手册
+.manual-wrap{
+	.layout-float-base;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	h3{
+		padding:20px 0 10px 0;
+		text-indent:10px;
+		color:@color-gray1;
+		font-size:@font-size-base + 8;
+		.text-ww;
+	}
+	p{
+		font-size:@font-size-base + 2;
+		text-indent:20px;
+		color:@color-gray3;
+		line-height:24px;
+		.text-ww;
+		span{
+			font-size:@font-size-small;
+			display:inline-block;
+			padding:3px 0 3px 20px;
+			color:@color-gray5;
+			line-height:18px;
+		}
+	}
+}

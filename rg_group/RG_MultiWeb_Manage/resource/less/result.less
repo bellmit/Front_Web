@@ -1,0 +1,51 @@
+@import 'variable/base_variable.less';
+///*result*/
+.result-wrap{
+	width:900px;
+	margin:30px auto;
+	padding:10px 0 50px 0;
+	border:1px solid @color-gray3;
+	.border-radius-base(6px);
+	background:@color-gray11;
+	.box-shadow-base(0 0 3px @color-gray5 e(',') 0 0 2px @color-white inset);
+	.box-sizing-base;
+	font-family:'微软雅黑','雅黑','Microsoft YaHei','YaHei','\5FAE\8F6F\96C5\9ED1';
+	.result-success-icon{
+		width:248px;
+		height:245px;
+		margin:30px auto 10px auto;
+		overflow:hidden;
+		background:url(../images/web_result.png) no-repeat 0 0;
+	}
+	.result-fail-icon{
+		width:248px;
+		height:247px;
+		margin:30px auto 10px auto;
+		overflow:hidden;
+		background:url(../images/web_result.png) no-repeat 0 -245px;
+	}
+	.result-remark{
+		width:100%;
+		text-align:center;
+		padding:5px 0;
+		font-size:@font-size-small + 30;
+		color:@color-gray2;
+	}
+	.result-success-tips,
+	.result-fail-tips{
+		width:100%;
+		margin:10px 0;
+		padding:10px 0;
+		text-align:center;
+		font-size:@font-size-small + 10;
+		.text-ww;
+		line-height:@font-size-small + 10;
+	}
+	.result-success-tips{
+		color:@color-blue2;
+	}
+	.result-fail-tips{
+		color:@color-red2;
+	}
+	
+}

@@ -1,0 +1,147 @@
+///grid 数据表格展现插件
+@import 'variable/base_variable.less';
+
+.grid-shopping{
+	.layout-float-base;
+}
+.shopping-wrap{
+	.layout-float-base;
+	margin:5px 0;
+}
+//主题
+.shopping-theme{
+	font-size:@font-size-small;
+	background:@color-gray11;
+	color:@color-cyan1;
+	height:30px;
+	line-height:30px;
+	padding:0 10px 0 20px;
+	font-family:@fontfamliy-base;
+	margin:2px 0;
+	.text-of;
+	.border-radius-base(3px);
+}
+
+//搜索
+.shopping-search{
+	.layout-float-base;
+	margin:5px 0;
+	button{
+		.layout-relative-base;
+		padding:4px 12px 4px 25px;
+		&:before{
+			.layout-absolutel-base(5px,5px,50);
+			content:'\e645';
+			font-family:'ux_eight';
+			font-size:@font-size-default;
+			color:@color-cyan1;
+		}
+	}
+}
+//快捷导航
+.shopping-keyword{
+	.layout-float-base;
+	margin:5px 0;
+	border-bottom:1px dashed @color-gray7;
+	padding:2px 5px 5px 5px;
+	li{
+		float:left;
+		padding:0 10px;
+		margin:3px 4px;
+		font-size:@font-size-small;
+		white-space:nowrap;
+		cursor:pointer;
+		color:@color-gray3;
+		.border-radius-base(3px);
+		&:hover{
+			background:@color-gray10;
+		}
+	}
+	li.keywrod-item-sel{
+		background:@color-cyan1;
+		color:@color-white;
+	}
+}
+.shopping-keyword:empty{
+	display:none;
+}
+//商品显示
+.shopping-show{
+	.layout-float-base;
+	margin:5px 0;
+	padding:10px;
+	max-height:300px;
+	overflow-y:auto;
+	border:1px solid @color-gray9;
+	.border-radius-base(3px);
+	background:@color-white;
+	text-align:center;
+	&:empty{
+			&:before{
+					content:'\e617';
+					font-family:'ux_six';
+					display:inline-block;
+					font-size:@font-size-small;
+					color:@color-cyan1;
+			}
+			&:after{
+					content:'暂无数据';
+					display:inline-block;
+					font-size:@font-size-small;
+					color:@color-cyan1;
+			}
+	}
+	li{
+		.box-sizing-base;
+		float:left;
+		width:180px;
+		height:150px;
+		border:1px solid @color-gray9;
+		padding:5px 5px 20px 5px;
+		margin:0 20px 20px 0;
+		cursor:pointer;
+		.border-radius-base(3px);
+		&:hover{
+			border:1px dashed @color-red2;
+		}
+		img{
+			.box-sizing-base;
+			width:100%;
+			height:100%;
+			display:block;
+		}
+		span{
+			display:inline-block;
+			width:100%;
+			height:20px;
+			.text-of;
+			font-size:@font-size-small;
+			line-height:20px;
+			color:@color-gray3;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

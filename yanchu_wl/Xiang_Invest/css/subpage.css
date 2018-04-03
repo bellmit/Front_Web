@@ -1,0 +1,172 @@
+@charset "utf-8";
+/* CSS Document */
+/*布局*/
+body{padding:0;margin:0;}
+body *{padding:0px;margin:0px;}
+.header{width:1003px;height:146px;*+height:150px;/*ie7*/}
+.container{position:relative;width:1003px;text-align:center;padding:0 auto;margin:0 auto;}
+/*ie6布局居中*/
+body *{_margin:0px;_padding:0px;}
+/*显示区内容居中*/
+.container{_position:relative;_left:50%;_width:1003px;_margin-left:-501px;}/*主内容*/
+.content:after{clear:both;visibility:hidden;line-height:0;display:block;content:"";height:0;}
+.content{_width:1003px;_position:relative;}
+
+/*集团简介*/
+.showinfos{float:left;top:30px;left:5px;width:700px;min-height:960px;border:1px solid #92a0b7;}
+.showinfos h3{color:#0a015a;margin:20px 0 10px 0;font-size:34px;}
+.showinfos hr{align:center;width:600px;height:1px;color:#cdd6df;margin:0 auto 10 auto;}
+.groupimages{float:left;width:300px;min-height:800px;}
+.groupimages a{margin:50px 0 20px 50px;color:#F00;font-size:12px;height:188px;width:234px;display:block;overflow:hidden; line-height:1.2em;}
+.groupimages img{padding:4px;border:2px solid #b7c5dc;width:217px;height:142px;margin-bottom:4px;overflow:hidden;}
+.groupinfos{float:right;width:380px;min-height:800px;text-align:left;overflow:hidden;}
+.groupinfos p{clear:both;margin:30px 20px 0 0;line-height:26px;font-size:14px;text-indent:2em;width:370px;overflow:hidden;}
+
+.showmenu{float:right;width:296px;}
+.showmenu ul{clear:both;list-style:none;width:294px;height:960px;border:1px solid #92a0b7;}
+.showmenu ul li{height:110px;width:280px;background:#dddede;margin:20px 0 0 8px;_margin:10px 0 0 8px;}
+.showmenu ul li span{float:left;font-size:15px;font-family:"黑体","宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;height:100px;width:100px;margin:8px 0 0 4px; color:#F00;}
+.showmenu ul li img{margin:0 auto;cursor:pointer;_cursor:hand;}
+.showmenu ul li a{float:right;font-size:12px;text-decoration:none;text-align:left;width:140px;color:#333;margin:30px 16px 0 0;height:50px;overflow:hidden;border:1px dashed #8bc0fc;padding:2px;padding:4px;cursor:pointer;_cursor:hand;}
+.showmenu ul li a:hover,.showmenu ul li strong:hover,.nationlist ul li a:hover,.grouplist ul li a:hover,.economylist ul li a:hover,.tradeslist ul li a:hover,.lawlist ul li a:hover,.culturelist ul li a:hover,.adminslist ul li a:hover,.dblist div a:hover,#dbpages a:hover{color:#099;}
+.showmenu ul li strong{clear:both;color:#F00;cursor:pointer;_cursor:hand;position:relative;left:50px;_left:100px;*+top:-20px;*+left:100px;}
+
+/*投资版图*/
+.invest{height:657px;width:1001px;background:#FFF url(../img/investdomain-background.jpg) no-repeat;position:relative;left:0;top:0;border:1px solid #92a0b7;overflow:hidden;}
+.invest h3{font-size:30px;}
+.investimg{width:960px;height:600px;position:absolute;left:10px;top:50px;overflow:hidden;}
+.investtop{position:absolute;left:134px;top:9px;height:88px;width:800px;}
+.investbottom{position:absolute;left:-16px;top:509px;height:88px;width:900px;}
+.investtop ul{margin:0;padding:0;list-style:none;height:880px;width:800px;}
+.investbottom ul{margin:0;padding:0;list-style:none;height:880px;width:900px;}
+.investtop ul li,.investbottom ul li{float:left;width:150px;height:88px;}
+.investtop ul li img,.investleft ul li img,.investright ul li img,.investbottom ul li img{width:104px;padding:0 23px 8px 23px;height:64px;cursor:pointer;border:none;overflow:hidden;}
+.investtop ul li a,.investleft ul li a,.investright ul li a,.investbottom ul li a{display:block;color:#F00;font-size:12px;text-decoration:none;height:84px;_width:80px;width:150px;}
+.investtop ul li a:hover,.investleft ul li a:hover,.investright ul li a:hover,.investbottom ul li a:hover{color:#000;}
+.investleft{position:absolute;top:109px;left:134px;width:150px;height:600px;}
+.investleft ul,.investright ul{list-style:none;width:150px;height:600px;}
+.investleft ul li,.investright ul li{height:100px;width:150px;}
+.investright{position:absolute;top:109px;left:734px;width:150px;height:600px;}
+
+/*业务架构及子公司简介*/
+.inc{height:1714px;width:1001px;background:#FFF url(../img/frame-background.jpg) no-repeat;position:relative;left:0;top:0;border:1px solid #92a0b7;}
+.inc h3{font-size:30px;}
+.energy li img,.tourism li img,.materials li img,.teleinfo li img,.logistics li img,.industry li img,.finance li img{height:84px;width:120px;cursor:pointer;}
+/*业务架构及子公司简介左侧文字定位*/
+#xinvest,#industrywork,#venture-finance,#asset-manage{position:relative;font-family:"黑体","宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;border:1px solid #000;}
+#xinvest{top:1010px;left:40px;*+left:-450px;font-size:26px;height:152px;width:50px;background:#999 url(../img/left-main.png) repeat-x;display:block;line-height:1.5em;}
+#industrywork{top:445px;left:146px;*+left:-340px;font-size:24px;height:218px;width:44px;background:#999 url(../img/center-top.png) repeat-x;display:block;line-height:1.3em;}
+#venture-finance{top:945px;left:150px;*+left:-336px;font-size:24px;height:156px;width:44px;background:#999 url(../img/center-middle.png) repeat-x;display:block;line-height:1.3em;}
+#asset-manage{top:950px;left:150px;*+left:-336px;font-size:24px;height:138px;width:44px;background:#999 url(../img/center-bottom.png) repeat-x;display:block;line-height:1.5em;}
+#electric-energy,#Hospitality-Tourism,#metallic-materials,#telegraphicinfo,#Trade-logistics{position:relative;font-size:20px;height:61px;width:50px;background:#999 url(../img/right-main.png) repeat-x;display:block;line-height:1.5em;font-family:"黑体","宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;border:1px solid #000;}
+#electric-energy{top:-496px;left:275px;*+left:-190px;}
+#Hospitality-Tourism{top:-122px;left:274px;*+left:-191px;}
+#metallic-materials{top:128px;left:275px;*+left:-190px;}
+#telegraphicinfo{top:214px;left:276px;*+left:-189px;}
+#Trade-logistics{top:300px;left:275px;*+left:-190px;}
+/*业务架构及子公司简介右侧图片定位*/
+.incimage{position:absolute;top:0px;left:400px;width:600px;height:1700px;*+left:400px;_left:380px;}
+/*电力能源*/
+.energy{position:absolute;top:50px;left:-27px;list-style:none;_left:-6px;}
+.energy li,.tourism li,.materials li,.teleinfo li,.logistics li,.industry li,.finance li{float:left;width:197px;height:142px;}
+.energy li a,.tourism li a,.materials li a,.teleinfo li a,.logistics li a,.industry li a,.finance li a,.tourismmain a{display:block;font-size:12px;height:100px;color:#000;width:120px;margin:0 auto;text-decoration:none;}
+.energy li a img,.tourism li a img,.materials li a img,.teleinfo li a img,.logistics li a img,.industry li a img,.finance li a img,.tourismmain a img{border:none;width:120px;height:84px;overflow:hidden;margin-bottom:4px;}
+.energy li a:hover,.tourism li a:hover,.materials li a:hover,.teleinfo li a:hover,.logistics li a:hover,.industry li a:hover,.finance li a:hover,.tourismmain a:hover{color:#099;}
+/*酒店旅游*/.tourism{list-style:none;position:absolute;top:488px;left:170px;_left:190px;width:400px;}
+.tourismmain{position:absolute;top:630px;left:11px;_left:190px;}
+/*金属材料*/.materials{list-style:none;position:absolute;top:941px;left:-27px;_left:-7px;}
+/*电子信息*/.teleinfo{clear:left;list-style:none;position:absolute;top:1092px;left:-26px;_left:-7px;}
+/*商贸物流*/.logistics{list-style:none;position:absolute;top:1240px;left:-26px;_left:-7px;}
+/*创投与经营*/.industry{clear:left;list-style:none;position:absolute;top:1386px;left:-27px;_left:-7px;}
+/*资产管理*/.finance{list-style:none;position:absolute;top:1534px;left:-27px;_left:-7px;}
+
+/*企业邮箱*/
+.emails{float:left;top:30px;left:5px;width:700px;height:960px;background:#FFF url(../img/email-background.png) no-repeat center top;border:1px solid #92a0b7;}
+#logins{position:relative;top:44px;left:180px;width:300px;height:160px;*+left:-30px;}
+#logins span{color:#FFF;font-size:20px;position:relative;left:-80px;top:-22px;}
+#logins label{cursor:pointer;color:#09C;font-family:"黑体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda,"宋体";font-size:16px;position:relative;left:20px;top:-6px;color:#01C0FE;}
+#username,#password{border:none;height:28px;width:188px;background:#FFF url(../img/email-text.png) no-repeat;position:relative;top:-4px;padding-left:2px;}
+#username:focus,#password:focus{outline:none;}
+#submits{margin:-16px 0 0 14px;border:none;height:27px;width:53px;font-size:16px;font-family:"宋体", "黑体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;cursor:pointer; background:url(../img/email-button.png) no-repeat; *+height:27px; *+margin:0 0 14px 24px;z-index:200px;}
+#.emusername,.empassword{float:right;color:red;}
+
+/*联系我们*/
+.contact{margin:0;padding:0;float:left;top:30px;left:5px;width:700px;height:960px;background:#FFF;border:1px solid #92a0b7;}
+.contact h3{clear:both;color:#F00;position:relative;top:40px;display:inline;font-size:24px;width:700px;}
+.contactmain{width:600px;height:400px;position:absolute;top:250px;_top:100px;left:60px;}
+.contactmain table{border:1px solid #F00;}
+
+/*引导页*/
+.leadcontainer{position:relative;top:20px;margin:0 auto;width:1360px;height:600px;background:url(../img/lead-background.jpg) no-repeat;}
+.leadothers{height:200px;width:934px;position:absolute;top:20px;left:0;}
+.leadothers img{margin:0;padding:0;width:62px;height:60px;position:relative;top:50px;left:80px;}
+.leadothers h1{text-indent:-9999px;background:url(../img/lead-title.png) no-repeat;width:415px;height:58px;position:relative;top:-6px;left:150px;}
+#leadshow{position:absolute;top:490px;left:0;height:106px;width:1360px;background:#F60;overflow:hidden;}
+#leadinner{float:left;height:106px;overflow:hidden;width:800%;}
+#leadlista,#leadlistb{float:left;list-style:none;width:2816px;height:104px;background:#FFF;margin-top:2px;}
+#leadlista li,#leadlistb li{float:left;height:114px;width:132px;}
+#leadlista li table,#leadlistb li table{border:none;}
+#leadlista table img,#leadlistb table img{width:120px;height:84px;border:none;}
+#leadlista table a,#leadlistb table a{padding:2px 0;height:14px; vertical-align:middle;font-size:12px;border-top:2px solid #FF6600;width:128px;display:block;background:#EA0000;line-height:1em;color:#FFF;font-family:"黑体","宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda; text-align:center;}
+.leadmenu{position:absolute;top:430px;left:1100px;width:160px;height:30px;}
+.leadmenu ul{width:160px;height:30px;list-style:none;}
+.leadmenu ul li{float:left;width:74px;height:29px;}
+.leadmenu ul li a{width:68px;height:29px;display:block;background:url(../img/lead-button.png) no-repeat;font-size:13px;font-weight:bold;padding:6px 0 0 4px;cursor:pointer;text-decoration:none;color:#F00;}
+.leadmenu ul li a:hover{/*background:url(../img/lead-button-hover.png) no-repeat;*/color:#000;}
+
+
+/*站内搜索*/
+/*搜索*/
+.searchbox{height:340px;width:1001px;border:1px solid #92a0b7;background:#EEFFF5;}
+.dosearch{width:400px;height:100px;margin:80px auto;}
+.dosearch table{margin:30px auto;width:260px;height:36px;}
+.dosearch table label{font-weight:bold;font-size:18px;cursor:pointer;}
+#search[value="请输入搜索内容"]{color:#999;}
+#search{height:28px;width:182px;padding:4px 0 0 2px;border:none;font-size:14px;color:#000;background:url(../img/search-text.png) no-repeat;}
+#search:focus{outline:none;}
+#dosearch{background:#FFF url(../img/search-icon.png) no-repeat center center;height:26px;width:26px;border:1px solid #CCC;margin:0 0 4px 0;display:block;}
+#dosearch:hover{cursor:pointer;_cursor:hand;background:#FFF url(../img/search-hover-icon.png) no-repeat center center;}
+/*搜索列表*/
+.searchlistbox{width:1001px;min-height:290px;_height:290px;border:1px solid #92a0b7;margin-top:10px;background:#EEFFF5;}
+.searchlist{width:700px;min-height:290px;_height:290px;margin:0 auto;}
+.searchlist hr{align:center;width:600px;height:1px;color:#cdd6df;margin-bottom:10px;margin:0 auto;}
+.searchlist ul{list-style:none;width:600px;height:auto;margin:10px auto;}
+.searchlist ul li{height:auto;width:600px;}
+.searchlist ul li a{margin:0 auto;text-align:left;font-size:14px;width:500px;height:auto;display:block;text-decoration:none;padding:4px;color:#000;border-bottom:1px dashed #999;}
+.searchlist ul li a:hover{color:#066;}
+.searchlist ul li a img{border:none;margin-right:4px;}
+#qh{font-size:14px;}
+#qh strong{color:#F00;}
+/*搜索查看*/
+.searchshowbox{float:left;width:700px;min-height:960px;border:1px solid #92a0b7;background:#EEFFF5;}
+.searchshowbox h3{margin:10px auto;font-size:24px;}
+.searchshowbox hr{align:center;width:600px;height:1px;color:#cdd6df;margin:0 auto;}
+.searchshowtitle{margin:10px auto;height:auto;width:600px;overflow:hidden;font-size:24px;color:#0a015a;}
+.searchshow{width:700px;min-height:400px;}
+
+/*more-国资要闻,集团要闻,经济视野,行业信息,政策法规,企业文化,管理创新,数据库*/
+.nationlist,.grouplist,.economylist,.tradeslist,.lawlist,.culturelist,.adminslist{float:left;margin:60px 0 0 50px;_margin:60px 0 0 20px;}
+.nationlist ul,.grouplist ul,.economylist ul,.tradeslist ul,.lawlist ul,.culturelist ul,.adminslist ul{height:600px;width:500px;list-style:none;text-align:left;margin:0 0 0 40px;}
+.nationlist ul li,.grouplist ul li,.economylist ul li,.tradeslist ul li,.lawlist ul li,.culturelist ul li,.adminslist ul li{margin:2px 0 0 0;height:40px;}
+.nationlist ul li img,.grouplist ul li img,.economylist ul li img,.tradeslist ul li img,.lawlist ul li img,.culturelist ul li img,.adminslist ul li img{float:left;margin:6px 0 0 4px;}
+.nationlist ul li a,.grouplist ul li a,.economylist ul li a,.tradeslist ul li a,.lawlist ul li a,.culturelist ul li a,.adminslist ul li a,.dblist div a{color:#000;font-size:16px;margin:0 0 0 10px;text-decoration:none;cursor:pointer;_cursor:hand;}
+#pages a,#dbpages a,#showpages a{cursor:pointer;_cursor:hand;}
+.dblist div{position:relative;top:20px;height:auto;width:auto;}
+.dblist div a{display:block;margin:8px 0 10px 0;}
+#dbpages{position:relative;top:30px;}
+/*show-国资要闻,集团要闻,经济视野,行业信息,政策法规,企业文化,管理创新,数据库*/
+#nationshow,#groupshow,#economyshow,#tradesshow,#lawshow,#cultureshow,#adminshow,#dbshow,#frameshow{font-size:20px;width:auto;text-align:center;}
+.nationshow,.groupshow,.economyshow,.tradesshow,.lawshow,.cultureshow,.adminshow,.dbshow{min-height:800px;width:600px;margin:20px auto;overflow:hidden;}
+.frameshow{width:510px;height:800px;overflow:hidden;}
+.nationshow img,.groupshow img,.economyshow img,.tradesshow img,.lawshow img,.cultureshow img,.adminshow img,.dbshow img,.frameshow img{padding:4px;border:1px solid #999;margin:10px;max-width:600px;overflow:hidden;}
+.nationshow p,.groupshow p,.economyshow p,.tradesshow p,.lawshow p,.cultureshow p,.adminshow p,.dbshow p,.frameshow p{font-size:14px;text-align:left;text-indent:2em;line-height:22px;margin:10px 0 0 0;}
+.nationshow pre,.groupshow pre,.economyshow pre,.tradesshow pre,.lawshow pre,.cultureshow pre,.adminshow pre,.dbshow pre,.frameshow pre{font-size:14px;text-align:left;text-indent:2em;line-height:1.6em;margin:10px 0 0 0;}
+.nationshow div,.groupshow div,.economyshow div,.tradesshow div,.lawshow div,.cultureshow div,.adminshow div,.dbshow div,.frameshow div{margin:0 auto;}
+.nationshow div img,.groupshow div img,.economyshow div img,.tradesshow div img,.lawshow div img,.cultureshow div img,.adminshow div img,.dbshow div img,.frameshow div img{padding:4px;border:2px solid #C7E4DD;height:300px;width:500px;}
+.frameshow div img{margin:0 0 0 100px;}
+.nationshow div a,.groupshow div a,.economyshow div a,.tradesshow div a,.lawshow div a,.cultureshow div a,.adminshow div a,.dbshow div,.aframeshow div a{display:block;margin:4px 0 8px 0;}
+#showpages{position:relative;top:820px;}
+
+/*底部信息*/
+.footer{position:relative;top:20px;height:20px;_top:-5px;_margin:20px 0;width:1003px;background:#FFF url(../img/footer-image.png) repeat-x center center;}
+.footer p{display:inline;position:relative;top:10px;overflow:hidden;}

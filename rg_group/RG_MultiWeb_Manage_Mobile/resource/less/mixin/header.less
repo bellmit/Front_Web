@@ -1,0 +1,59 @@
+///*--顶部菜单--*/
+.header-menuwrap{
+	height:44px;
+	width:100%;
+	ul{
+		.layout-relative-base(0,0,1);
+		background:@color-gray2;
+		width:100%;
+		height:100%;
+		.text-unselect;
+		>li:first-child,
+		>li:last-child{
+			position:absolute;
+			top:0;
+			.box-sizing-base;
+			cursor:pointer;
+		}
+		>li:first-child{
+			left:0;
+			width:36px;
+			z-index:80;
+			a{
+				width:100%;
+				height:100%;
+				display:block;
+				font-family:'ux_four';
+				font-size:@font-size-base + 14;
+				line-height:44px;
+				color:@color-white;
+			}
+		}
+		>li.h-menu-action{
+			right:3px;
+			z-index:80;
+			a{
+				.box-sizing-base;
+				padding:0 15px;
+				float:left;
+				height:30px;
+				line-height:30px;
+				margin:7px 3px 0 0;
+				font-size:@font-size-base;
+				.border-radius-base(3px);
+				background:@color-green1;
+				color:@color-white;
+			}
+		}
+		>li.h-menu-txt{
+			z-index:10;
+			width:100%;
+			height:100%;
+			line-height:44px;
+			font-size:@font-size-large;
+			text-align:center;
+			.text-of;
+			color:@color-white;
+		}
+	}
+}

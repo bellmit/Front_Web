@@ -1,0 +1,60 @@
+@charset "utf-8";
+/* CSS Document */
+/*大导航*/
+.menu{
+height:30px;
+width:1003px;
+}
+.menu ul{
+padding:0;
+margin:0;
+height:29px;
+list-style:none;
+background:#FFF url(../img/menu-background.png) repeat-x;
+}
+.menu ul li{
+float:left;
+height:29px;
+width:100px;
+text-align:center;
+}
+.menu ul li a{
+font-family:"宋体","黑体";
+font-weight:bold;
+font-size:14px;
+color:#FFF;
+display:block;
+height:29px;
+width:100px;
+text-decoration:none;
+line-height:2.2em;
+}
+.menu ul li a:hover{
+background:url(../img/menu-hover.png) no-repeat center;
+color:#000;
+margin:0;
+padding:0;
+}
+/*长的大导航*/
+.menu ul #opts a{
+width:180px;
+height:29px;
+}
+.menu ul #opts a:hover{
+background:url(../img/menu-other.png) no-repeat center;
+}
+#emails{
+margin-left:80px;
+_margin-left:0px;
+}
+#dtimes{
+float:left;
+margin:-28px 0 0 760px;
+_margin:-30px 0 0 380px;/*针对ie6*/
+height:26px;
+width:200px;
+font-size:14px;
+line-height:2.0em;
+color:#FFF;
+}
+

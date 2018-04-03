@@ -1,0 +1,50 @@
+///result text
+.result-text1,
+.result-text2{
+	input[type='text'],
+	input[type='password']{
+		.layout-relative-base;
+		padding:15px 0 15px 10px;
+		float:left;
+		width:100%;
+	}
+	label{
+		font-size:@font-size-base;
+		color:@color-gray3;
+		padding:0 0 5px 0;
+		&:before{
+			display:inline-block;
+			font-size:@font-size-base + 6;
+			color:@color-blue1;
+			content:'申报金额：';
+			padding:0 5px 0 0;
+		}
+	}
+}
+
+////result btn
+.result-btn{
+	input[type='submit'],
+	input[type='button'],
+	input[type='reset'],
+	button,
+	a{
+		.layout-float-base;
+		height:40px;
+		line-height:40px;
+		margin:5px 0;
+	}
+	a{
+		.border-radius-base(3px);
+		font-size:@font-size-base;
+		color:@color-white;
+		display:block;
+		.text-unselect;
+		text-align:center;
+	}
+}
+///result tip
+.result-tip{
+	height:24px;
+	line-height:24px;
+}

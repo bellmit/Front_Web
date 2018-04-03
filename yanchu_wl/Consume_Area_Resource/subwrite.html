@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="css/subpage.css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/global.js"></script>
+<title>消费领域资源互享平台文章添加</title>
+</head>
+<body>
+<form method="post" action="#">
+<div class="containerwrite">
+	<div class="header">
+        	<div class="banner">
+        	  <h3>消费领域资源互享平台</h3>
+        	</div>
+            <div class="menu">
+            	<ul class="menutop">
+                	<li><a class="ta" href="subshow.html">平台为什么值得加入</a></li>
+                    <li><a class="tb" href="subshow.html">如何加入</a></li>
+                    <li><a class="tc" href="subshow.html">如何提取站内资源</a></li>
+                </ul>
+                <ul class="menumiddle">
+                	<li><a class="ma" href="subshow.html">如何向平台提供文化信息</a></li>
+                    <li><a class="mb" href="subshow.html">向平台提供文化信息有何益处</a></li>
+                    <li><a class="mc" href="subshow.html">现在提供文化信息</a></li>
+                </ul>
+                <ul class="menubottom">
+                	<li><a class="ba" href="subshow.html">如果成为平台管理</a></li>
+                    <li><a class="bc" href="subshow.html">成为管理员有何好处</a></li>
+                </ul>
+                <div class="mainmenu">
+                    <ul>
+                        <li><a href="index.html">首&nbsp;页</a></li>
+                        <li><a href="subwrite.html">文章发表</a></li>
+                    </ul>
+            	</div>
+            </div>
+            <div class="searchs">
+            	<input type="text" name="search" id="search" value="请输入搜索内容"/>
+                <input type="button" name="dosearch" id="dosearch" value="&nbsp;&nbsp;&nbsp;&nbsp;"/>
+            </div>
+          	<div class="logins">
+                <table border="0" cellspacing="0">
+                  <tr>
+                    <td><label for="username" class="username">用户名：</label></td>
+                    <td><input type="text" name="username" id="username"/></td>
+                    <td rowspan="2"><input type="button" name="login" id="login" value="登录"/></td>
+                  </tr>
+                  <tr>
+                    <td><label for="password" class="password">密&nbsp;&nbsp;码：</label></td>
+                    <td><input type="password" name="password" id="password"/></td>
+                  </tr>
+                </table>
+          	</div>
+    </div>
+    <div class="contentwrite">
+    	<div class="subarticle">
+        	<table border="0" cellspacing="0" cellpadding="0">
+             <colgroup class="colleft"></colgroup>
+             <colgroup class="collright"></colgroup>   
+              <tr>
+                <td><label for="title">文章标题：</label></td>
+                <td><input name="title" type="text" class="articletitle" id="title" /></td>
+              </tr>
+              <tr>
+                <td><label for="types">文章类型：</label></td>
+                <td>
+                <select name="types" class="articletypes" id="types">
+                		<option value="cul" selected="selected">文化区</option>
+                        <option value="sml">笑笑区</option>
+                        <option value="eng">英语区</option>
+                        <option value="mus">音乐区</option>
+                        <option value="hea">健康区</option>
+                        <option value="hap">情感区</option>
+                        <option value="res">资源区</option>
+                        <option value="hav">需求区</option>
+                        <option value="inf">信息区</option>
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td><label for="source">文章来源：</label></td>
+                <td><input name="source" type="text" class="articlesource" id="source"/>&nbsp;&nbsp;&nbsp;&nbsp;<label for="self">原创：</label><input name="sourcefrom" type="radio" class="articlesourcefrom" value="self" id="self" checked="true" />&nbsp;&nbsp;&nbsp;&nbsp;<label for="other">转载：</label><input name="sourcefrom" type="radio" class="articlesourcefrom" value="other" id="other" /></td>
+              </tr>
+              <tr>
+                <td><label for="phone">联系方式：</label></td>
+                <td><input name="phone" type="text" class="articlephone" id="phone" /></td>
+              </tr>
+              <tr>
+                <td><label for="QQ">QQ：</label></td>
+                <td><input name="QQ" type="text" class="autqq" id="QQ" /></td>
+              </tr>
+              <tr>
+                <td><label for="usertime">文章有效期：</label></td>
+                <td><input name="usertime" type="text" class="usertime" id="usertime" /></td>
+              </tr>
+              <tr>
+                <td><label for="contents">文章内容：</label></td>
+                <td><textarea name="contents" class="articlecontent" id="contents" cols="" rows=""></textarea></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><input name="appear" type="button" class="articleappear" id="appear" value="发&nbsp;表"/></td>
+              </tr>
+            </table>
+        </div>
+       </div>
+    <div class="footer">
+        	<div class="foottop"></div>
+        	<div class="footcontent">
+            	<p>友情链接：<a href="#">百度</a>&nbsp;|&nbsp;<a href="#">新浪</a>&nbsp;|&nbsp;<a href="#">搜狐</a>&nbsp;|&nbsp;<a href="#">腾讯</a></p>
+            	<p>版权所有，违者必究</p>
+                <p>您是第<span>x</span>位访问者</p>
+            </div>
+    </div>
+</div>
+</form>
+</body>
+</html>
