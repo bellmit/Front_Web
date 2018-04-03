@@ -1,0 +1,67 @@
+/*--适配不同分辨率--*/
+@media screen{
+min-width:1003px;
+}
+@media screen and (min-width:641px){
+
+}
+@media screen and (min-width:481px) and (max-width:640px){
+/*产品切换*/
+.rg-sp-navbox ul{width:400px;}
+.rg-sp-navitem{width:80px;margin:20px 10px 0 10px;}
+.rg-sp-navitem a{width:60px;height:60px;-moz-border-radius:8px;-ms-border-radius:8px;-o-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;font-size:35px;line-height:60px;}
+.rg-sp-navitem a span{width:100px;font-size:16px;left:-20px;bottom:-28px;}
+.rg-sp-icon a{background-size:70%;}
+}
+@media screen and (min-width:321px) and (max-width:480px){
+/*搜索*/
+.rg-searchtxt{height:38px;-moz-border-radius:19px;-ms-border-radius:19px;-o-border-radius:19px;-webkit-border-radius:19px;border-radius:19px;padding:9px 43px 9px 15px;}
+.rg-searchbtn{width:40px;height:34px;line-height:34px;font-size:24px;right:3px;}
+/*产品切换*/
+.rg-sp-navbox ul{width:300px;}
+.rg-sp-navitem{width:60px;margin:15px 7px 0 7px;padding:0 0 35px 0;}
+.rg-sp-navitem a{width:50px;height:50px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;font-size:30px;line-height:50px;}
+.rg-sp-navitem a span{width:70px;font-size:14px;left:-10px;bottom:-25px;}
+.rg-sp-icon a{background-size:60%;}
+/*点赞，分享，评论*/
+.rg-detail-operate ul{width:300px;}
+.rg-detail-operate li{width:75px;height:75px;}
+.rg-detail-oicon{font-size:24px;line-height:50px;}
+.rg-detail-otext{line-height:30px;font-size:14px;}
+/*评论列表*/
+.rg-detail-clmainbox{margin:0 0 0 0;}
+.rg-detail-clmainitem{margin:10px 0 5px 0;}
+.rg-detail-clmaintheme{line-height:20px;font-size:14px;}
+.rg-detail-clmaintag{padding:5px 0;}
+.rg-detail-clsubbox{padding:0 8px 2px 8px;}
+.rg-detail-clsubbox li{margin:7px 0 5px 0;}
+.rg-detail-clsubbox p{padding:0 0 0 28px;}
+/*评论*/
+.rg-c-pcontent textarea{height:120px;}
+}
+@media screen and (max-width:320px){
+/*搜索*/
+.rg-searchtxt{height:32px;-moz-border-radius:16px;-ms-border-radius:16px;-o-border-radius:16px;-webkit-border-radius:16px;border-radius:16px;padding:6px 35px 6px 12px;}
+.rg-searchbtn{width:30px;height:28px;line-height:28px;font-size:20px;right:5px;}
+/*产品切换*/
+.rg-sp-navbox ul{width:280px;}
+.rg-sp-navitem{width:60px;margin:10px 3px 0 3px;padding:0 0 25px 0;}
+.rg-sp-navitem a{width:40px;height:40px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;font-size:25px;line-height:40px;}
+.rg-sp-navitem a span{width:60px;font-size:12px;left:-9px;bottom:-20px;}
+.rg-sp-icon a{background-size:60%;}
+/*点赞，分享，评论*/
+.rg-detail-operate ul{width:240px;}
+.rg-detail-operate li{width:60px;height:60px;}
+.rg-detail-oicon{font-size:18px;line-height:40px;}
+.rg-detail-otext{line-height:24px;font-size:12px;}
+/*评论列表*/
+.rg-detail-clmainbox{margin:0 0 0 0;}
+.rg-detail-clmainitem{margin:10px 0 5px 0;}
+.rg-detail-clmaintheme{line-height:20px;font-size:14px;}
+.rg-detail-clmaintag{padding:5px 0;}
+.rg-detail-clsubbox{padding:0 5px 2px 5px;}
+.rg-detail-clsubbox li{margin:7px 0 5px 0;}
+.rg-detail-clsubbox p{padding:0 0 0 25px;}
+/*评论*/
+.rg-c-pcontent textarea{height:100px;}
+}

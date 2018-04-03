@@ -1,0 +1,9 @@
+/*extend
+highlight module*/
+;(function($){var $doc=$(document),$el,timer;function dismiss(){var cls=$el.attr('hl-cls');clearTimeout(timer);$el.removeClass(cls).removeAttr('hl-cls');$el=null;$doc.off('touchend touchmove touchcancel',dismiss)}$.fn.highlight=function(className,selector){return this.each(function(){var $this=$(this);$this.css('-webkit-tap-highlight-color','rgba(255,255,255,0)').off('touchstart.hl');className&&$this.on('touchstart.hl',function(e){var match;$el=selector?(match=$(e.target).closest(selector,this))&&match.length&&match:$this;if($el){$el.attr('hl-cls',className);timer=setTimeout(function(){$el.addClass(className)},100);$doc.on('touchend touchmove touchcancel',dismiss)}})})}})(Zepto);
+/*extend
+event.ortchange module*/
+$(function(){$.mediaQuery={ortchange:'screen and (width: '+window.innerWidth+'px)'};$.matchMedia($.mediaQuery.ortchange).addListener(function(){$(window).trigger('ortchange')})});
+/*extend
+matchmedia module*/
+(function($){$.matchMedia=(function(){var mediaId=0,cls='gmu-media-detect',transitionEnd=$.fx.transitionEnd,cssPrefix=$.fx.cssPrefix,$style=$('<style></style>').append('.'+cls+'{'+cssPrefix+'transition: width 0.001ms; width: 0; position: absolute; clip: rect(1px, 1px, 1px, 1px);}\n').appendTo('head');return function(query){var id=cls+mediaId++,$mediaElem,listeners=[],ret;$style.append('@media '+query+' { #'+id+' { width: 1px; } }\n');$mediaElem=$('<div class="'+cls+'" id="'+id+'"></div>').appendTo('body').on(transitionEnd,function(){ret.matches=$mediaElem.width()===1;$.each(listeners,function(i,fn){$.isFunction(fn)&&fn.call(ret,ret)})});ret={matches:$mediaElem.width()===1,media:query,addListener:function(callback){listeners.push(callback);return this},removeListener:function(callback){var index=listeners.indexOf(callback);~index&&listeners.splice(index,1);return this}};return ret}}())})(Zepto);

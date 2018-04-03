@@ -1,0 +1,137 @@
+@import 'base_variable.less';
+///*以上部分需删除，为公共部分*/
+/*常用部分(公共部分)*/
+.commom1-wrap,.show-wrap{
+	.layout-float-base;
+	padding:0 10px 0 10px;
+	margin:5px 0 5px 0;
+}
+.show-wrap{
+	padding:0 10px 30px 10px;
+}
+.info1-item{
+	.layout-relative-base(0,0,1);
+	width:100%;
+	min-height:50px;
+	background:@color-gray10;
+}
+/*首页*/
+///*微名片信息*/
+.info1-decorate{
+	.layout-absoluter-base(0,0,10);
+	width:36px;
+	height:36px;
+	overflow:hidden;
+	div{
+		float:left;
+		background:@color-gray10;
+		width:100%*1.5;
+		height:100%*1.5;
+		overflow:hidden;
+		.transform-origin-base(0 0);
+		.transform-base(rotate(45deg));
+	}
+}
+.info1-usericon,.info2-usericon{
+	.layout-absolutel-base(0,0,10);
+	.box-sizing-base(border-box);
+	width:80px;
+	height:80px;
+	padding:10px;
+	img{
+		height:100%;
+		display:block;
+		overflow:hidden;
+	}
+}
+.info1-usericon img{width:100%;
+		.border-radius-base(50%);
+}
+.info2-usericon img{width:100%;
+		.border-radius-base(5px);
+}
+.info1-usertxt{
+	.layout-float-base;
+	padding:10px 36px 20px 80px;
+	h3,p{
+		.text-ww;
+		width:100%;
+		float:left;
+		padding:2px 0;
+	}
+	h3{
+		font-weight:normal;
+		color:@color-gray2;
+		font-size:@font-size-default;
+		strong{
+			font-weight:normal;
+			color:@color-gray1;
+		}
+	}
+	p{
+		font-size:@font-size-base;
+		color:@color-gray3;
+		line-height:@font-size-large;
+	}
+}
+.info1-sign{
+	.layout-float-base;
+	padding:10px 20px;
+	background:@color-gray4;
+	.text-ww;
+	width:100%;
+	float:left;
+	color:@color-white;
+	font-size:@font-size-base;
+	line-height:@font-size-large;
+}
+///*店铺列表*/
+.showtitle{
+	.layout-float-base;
+	height:36px;
+	line-height:36px;
+	text-align:center;
+	font-size:16px;
+	font-weight:normal;
+	border-bottom:2px solid @color-red;
+	background:@color-gray10 + 5;
+	margin:5px 0 0 0;
+}
+.showlist{
+	.layout-float-base;
+	background:@color-white;
+	margin:0 0 5px 0;
+	li{
+		width:33.33%;
+		float:left;
+		.box-sizing-base(border-box);
+		padding:4px 2px 0 2px;
+		a{
+			width:100%;
+			height:100%;
+			display:inline-block;			
+		}
+		img{
+			width:100%;
+			height:auto;
+			display:inline-block;
+			margin:0 auto;
+			vertical-align:top;
+		}
+		span{
+			.layout-base;
+			display:inline-block;
+			vertical-align:bottom;
+			padding:2px 2px 5px 2px;
+			text-align:center;
+			line-height:18px;
+			.text-of;
+			font-size:@font-size-base;
+			color:@color-gray3;
+		}
+	}
+}
+
+
+
+
