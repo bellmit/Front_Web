@@ -94,28 +94,30 @@
 ///*--基础类--*/
 
 ///*盒模型*/
-.box-sizing-base(@boxsizing:border-box){box-sizing:@boxsizing;}
+.box-sizing-base(@boxsizing:border-box){-ms-box-sizing:@boxsizing;-o-box-sizing:@boxsizing;-moz-box-sizing:@boxsizing;-webkit-box-sizing:@boxsizing;box-sizing:@boxsizing;}
 
 ///*圆角*/
-.border-radius-base(@radius:none){border-radius:@radius;}
+.border-radius-base(@radius:none){-moz-border-radius:@radius;-ms-border-radius:@radius;-o-border-radius:@radius;-webkit-border-radius:@radius;border-radius:@radius;}
 
 ///*容器阴影*/
-.box-shadow-base(@str){box-shadow:@str;}
+.box-shadow-base(@str){
+-moz-box-shadow:@str;-ms-box-shadow:@str;-o-box-shadow:@str;-webkit-box-shadow:@str;box-shadow:@str;}
 
 ///*文字阴影*/
-.text-shadow-base(@str){text-shadow:@str;}
+.text-shadow-base(@str){
+-moz-text-shadow:@str;-ms-text-shadow:@str;-o-text-shadow:@str;-webkit-text-shadow:@str;text-shadow:@str;}
 
 ///*过渡*/
-.transition-base(@str){transition:@str;}
+.transition-base(@str){-moz-transition:@str;-ms-transition:@str;-o-transition:@str;-webkit-transition:@str;transition:@str;}
 
 ///*变换中心*/
-.transform-origin-base(@origin){transform-origin:@origin;}
+.transform-origin-base(@origin){-moz-transform-origin:@origin;-ms-transform-origin:@origin;-o-transform-origin:@origin;-webkit-transform-origin:@origin;transform-origin:@origin;}
 
 ///*变换*/
-.transform-base(@str){transform:@str;}
+.transform-base(@str){-moz-transform:@str;-ms-transform:@str;-o-transform:@str;-webkit-transform:@str;transform:@str;}
 
 ///*动画定义*/
-.animation-base(@str){animation:@str;}
+.animation-base(@str){-moz-animation:@str;-ms-animation:@str;-webkit-animation:@str;-o-animation:@str;animation:@str;}
 
 ///*横向渐变*/
 .linear-gradienth-base(@startColor: #555, @endColor: #333){
@@ -148,37 +150,38 @@
 .color-bg-base(@color){background-@{color-type}:@color;}
 
 ///*轮廓*/
-.no-outline-base(@outline:none){outline:@outline;}
+.no-outline-base(@outline:none){-moz-outline:@outline;-ms-outline:@outline;-o-outline:@outline;-webkit-outline:@outline;outline:@outline;}
 
 ///*透明*/
 .opacity-base(@str:100){opacity: @str / 100;filter:~"alpha(opacity=@{str})";}
 
 ///*图像灰度*/
-.filter-grayscale-base(@str:100){filter:grayscale(~'@{str}%');filter:gray;}
+.filter-grayscale-base(@str:100){-webkit-filter:grayscale(~'@{str}%');-moz-filter:grayscale(~'@{str}%');-o-filter:grayscale(~'@{str}%');-ms-filter:grayscale(~'@{str}%');filter:grayscale(~'@{str}%');filter:gray;}
 
 ///*图像模糊*/
-.filter-blur-base(@str:5){filter:blur(~'@{str}px');filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=~'@{str}', MakeShadow=false);
+.filter-blur-base(@str:5){-webkit-filter:blur(~'@{str}px');-moz-filter:blur(~'@{str}px');-o-filter:blur(~'@{str}px');-ms-filter:blur(~'@{str}px');filter:blur(~'@{str}px');filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=~'@{str}', MakeShadow=false);
 }
 
 ///*透视*/
-.perspective-base(@str:50px){perspective:@str;}
+.perspective-base(@str:50px){-webkit-perspective:@str;-ms-perspective:@str;-moz-perspective:@str;-o-perspective:@str;perspective:@str;
+}
 
 ///*透视坐标*/
-.perspective-origin-base(@strx:center,@stry:center){perspective-origin:@strx @stry;
+.perspective-origin-base(@strx:center,@stry:center){-webkit-perspective-origin:@strx @stry;-moz-perspective-origin:@strx @stry;-ms-perspective-origin:@strx @stry;-o-perspective-origin:@strx @stry;perspective-origin:@strx @stry;
 }
 
 
 ///*屏幕模式下的文字缩放(none或者100%为关闭)*/
-.text-size-adjust-base(@str:100%){text-size-adjust:@str;}
+.text-size-adjust-base(@str:100%){-moz-text-size-adjust:@str;-o-text-size-adjust:@str;-webkit-text-size-adjust:@str;-ms-text-size-adjust:@str;text-size-adjust:@str;}
 
 ///*动态及时尺寸*/
-.calc-base(@obj,@str){@{obj}:calc(~'@{str}');}
+.calc-base(@obj,@str){@{obj}:-webkit-calc(~'@{str}');@{obj}:-moz-calc(~'@{str}');@{obj}:calc(~'@{str}');}
 
 ///*伪对象*/
 .placeholder-base(@obj,@str){@{obj}:-ms-input-placeholder{@str();};@{obj}::-webkit-input-placeholder{@str();};@{obj}:-moz-placeholder{@str();};@{obj}::-moz-placeholder{@str();}}
 
 ///*选中*/
-.selection-base(@obj,@str){@{obj}::selection{@str();}};
+.selection-base(@obj,@str){@{obj}::-moz-selection{@str();};@{obj}::selection{@str();}};
 
 
 
@@ -229,7 +232,7 @@
 .text-ww(@w1:break-all,@w2:break-word){word-break:@w1;word-wrap:@w2;}
 
 ///*禁止选中*/
-.user-select-base(@str:none){user-select:@str;}
+.user-select-base(@str:none){-moz-user-select:@str;-o-user-select:@str;-webkit-user-select:@str;-ms-user-select:@str;-khtml-user-select:@str;user-select:@str;}
 
 
 
@@ -238,84 +241,84 @@
 ///*--伸缩盒--*/
 
 ///*显示方式*/
-.display-base(@str:flex){display:~'@{str}';}
+.display-base(@str:flex){display:-webkit-~'@{str}';display:-moz-~'@{str}';display:-ms-~'@{str}';display:-o-~'@{str}';display:~'@{str}';}
 
 
 ///*伸缩盒（旧）*/
 ///*排列规则*/
-.box-orient-base(@str:horizontal){box-orient:@str;}
+.box-orient-base(@str:horizontal){-moz-box-orient:@str;-ms-box-origent:@str;-webkit-box-orient:@str;-o-box-orient:@str;box-orient:@str;}
 
 ///*对齐方式(水平方向)*/
-.box-pack-base(@str:start){box-pack:@str;}
+.box-pack-base(@str:start){-ms-box-pack:@str;-webkit-box-pack:@str;-moz-box-pack:@str;-o-box-pack:@str;box-pack:@str;}
 
 ///*对齐方式（垂直方向）*/
-.box-align-base(@str:stretch){box-align:@str;}
+.box-align-base(@str:stretch){-ms-box-align:@str;-webkit-box-align:@str;-moz-box-align:@str;-o-box-align:@str;box-align:@str;}
 
 ///*分配父元素剩余空间的比例*/
-.box-flex-base(@str:0){box-flex:@str;}
+.box-flex-base(@str:0){-ms-box-flex:@str;-webkit-box-flex:@str;-moz-box-flex:@str;-o-box-flex:@str;box-flex:@str;}
 
 ///*设置子对象所属组*/
-.box-flex-group-base(@str:1){box-flex-group:@str;}
+.box-flex-group-base(@str:1){-ms-box-flex-group:@str;-webkit-box-flex-group:@str;-moz-box-flex-group:@str;-o-box-flex-group:@str;box-flex-group:@str;}
 
 ///*设置子对象的显示顺序*/
-.box-ordinal-group-base(@str:1){box-ordinal-group:@str;}
+.box-ordinal-group-base(@str:1){-ms-box-ordinal-group:@str;-webkit-box-ordinal-group:@str;-moz-box-ordinal-group:@str;-o-box-ordinal-group:@str;box-ordinal-group:@str;}
 
 ///*设置子对象的排列顺序是否反转*/
-.box-direction-base(@str:normal){box-direction:@str;}
+.box-direction-base(@str:normal){-ms-box-direction:@str;-webkit-box-direction:@str;-moz-box-direction:@str;-o-box-direction:@str;box-direction:@str;}
 
 ///*设置子对象是否可以换行显示*/
-.box-lines-base(@str:normal){box-lines:@str;}
+.box-lines-base(@str:normal){-ms-box-lines:@str;-webkit-box-lines:@str;-moz-box-lines:@str;-o-box-lines:@str;box-lines:@str;}
 
 
 
 ///*伸缩盒（新）*/
 ///*设置子对象如何分配空间--复合属性（扩展比率 收缩比率 默认基准值）*/
-.flex-base(@str:0 0 auto){flex:@str;}
+.flex-base(@str:0 0 auto){-ms-flex:@str;-webkit-flex:@str;-moz-flex:@str;flex:@str;}
 
 ///*设置子对象排列方式--复合属性（排列方向 溢出父元素是否换行）*/
-.flex-flow-base(@str:row nowrap){flex-flow:@str;}
+.flex-flow-base(@str:row nowrap){-ms-flex-flow:@str;-webkit-flex-flow:@str;-moz-flex-flow:@str;flex-flow:@str;}
 
 
 ///*设置堆叠缩进的对齐方式（水平方向）--总体上*/
-.align-content-base(@str:stretch){align-content:@str;}
+.align-content-base(@str:stretch){-ms-align-content:@str;-webkit-align-content:@str;-moz-align-content:@str;-o-align-content:@str;align-content:@str;}
 
 ///*(弹性容器--容器，主要是对整个伸缩项目的设置)设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
-.align-items-base(@str:stretch){align-items:@str;}
+.align-items-base(@str:stretch){-ms-align-items:@str;-webkit-align-items:@str;-moz-align-items:@str;-o-align-items:@str;align-items:@str;}
 
 ///*（弹性项目--容器中的相关项目或子容器等,主要是对单个伸缩项目的设置）设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
-.align-self-base(@str:auto){align-self:@str;}
+.align-self-base(@str:auto){-ms-align-self:@str;-webkit-align-self:@str;-moz-align-self:@str;-o-align-self:@str;align-self:@str;}
 
 ///*设置元素在主轴（横轴）方向上的对齐方式（水平方向）--细节上*/
-.justify-content-base(@str:flex-start){justify-content:@str;}
+.justify-content-base(@str:flex-start){-ms-justify-content:@str;-webkit-justify-content:@str;-moz-justify-content:@str;-o-justify-content:@str;justify-content:@str;}
 
 ///*设置元素出现的顺序*/
-.order-base(@str:0){order:@str;}
+.order-base(@str:0){-ms-order:@str;-webkit-order:@str;-moz-order:@str;-o-order:@str;order:@str;}
 
 
 
 ///*--多列--*/
 
 ///*设置多列列数和列宽--复合属性（列宽 列数）*/
-.columns-base(@str:auto auto){columns:@str;}
+.columns-base(@str:auto auto){-ms-columns:@str;-webkit-columns:@str;-moz-columns:@str;-o-columns:@str;columns:@str;}
 
 ///*设置多列间隙*/
-.column-gap-base(@str:normal){column-gap:@str;}
+.column-gap-base(@str:normal){-ms-column-gap:@str;-webkit-column-gap:@str;-moz-column-gap:@str;-o-column-gap:@str;column-gap:@str;}
 
 ///*设置多列边框--复合属性（宽度 样式 颜色）*/
-.column-rule-base(@str:medium none transparent){column-rule:@str;}
+.column-rule-base(@str:medium none transparent){-ms-column-rule:@str;-webkit-column-rule:@str;-moz-column-rule:@str;-o-column-rule:@str;column-rule:@str;}
 
 ///*设置是否横跨所有列*/
-.column-span-base(@str:none){column-span:@str;}
+.column-span-base(@str:none){-ms-column-span:@str;-webkit-column-span:@str;-moz-column-span:@str;-o-column-span:@str;column-span:@str;}
 
 ///*设置所有列的高度是否统一*/
-.column-fill-base(@str:auto){column-fill:@str;}
+.column-fill-base(@str:auto){-ms-column-fill:@str;-webkit-column-fill:@str;-moz-column-fill:@str;-o-column-fill:@str;column-fill:@str;}
 
 ///*设置对象之前是否断行*/
-.column-break-before-base(@str:auto){column-break-before:@str;}
+.column-break-before-base(@str:auto){-ms-column-break-before:@str;-webkit-column-break-before:@str;-moz-column-break-before:@str;-o-column-break-before:@str;column-break-before:@str;}
 
 ///*设置对象之后是否断行*/
-.column-break-after-base(@str:auto){column-break-after:@str;}
+.column-break-after-base(@str:auto){-ms-column-break-after:@str;-webkit-column-break-after:@str;-moz-column-break-after:@str;-o-column-break-after:@str;column-break-after:@str;}
 
 ///*设置对象内部是否断行*/
-.column-break-inside-base(@str:auto){column-break-inside:@str;}
+.column-break-inside-base(@str:auto){-ms-column-break-inside:@str;-webkit-column-break-inside:@str;-moz-column-break-inside:@str;-o-column-break-inside:@str;column-break-inside:@str;}
 
